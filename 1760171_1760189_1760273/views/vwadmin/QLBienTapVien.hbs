@@ -1,0 +1,46 @@
+<div class="card">
+  <div class="card-header">
+    <h4>Danh sách biên tập viên</h4>
+  </div>
+<div class="card">
+  <div class="card-header d-flex justify-content-between">
+    <h4>Biên tập viên</h4>
+    <a class="btn btn-outline-success" href="/admin/QLBienTapVien/add" role="button">
+      <i class="fa fa-plus" aria-hidden="true"></i>
+      Thêm biên tập viên
+    </a>
+  </div>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col" class="text-center">#</th>
+        <th scope="col">Tên tài khoản</th>
+        <th scope="col">Họ và Tên</th>
+        <th scope="col">email</th>
+        <th scope="col">Ngày sinh</th>
+        <th scope="col">Chuyên mục quản lý</th>
+        <th scope="col">Vai trò</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each this.lists}}
+      <tr>
+        <th scope="row" class="text-center">{{id}}</th>
+        <td>{{TenTaiKhoan}}</td>
+        <td>{{HoTen}}</td>
+        <td>{{email}}</td>
+        <td>{{NgaySinh}}</td>
+        <td>{{TenChuyenMuc}}</td>
+        <td>{{TenVaiTro}}</td>
+        <td class="text-right">
+          <a class="btn btn-primary btn-sm" href="/admin/QLBienTapVien/edit/{{id}}" role="button" title="Sửa biên tập viên">
+            <i class="fa fa-pencil" aria-hidden="true">sửa</i>
+          </a>
+          <a class="btn btn-danger btn-sm" href="/admin/QLBienTapVien/del/{{id}}" role="button" title="Xóa biên tập viên">
+            <i class="fa fa-trash" aria-hidden="true">Xóa</i>
+          </a>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
