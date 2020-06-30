@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 const config = require('../config/default.json');
+
 const pool = mysql.createPool(config.mysql);
 
 module.exports = {

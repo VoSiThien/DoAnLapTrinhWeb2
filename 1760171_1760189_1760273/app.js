@@ -1,18 +1,18 @@
 const express = require('express');
-const exphbs = require('express-handlebars');
+require('express-async-errors');
+// const exphbs = require('express-handlebars');
 
 const app = express();
+
 app.use(express.urlencoded({
     extended: true
 }));
 
-app.engine('hbs', exphbs({
-    partialsDir: 'views/partials',
-    defaultLayout: 'main.hbs',
-    extname: '.hbs'
-}));
+app.use('/public', express.static('public'));
 
-app.set('view engine', 'hbs');
+require('./middlewares/view.mdw')(app);
+require('./middlewares/locals.mdw')(app);
+
 
 app.get('/', function (req, res) {
     res.render('home');
