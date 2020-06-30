@@ -1,8 +1,8 @@
 const db = require('../utils/db');
-const TB_CATEGORIES = 'ChuyenMuc'
+const TBL_CATEGORIES = 'ChuyenMuc'
 
 module.exports = {
-    loadCategories: function() {
-        return db.load(`select * from ${TB_CATEGORIES}`);
+    loadAll: function() {
+        return db.load(`select * from ${TBL_CATEGORIES}`);
     }
 }

@@ -12,6 +12,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "express-handlebars": "^4.0.4",
+    "lru-cache": "^5.1.1",
     "moment": "^2.27.0",
     "mysql": "^2.18.1"
   }

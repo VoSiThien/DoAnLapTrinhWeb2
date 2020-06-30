@@ -1,4 +1,5 @@
 const express = require('express');
+const LRU = require('lru-cache');
 const catModel = require('../models/categories.model');
 const router = express.Router();
 
