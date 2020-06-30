@@ -18,9 +18,9 @@ app.get('/', function (req, res) {
     res.render('home');
 });
 
-app.use('/admin', require('./routes/admin.route'));
+// app.use('/admin', require('./routes/admin.route'));
 
 const POST = 3000;
 app.listen(POST, function () {
-    console.log(`http://localhost:${POST}`);
+    console.log(`Server is running on PORT: ${POST}`);
 });
