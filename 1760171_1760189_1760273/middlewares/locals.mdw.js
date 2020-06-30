@@ -14,15 +14,18 @@ module.exports = function (app) {
 
     if (!data) {
       const rows = await catModel.loadAll();
-      res.locals.cat = rows;
+      res.locals.lcCats = rows;
       cache.set(GLB_CATEGORIES, rows); // put `rows` back into `cache`
 
       console.log(`-- Fetch ${GLB_CATEGORIES}`);
     } else {
-      res.locals.cat = data;
+      res.locals.lcCats = data;
 
       console.log(`++ Cache hit for ${GLB_CATEGORIES}`);
     }
+
+    res.locals.test = 'manh cuong';
+    // console.log(res.locals.lcCats); // return lift of row
 
     next();
   });
