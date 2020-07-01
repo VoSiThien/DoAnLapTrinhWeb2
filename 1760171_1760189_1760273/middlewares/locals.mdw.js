@@ -27,7 +27,7 @@ module.exports = function (app) {
 
     // format `res.locals.lcCats`
     res.locals.lcCats = []
-    
+
     cats.forEach((cat) => {
       if (cat["ChuyenMucCon"] === null) {
         res.locals.lcCats.push([cat]);
@@ -41,7 +41,7 @@ module.exports = function (app) {
       }
     });
 
-    console.log(res.locals.lcCats); // return lift of row
+    // console.log(res.locals.lcCats); // return lift of row
 
     next();
   });

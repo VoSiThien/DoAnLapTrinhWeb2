@@ -9,7 +9,10 @@ module.exports = function (app) {
       defaultLayout: "main.hbs",
       extname: ".hbs",
       helpers: {
-        section: hbs_sections()
+        section: hbs_sections(),
+        isNull: function(value) {
+          return value === null;
+        }
       }
     })
   );
