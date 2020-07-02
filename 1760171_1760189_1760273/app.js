@@ -1,26 +1,28 @@
-const express = require('express');
-const exphbs = require('express-handlebars');
+const express = require("express");
+require("express-async-errors");
+// const exphbs = require('express-handlebars');
 
 const app = express();
-app.use(express.urlencoded({
-    extended: true
-}));
 
-app.engine('hbs', exphbs({
-    partialsDir: 'views/partials',
-    defaultLayout: 'main.hbs',
-    extname: '.hbs'
-}));
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
 
-app.set('view engine', 'hbs');
+app.use("/public", express.static("public"));
 
-app.get('/', function (req, res) {
-    res.render('home');
+require("./middlewares/view.mdw")(app);
+require("./middlewares/locals.mdw")(app);
+
+// home page
+app.use("/", require("./routes/home.route"));
+
+app.get('/category/:id', (req, res) => {
+  console.log(req.params.id);
 });
-
-app.use('/admin', require('./routes/admin.route'));
 
 const POST = 3000;
 app.listen(POST, function () {
-    console.log(`http://localhost:${POST}`);
+  console.log(`Server is running on PORT: ${POST}`);
 });
