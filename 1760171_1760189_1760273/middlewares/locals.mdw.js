@@ -40,9 +40,6 @@ module.exports = function (app) {
         }
       }
     });
-
-    // console.log(res.locals.lcCats); // return lift of row
-
     next();
   });
 };
