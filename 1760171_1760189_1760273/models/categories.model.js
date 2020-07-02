@@ -1,6 +1,6 @@
 const db = require('../utils/db');
 
-const TBL_CATEGORIES = 'ChuyenMuc'
+const TBL_CATEGORIES = 'chuyenmuc';
 
 module.exports = {
     loadAll: function() {

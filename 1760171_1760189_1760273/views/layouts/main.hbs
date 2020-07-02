@@ -39,6 +39,20 @@
           $('[data-toggle="dropdown"]', _d).attr('aria-expanded', _d.is(':hover'));
         }, 50);
       });
+
+      var parCats = document.querySelectorAll('.parent-cat');
+
+      for (var i = 0; i < parCats.length; i++) {
+        var head = parCats[i].firstChild.nextSibling;
+        var tail = parCats[i].lastChild.previousSibling;
+        var tmpHref = head.href;
+        var tmpInner = head.innerHTML;
+
+        head.href = tail.href.replace(/^.*\/\/[^\/]+/, '');
+        head.innerHTML = tail.innerHTML;
+        tail.href = tmpHref.replace(/^.*\/\/[^\/]+/, '');
+        tail.innerHTML = tmpInner;
+      }
     });
   </script>
 </body>

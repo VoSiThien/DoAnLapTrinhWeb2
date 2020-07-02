@@ -13,7 +13,7 @@
           {{this.0.TenChuyenMuc}}
         </a>
 
-        <div class="dropdown-menu" aria-labelledby="catId_{{this.0.id}}">
+        <div class="dropdown-menu parent-cat" aria-labelledby="catId_{{this.0.id}}">
           {{#each this}}
           {{#if (isNull this.ChuyenMucCon)}}
           <a class="dropdown-item" href="/category/{{this.id}}">Tất cả</a>
