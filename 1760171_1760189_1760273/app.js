@@ -1,15 +1,17 @@
 const express = require("express");
 require("express-async-errors");
-// const exphbs = require('express-handlebars');
-
+const bodyParser = require('body-parser');
 const app = express();
 
+
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(
   express.urlencoded({
     extended: true,
   })
 );
-
 app.use("/public", express.static("public"));
 
 require("./middlewares/view.mdw")(app);

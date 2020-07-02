@@ -8,6 +8,9 @@ module.exports= {
     loadByID: function(id){
         return db.load(`select c.*, t.ButDanh from ${TBL_BAIVIET} c join ${TBL_TAIKHOAN} t where c.id = ${id} and c.TaiKhoanID = t.id`);
     },
+    getNewestID: function(){
+        return db.load(`SELECT MAX(ID) + 1 as newest FROM ${TBL_BAIVIET}`);
+    },
     insert: function(entity){
         return db.add(TBL_BAIVIET, entity);
     },

@@ -114,9 +114,6 @@
 </style>
 {{/section}}
 {{#section 'js'}}
-<script
-    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
     (function ($) {
     "use strict";
@@ -806,6 +803,10 @@
   })(window.jQuery);
   
 </script>
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script>
 <script>
     $('#txtBeginDate').datetimepicker({
         format: 'd/m/Y',
@@ -816,12 +817,13 @@
         selector: '#txtFullDes',
         height: 500,
         plugins: 'paste image link autolink lists table media',
-        menubar: false,
+        menubar: true,
         toolbar: [
             'undo reda | bold italic underline strikethrough | numlist bullist | alignleft aligncenter alignright | forecolor backcolor | table link image media',
         ],
     });
 </script>
+
 {{/section}}
 
 <div class="card">
@@ -833,32 +835,32 @@
 
             <div class="form-group">
                 <label for="txtTitle">Tiêu đề</label>
-                <input type="text" class="form-control" id="txtProName" name="TieuDe" autofocus required>
+                <input type="text" class="form-control" id="txtProName" name="TieuDe" autofocus>
             </div>
 
             <div class="form-group">
                 <label for="txtImage">Ảnh đại diện bài viết:</label><br>
-                <input type="file" name="urlImage" value="null" accept="image/png, image/jpeg" required></input>
+                <input type="file" name="urlImage" value="null" accept="image/png, image/jpeg"></input>
             </div>
 
             <div class="form-group">
                 <label for="txtTinyDes">Mô tả ngắn:</label>
-                <textarea name="NoiDungTat" id="txtFullDes" class="form-control" cols="30" rows="10" required></textarea>
+                <input name="NoiDungTat" id="txtTinyDes" class="form-control" cols="30" rows="10"></input>
             </div>
             <div class="form-group">
                 <label for="txtFullDes">Mô tả đầy đủ:</label>
-                <textarea name="NoiDung" id="txtFullDes" class="form-control" cols="30" rows="10" required></textarea>
+                <textarea name="NoiDung" id="txtFullDes" class="form-control" cols="30" rows="10"></textarea>
             </div>
             <div class="form-group">
                 <label for="txtBeginDate">Ngày xuất bản:</label>
-                <input type="text" class="form-control" id="txtBeginDate" name="NgayXuatBan" required>
+                <input type="text" class="form-control" id="txtBeginDate" name="NgayXuatBan">
             </div>
 
             <div class="form-group">
 
                 <label for="txtType">Chuyên mục:</label>
 
-                <select id="cbParentType" name="ChuyenMucID" class="form-control" required>
+                <select id="cbParentType" name="ChuyenMucID" class="form-control">
                     {{#each lcCats}}
                     <optgroup label="{{this.0.TenChuyenMuc}}">
                         {{#each this}}
@@ -872,15 +874,11 @@
 
             </div>
             <label for="tag">Nhập tag:</label><br>
-            <input type="text" value="html,input,tag" data-role="tagsinput" required></input>
-
-            <a class="btn btn-success" href="/admin/conference" role="button" title="Back to List">
-                <i class="fa fa-backward" aria-hidden="true"></i>
-            </a>
+            <input type="text" name="tag" value="" data-role="tagsinput"></input>
 
             <button type="submit" class="btn btn-primary">
                 <i class="fa fa-check" aria-hidden="true"></i>
-                Save
+                Đăng bài
             </button>
         </form>
     </div>
