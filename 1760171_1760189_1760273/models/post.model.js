@@ -1,6 +1,4 @@
 const db = require('../utils/db');
-const db = require('../utils/db');
-
 const TBL_BAIVIET = 'BaiViet';
 
 module.exports= {

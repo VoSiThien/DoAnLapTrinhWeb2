@@ -3,9 +3,6 @@
     <h4>Danh sách bài viết</h4>
   </div>
 <div class="card">
-  <div class="card-header d-flex justify-content-between">
-    <h4>Bài viết </h4>
-  </div>
   <table class="table table-hover">
     <thead>
       <tr>
@@ -17,7 +14,7 @@
       </tr>
     </thead>
     <tbody>
-      {{#each this.lists}}
+      {{#each this.List}}
       <tr>
         <th scope="row" class="text-center">{{id}}</th>
         <td>{{{TieuDe}}}</td>

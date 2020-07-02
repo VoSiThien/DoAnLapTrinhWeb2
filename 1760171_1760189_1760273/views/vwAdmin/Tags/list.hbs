@@ -5,7 +5,7 @@
 <div class="card">
   <div class="card-header d-flex justify-content-between">
     <h4>Tag</h4>
-    <a class="btn btn-outline-success" href="/admin/QLTag/add" role="button">
+    <a class="btn btn-outline-success" href="/admin/Tag/add" role="button">
       <i class="fa fa-plus" aria-hidden="true"></i>
       Thêm Tag
     </a>
@@ -19,15 +19,15 @@
       </tr>
     </thead>
     <tbody>
-      {{#each this.lists}}
+      {{#each this.List}}
       <tr>
         <th scope="row" class="text-center">{{id}}</th>
         <td>{{TenTag}}</td>
         <td class="text-right">
-          <a class="btn btn-primary btn-sm" href="/admin/QLTag/edit/{{id}}" role="button" title="Sửa Tag">
+          <a class="btn btn-primary btn-sm" href="/admin/Tag/edit/{{id}}" role="button" title="Sửa Tag">
             <i class="fa fa-pencil" aria-hidden="true">sửa</i>
           </a>
-          <a class="btn btn-danger btn-sm" href="/admin/QLTag/del/{{id}}" role="button" title="Xóa Tag">
+          <a class="btn btn-danger btn-sm" href="/admin/Tag/del/{{id}}" role="button" title="Xóa Tag">
             <i class="fa fa-trash" aria-hidden="true">Xóa</i>
           </a>
         </td>

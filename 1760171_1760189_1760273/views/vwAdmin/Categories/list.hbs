@@ -5,7 +5,7 @@
 <div class="card">
   <div class="card-header d-flex justify-content-between">
     <h4>Chuyên mục</h4>
-    <a class="btn btn-outline-success" href="/admin/QLChuyenMuc/add" role="button">
+    <a class="btn btn-outline-success" href="/admin/Categories/add" role="button">
       <i class="fa fa-plus" aria-hidden="true"></i>
       Thêm Chuyên mục
     </a>
@@ -20,16 +20,16 @@
       </tr>
     </thead>
     <tbody>
-      {{#each this.lists}}
+      {{#each this.List}}
       <tr>
         <th scope="row" class="text-center">{{id}}</th>
         <td>{{TenChuyenMuc}}</td>
         <td>{{ChuyenMucCon}}</td>
         <td class="text-right">
-          <a class="btn btn-primary btn-sm" href="/admin/QLChuyenMuc/edit/{{id}}" role="button" title="Sửa chuyên mục">
+          <a class="btn btn-primary btn-sm" href="/admin/Categories/edit/{{id}}" role="button" title="Sửa chuyên mục">
             <i class="fa fa-pencil" aria-hidden="true">sửa</i>
           </a>
-          <a class="btn btn-danger btn-sm" href="/admin/QLChuyenMuc/del/{{id}}" role="button" title="Xóa chuyên mục">
+          <a class="btn btn-danger btn-sm" href="/admin/Categories/del/{{id}}" role="button" title="Xóa chuyên mục">
             <i class="fa fa-trash" aria-hidden="true">Xóa</i>
           </a>
         </td>
