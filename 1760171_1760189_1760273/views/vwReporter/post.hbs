@@ -1,0 +1,56 @@
+<div class="row">
+    {{#each lcUser}}
+    <div class="col-sm-6">
+        <div class="card h-100 container-fluid">
+            <div class="card-body">
+                <h1 class="card-title">Đăng ký hội nghị</h1>
+                <img src="/public/actionImage/RegisterConferenceImage.jpg">
+            </div>
+            <div class="card-footer text-muted">
+                <h3 class="card-title">Xác nhận thông tin đăng ký</h3>
+                <form action = "" method = "POST">
+                    <div class="form-group">
+                        <label for="txtEmail">Mã User:</label><br>
+                        <input type="text" name="userID" value="{{UserID}}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtEmail">Họ tên:</label><br>
+                        <input type="text" name="fullname" placeholder="{{FullName}}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtEmail">Email:</label><br>
+                        <input type="text" name="email" placeholder="{{Email}}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtPhoneNum">Phonenumber:</label><br>
+                        <input type="text" name="phonenumber" placeholder="{{PhoneNumber}}" readonly>
+                    </div>
+                    {{/each}}
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-registered" aria-hidden="true"></i>Đăng ký</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    {{#each this.List}}
+    <div class="col-sm-6">
+        <div class="card-group">
+            <div class="card">
+                <div class="card-head">
+                    <img class="card-img-top" src="/public/conferenceImage/{{urlImage}}.jpg" alt="Card image cap">
+                    <h4 class="card-title">{{Name}}</h4>
+                </div>
+                <div class="card-body">
+                    <b>Mã hội nghị:</b>{{{ConferenceID}}}
+                </div>
+                <div class="card-body">
+                    <b>Mô tả:</b>{{{fullDes}}}
+                </div>
+                <div class="card-footer">
+                    <p class="card-text"><b>Ngày diễn ra:</b> {{beginDate}} </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+</div>

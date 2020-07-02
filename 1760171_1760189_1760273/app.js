@@ -19,7 +19,8 @@ require("./middlewares/locals.mdw")(app);
 app.use("/", require("./routes/home.route"));
 // admin route
 app.use("/admin", require("./routes/admin.route"));
-
+// reporter route
+app.use("/reporter", require("./routes/reporter.route"));
 
 app.get('/category/:id', (req, res) => {
   console.log(req.params.id);
