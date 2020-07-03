@@ -9,7 +9,8 @@
     <ul class="navbar-nav mr-auto">
       {{#each lcCats}}
       <li class="nav-item dropdown">
-        <a class="nav-link btn btn-dark dropdown-toggle" href="#" id="catId_{{this.0.id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link btn btn-dark dropdown-toggle" href="#" id="catId_{{this.0.id}}" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
           {{this.0.TenChuyenMuc}}
         </a>
 
@@ -36,12 +37,36 @@
         </div>
       </form>
     </div>
+
     <ul class="navbar-nav">
+      {{#each lcUser}}
+      {{#if (isEqual this.VaiTroID 1)}}
+      <a class="nav-link disabled" href="/admin" tabindex="-1" aria-disabled="true">
+        <i class="fa fa-calendar-minus-o" aria-hidden="true"></i>
+        Trang quản lý
+      </a>
+      {{/if}}
+      {{#if (isEqual this.VaiTroID 2)}}
+      <a class="nav-link disabled" href="/" tabindex="-1" aria-disabled="true">
+        <i class="fa fa-calendar-minus-o" aria-hidden="true"></i>
+        Chuyên mục quản lý
+      </a>
+      {{/if}}
+      {{#if (isEqual this.VaiTroID 3)}}
+      <a class="nav-link disabled" href="/reporter/post" tabindex="-1" aria-disabled="true">
+        <i class="fa fa-calendar-minus-o" aria-hidden="true"></i>
+        Đăng bài
+      </a>
+      {{/if}}
+      {{/each}}
+      {{#if lcIsAuthenticated}}
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">
           <i class="fa fa-user" aria-hidden="true"></i>
-          Welcome</b>!
+          {{#each lcUser}}
+          Hello, <b>{{TenTaiKhoan}} !</b>
+          {{/each}}
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="/account/profile">
@@ -49,12 +74,13 @@
             Account Profile
           </a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="javascript: $('#frmLogout').submit()">
+          <a class="dropdown-item" href="/account/logout">
             <i class="fa fa-sign-out" aria-hidden="true"></i>
             Logout
           </a>
         </div>
       </li>
+      {{else}}
       <li class="nav-item">
         <a class="nav-link" href="/account/login">
           <i class="fa fa-sign-in" aria-hidden="true"></i>
@@ -68,5 +94,6 @@
         </a>
       </li>
     </ul>
+    {{/if}}
   </div>
 </nav>

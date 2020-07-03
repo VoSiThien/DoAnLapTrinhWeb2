@@ -10,12 +10,15 @@ module.exports = function (app) {
       extname: ".hbs",
       helpers: {
         section: hbs_sections(),
-        isNull: function(value) {
+        isNull: function (value) {
           return value === null;
+        },
+        isEqual: function (a,b){
+          return a == b;
         }
       }
     })
   );
-
+ 
   app.set("view engine", "hbs");
 };
