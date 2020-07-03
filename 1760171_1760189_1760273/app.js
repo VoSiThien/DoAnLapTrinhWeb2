@@ -23,6 +23,8 @@ app.use("/", require("./routes/home.route"));
 app.use("/admin", require("./routes/admin.route"));
 // reporter route
 app.use("/reporter", require("./routes/reporter.route"));
+//account route
+app.use("/account",require("./routes/account.route"));
 
 app.get('/category/:id', (req, res) => {
   console.log(req.params.id);
