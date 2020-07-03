@@ -26,9 +26,6 @@ var upload = multer({
         fileSize: 2048 * 2048
     }
 });
-router.get('/post', function (req, res) {
-    res.render('vwReporter/post');
-});
 
 //------------------------------show post------------------------------------------------------
 router.get('/post', async function (req, res) {
@@ -36,7 +33,6 @@ router.get('/post', async function (req, res) {
     const list = await postModel.loadDraftPost(category);
     res.render('vwEditor/list', { List: list });
 });
-
 //-----------------------------accept and edit post--------------------------------------------
 router.get('/accept/:id', async function (req, res) {
     var postID = req.params.id;
@@ -72,7 +68,7 @@ router.post('/accept/:id', upload.single('urlImage'), async function (req, res) 
         TieuDe: req.body.TieuDe,
         NoiDungTat: req.body.NoiDungTat,
         NoiDung: req.body.NoiDung,
-        NgayXuatBan: dateFormat(Date(req.body.NgayXuatBan), "yyyy/mm/dd"),
+        NgayXuatBan: req.body.NgayXuatBan,
         HinhAnh: imageName,
         LuotXem: 0,
         TrangThaiID: 1,
@@ -80,8 +76,7 @@ router.post('/accept/:id', upload.single('urlImage'), async function (req, res) 
         TaiKhoanID: row[0]["TaiKhoanID"],
         isPremium: 1
     }
-    console.log(dateFormat(Date(req.body.NgayXuatBan), "yyyy/mm/dd"));
-     await postModel.update(postEntity);
+    await postModel.update(postEntity);
     //edit tag
     var words = req.body.tag.split
     const newTags = req.body.tag.split(',');
