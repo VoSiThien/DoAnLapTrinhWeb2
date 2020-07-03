@@ -26,7 +26,8 @@ app.use("/admin", require("./routes/admin.route"));
 app.use("/reporter", require("./routes/reporter.route"));
 //account route
 app.use("/account",require("./routes/account.route"));
-
+//editor route
+app.use('/editor', require("./routes/editor.route"))
 app.get('/category/:id', (req, res) => {
   console.log(req.params.id);
 });
