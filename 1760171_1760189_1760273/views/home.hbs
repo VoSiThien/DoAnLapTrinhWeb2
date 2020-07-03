@@ -16,6 +16,10 @@ Trang chủ
     color: black;
     text-decoration: none;
   }
+
+  .carousel-indicators li {
+    filter: invert(100%);
+  }
 </style>
 {{/section}}
 
@@ -23,63 +27,94 @@ Trang chủ
   <h3 class="mt-5 font-Oswald">Được quan tâm nhất trong tuần qua</h3>
   <hr>
 
-  <div class="row">
-    <a href="" class="a-unstyle">
-      <div class="col-sm-12 col-md-4 mt-4">
-        <div class="card w-100 h-100" style="width: 18rem;">
-          <img class="card-img-top" src="public\images\2light_1.jpg" alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-          </div>
-          <div class="card-body">
-            <a href="#" class="card-link"></a>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item"><strong>Chuyên mục:</strong> Thể thao</li>
-              <li class="list-group-item"><strong>Ngày đăng:</strong> 01/07/2020</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </a>
-    <a href="#" class="a-unstyle">
-      <div class="col-sm-12 col-md-4 mt-4">
-        <div class="card w-100 h-100" style="width: 18rem;">
-          <img class="card-img-top" src="public\images\2light_2.jpg" alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-          </div>
-          <div class="card-body">
-            <a href="#" class="card-link"></a>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item"><strong>Chuyên mục:</strong> Thể thao</li>
-              <li class="list-group-item"><strong>Ngày đăng:</strong> 01/07/2020</li>
-            </ul>
+  <div id="carouselExampleIndicators" class="carousel slide h-100" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="card">
+          <div class="row ">
+            <div class="col-md-7">
+              <img src="public/images/2light_1.jpg" class="img-fluid">
+            </div>
+            <div class="col-md-5">
+              <div class="card-block p-3">
+                <h4 class="card-title">Dương Mạnh Cường và cuộc tình đổ vỡ với bạn gái hơn 3 năm</h4>
+                <p class="card-text">Mới đây cộng đồng mạng một pha xôn xao sau khi mối tình hơn 3 năm của Mạnh Cường
+                  với cô
+                  người yêu đột nhiên đổ vỡ gây ra biết bao thương tiếc cho cộng đồng fan hâm mộ của anh nói riêng
+                  cũng như
+                  toàn thể mọi người trên nước Việt Nam nói chung.</p>
+              </div>
+              <div class="card-body">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item"><strong>Chuyên mục:</strong> Ngôi sao</li>
+                  <li class="list-group-item"><strong>Ngày đăng:</strong> 01/07/2020</li>
+                </ul>
+                <a href="#" class="btn btn-outline-primary float-right mt-4"><i class="fa fa-eye fa-lg"
+                    aria-hidden="true"></i> Chi tiết</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </a>
-    <a href="" class="a-unstyle">
-      <div class="col-sm-12 col-md-4 mt-4">
-        <div class="card w-100 h-100" style="width: 18rem;">
-          <img class="card-img-top" src="public\images\2light_3.jpg" alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-          </div>
-          <div class="card-body">
-            <a href="#" class="card-link"></a>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item"><strong>Chuyên mục:</strong> Thể thao</li>
-              <li class="list-group-item"><strong>Ngày đăng:</strong> 01/07/2020</li>
-            </ul>
+      <div class="carousel-item">
+        <div class="card">
+          <div class="row ">
+            <div class="col-md-7">
+              <img src="public/images/2light_2.jpg" class="img-fluid">
+            </div>
+            <div class="col-md-5">
+              <div class="card-block p-3">
+                <h4 class="card-title">Dương Mạnh Cường và cuộc tình đổ vỡ với bạn gái hơn 3 năm</h4>
+                <p class="card-text">Mới đây cộng đồng mạng một pha xôn xao sau khi mối tình hơn 3 năm của Mạnh Cường
+                  với cô
+                  người yêu đột nhiên đổ vỡ gây ra biết bao thương tiếc cho cộng đồng fan hâm mộ của anh nói riêng
+                  cũng như
+                  toàn thể mọi người trên nước Việt Nam nói chung.</p>
+              </div>
+              <div class="card-body">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item"><strong>Chuyên mục:</strong> Ngôi sao</li>
+                  <li class="list-group-item"><strong>Ngày đăng:</strong> 01/07/2020</li>
+                </ul>
+                <a href="#" class="btn btn-outline-primary float-right mt-4"><i class="fa fa-eye fa-lg"
+                    aria-hidden="true"></i> Chi tiết</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </a>
+      <div class="carousel-item">
+        <div class="card">
+          <div class="row ">
+            <div class="col-md-7">
+              <img src="public/images/2light_3.jpg" class="img-fluid">
+            </div>
+            <div class="col-md-5">
+              <div class="card-block p-3">
+                <h4 class="card-title">Dương Mạnh Cường và cuộc tình đổ vỡ với bạn gái hơn 3 năm</h4>
+                <p class="card-text">Mới đây cộng đồng mạng một pha xôn xao sau khi mối tình hơn 3 năm của Mạnh Cường
+                  với cô
+                  người yêu đột nhiên đổ vỡ gây ra biết bao thương tiếc cho cộng đồng fan hâm mộ của anh nói riêng
+                  cũng như
+                  toàn thể mọi người trên nước Việt Nam nói chung.</p>
+              </div>
+              <div class="card-body">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item"><strong>Chuyên mục:</strong> Ngôi sao</li>
+                  <li class="list-group-item"><strong>Ngày đăng:</strong> 01/07/2020</li>
+                </ul>
+                <a href="#" class="btn btn-outline-primary float-right mt-4"><i class="fa fa-eye fa-lg"
+                    aria-hidden="true"></i> Chi tiết</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
