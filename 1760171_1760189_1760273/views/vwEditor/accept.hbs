@@ -824,7 +824,15 @@
   });
 </script>
 
+
 <script>
+  var selectedCategory = document.getElementById("storedValue").value;
+  selectElement('cbParentType', String(selectedCategory))
+
+  function selectElement(id, valueToSelect) {
+    let element = document.getElementById(id);
+    element.value = valueToSelect;
+  }
   $(function () {
     $('#urlImage').change(function () {
       var input = this;
@@ -846,31 +854,38 @@
 {{/section}}
 
 <div class="card">
+  <input type="text" name="storedValue" id="storedValue" value="{{selectedCategory}}" hidden></input>
   <div class="card-header">
     <h4>Bài viết mới</h4>
   </div>
   <div class="card-body">
+    {{#each ListPost}}
     <form method="POST" action="" enctype="multipart/form-data">
 
       <div class="form-group">
         <label for="txtTitle">Tiêu đề</label>
-        <input type="text" class="form-control" id="txtProName" name="TieuDe" autofocus>
+        <input type="text" class="form-control" id="txtProName" name="TieuDe" value="{{TieuDe}}" autofocus>
       </div>
 
       <div class="form-group">
         <label for="txtImage">Ảnh đại diện bài viết:</label><br>
-        <img id = "showImg" src="../../public/reporterImage/noImage.jpg" style="width:300px;height:300px;"><br>
+        <img id = "showImg" src="../../public/reporterImage/{{HinhAnh}}" style="width:300px;height:300px;"><br>
         <input type="file" name="urlImage" value="" id = "urlImage"></input>
       </div>
 
       <div class="form-group">
         <label for="txtTinyDes">Mô tả ngắn:</label>
-        <input name="NoiDungTat" id="txtTinyDes" class="form-control" cols="30" rows="10"></input>
+        <input name="NoiDungTat" id="txtTinyDes" class="form-control" cols="30" rows="10" value = "{{NoiDungTat}}"></input>
       </div>
       <div class="form-group">
         <label for="txtFullDes">Mô tả đầy đủ:</label>
-        <textarea name="NoiDung" id="txtFullDes" class="form-control" cols="30" rows="10"></textarea>
+        <textarea name="NoiDung" id="txtFullDes" class="form-control" cols="30" rows="10" >{{{NoiDung}}}</textarea>
       </div>
+      <div class="form-group">
+        <label for="txtBeginDate">Ngày xuất bản:</label>
+        <input type="text" class="form-control" id="txtBeginDate" name="NgayXuatBan">
+      </div>
+      {{/each}}
       <div class="form-group">
 
         <label for="txtType">Chuyên mục:</label>
@@ -889,7 +904,7 @@
 
       </div>
       <label for="tag">Nhập tag:</label><br>
-      <input type="text" name="tag" value="" data-role="tagsinput"></input>
+      <input type="text" name="tag" value="{{Tag}}" data-role="tagsinput"></input>
 
       <button type="submit" class="btn btn-primary">
         <i class="fa fa-check" aria-hidden="true"></i>

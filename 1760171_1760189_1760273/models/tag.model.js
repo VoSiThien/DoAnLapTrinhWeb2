@@ -8,6 +8,9 @@ module.exports = {
     loadByID: function (id) {
         return db.load(`select * from ${TBL_TAG} where id = ${id}`);
     },
+    loadByPostID:function(postID){
+        return db.load(`select * from ${TBL_TAG} where BaiVietid = ${postID}`);
+    },
     insert: function (entity) {
         return db.add(TBL_TAG, entity);
     },

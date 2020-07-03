@@ -26,16 +26,15 @@ module.exports= {
           delete entity.id;
         return db.patch(TBL_BAIVIET, entity, condition);
     },
-    updatePulishedDate: function(id){
-        return db.load(`update ${TBL_BAIVIET} set NgayXuatBan = curdate(), TrangThaiID = 3 where id = ${id}`)
-    },
     delete: function(id){
         const condition = { id }
         return db.del(TBL_BAIVIET, condition);
     },
     
-    
-    
+    //---------------------------------------------------------------------------------------------------
+    updatePulishedDate: function(id){
+        return db.load(`update ${TBL_BAIVIET} set NgayXuatBan = curdate(), TrangThaiID = 3 where id = ${id}`)
+    },
     // hien thi 10 bai viet duoc xem nhieu nhat
     loadTop10View: function(){
         return db.load(`select * from ${TBL_BAIVIET} ORDER BY LuotXem DESC LIMIT 10`);

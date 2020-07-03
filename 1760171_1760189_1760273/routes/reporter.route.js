@@ -36,7 +36,7 @@ router.post('/post', upload.single('urlImage'), async function (req,res){
         TieuDe: req.body.TieuDe,
         NoiDungTat: req.body.NoiDungTat,
         NoiDung: req.body.NoiDung,
-        NgayXuatBan: req.body.NgayXuatBan,
+        NgayXuatBan: '0/0/0',
         HinhAnh: req.file.filename,
         LuotXem:0,
         TrangThaiID:2,

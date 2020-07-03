@@ -40,13 +40,12 @@ module.exports = function (app) {
         }
       }
     });
-    
+    //local variables for authentication
     if (req.session.isAuthenticated == null) {
       req.session.isAuthenticated = false;
     }
     res.locals.lcIsAuthenticated = req.session.isAuthenticated;
     res.locals.lcUser = req.session.user;
-
     next();
   });
 };
