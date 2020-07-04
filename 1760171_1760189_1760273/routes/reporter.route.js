@@ -99,7 +99,7 @@ router.post('/edit/:id', upload.single('urlImage'), async function (req, res) {
         NgayXuatBan: '0000-00-00 00:00:00',
         HinhAnh: imageName,
         LuotXem: 0,
-        TrangThaiID: 1,
+        TrangThaiID: 2,
         ChuyenMucID: +req.body.ChuyenMucID,
         TaiKhoanID: row[0]["TaiKhoanID"],
         isPremium: 1
