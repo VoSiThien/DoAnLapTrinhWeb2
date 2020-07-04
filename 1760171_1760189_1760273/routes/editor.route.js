@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const postModel = require('../models/post.model');
 const tagModel = require('../models/tag.model')
+const postFeedBackModel = require('../models/postFeedback.model');
 const fs = require('fs')
 const multer = require('multer');
 var path = require('path');
@@ -110,10 +111,18 @@ router.post('/accept/:id', upload.single('urlImage'), async function (req, res) 
             await tagModel.delete(idIndex[i]);
         }
     }
-    //var category = res.locals.lcUser[0]["ChuyenMucQuanLy"];
-    //const list = await postModel.loadDraftPost(category);
-    //res.render('vwEditor/list', { List: list });
-    res.render('vwEditor/accept');
+    var category = res.locals.lcUser[0]["ChuyenMucQuanLy"];
+    const list = await postModel.loadDraftPost(category);
+    //destroy session
+    req.body.tag = null;
+    req.session.tagIndex = null;
+    res.render('vwEditor/list', { List: list });
 });
 //------------------------------denied action---------------------------------------------------
+router.post("/deny",async function(req,res){
+    await postFeedBackModel.insert(req.body);
+    await postModel.updateStatus(req.body.BaiVietID, 4);
+    console.log(req.body);
+    res.redirect('/editor/post');
+})
 module.exports = router;

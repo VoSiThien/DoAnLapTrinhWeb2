@@ -8,14 +8,14 @@
                 <tr>
                     <th scope="col" style="width: 30%">Tiêu đề</th>
                     <th scope="col" style="width: 30%">Tóm tắt</th>
-                    <th scope="col" style="width: 22%">Tác giả</th>
-                    <th scope="col" style="width: 18%">Action</th>
+                    <th scope="col" style="width: 20%">Tác giả</th>
+                    <th scope="col" style="width: 20%">Action</th>
                 </tr>
             </thead>
             <tbody>
                 {{#each this.List}}
                 <tr>
-                    <td><b>{{{TieuDe}}}</b></td>
+                    <td><b>{{TieuDe}}</b></td>
                     <td>{{{NoiDungTat}}}</td>
                     <td>{{ButDanh}}</td>
                     <td class="text-right">
@@ -25,13 +25,50 @@
                         <a class="btn btn-success btn-sm" href="/editor/accept/{{id}}" role="button" title="">
                             <i class="fa fa-registered" aria-hidden="true">Duyệt</i>
                         </a>
-                        <a class="btn btn-danger btn-sm" href="" role="button" title="">
-                            <i class="fa fa-trash" aria-hidden="true">Từ chối</i>
-                        </a>
+                        <button type="button" onclick="btnClick({{id}}, {{userID}})" class="btn btn-danger"
+                            data-toggle="modal" data-target="#denyModal" value={{id}}>
+                            <i class="fa fa-hand-lizard-o" aria-hidden="true">Từ chối</i>
+                        </button>
                     </td>
                 </tr>
                 {{/each}}
             </tbody>
         </table>
+    </div>
+</div>
+{{#section 'js'}}
+<script>
+    function btnClick(id, userID) {
+        document.getElementById("textPostID").value = id;
+        document.getElementById("textUserID").value = userID;
+    }
+</script>
+{{/section}}
+<!-- Modal -->
+<div class="modal fade" id="denyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Thông điệp từ chối</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="deniedForm" action = "/editor/deny" method = "post">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="TaiKhoanID" id="textPostID" aria-describedby="helpId" hidden>
+                        <input type="text" class="form-control" name="BaiVietID" id="textUserID" aria-describedby="helpId" hidden>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Lý do từ chối:</label><br>
+                        <textarea style="width: 470px;height:100px" name = "NoiDung"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>

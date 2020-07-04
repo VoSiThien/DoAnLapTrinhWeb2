@@ -9,9 +9,13 @@ module.exports= {
         return db.load(`select c.*, t.ButDanh from ${TBL_BAIVIET} c join ${TBL_TAIKHOAN} t where c.id = ${id} and c.TaiKhoanID = t.id`);
     },
     loadDraftPost: function(category){
-         return db.load(`SELECT distinct ${TBL_BAIVIET}.*, ${TBL_TAIKHOAN}.ButDanh 
+         return db.load(`SELECT distinct ${TBL_BAIVIET}.*, ${TBL_TAIKHOAN}.id as 'userID', ${TBL_TAIKHOAN}.ButDanh 
         FROM ${TBL_BAIVIET},${TBL_TAIKHOAN}
         where ${TBL_BAIVIET}.TrangThaiID = 2 and ${TBL_BAIVIET}.ChuyenMucID = ${TBL_TAIKHOAN}.ChuyenMucQuanLy and ${TBL_TAIKHOAN}.ChuyenMucQuanLy = ${category}`)
+    },
+    loadByAuthor:function (AuthorID){
+        console.log(`select * from ${TBL_BAIVIET} where TaiKhoanID = ${AuthorID} order by NgayXuatBan desc`);
+        return db.load(`select * from ${TBL_BAIVIET} where TaiKhoanID = ${AuthorID} order by NgayXuatBan desc`);
     },
     getNewestID: function(){
         return db.load(`SELECT MAX(ID) + 1 as newest FROM ${TBL_BAIVIET}`);
@@ -25,6 +29,9 @@ module.exports= {
           }
           delete entity.id;
         return db.patch(TBL_BAIVIET, entity, condition);
+    },
+    updateStatus:function(postID, statusID){
+        return db.load(`update ${TBL_BAIVIET} set TrangThaiID = ${statusID} where id = ${postID}`);
     },
     delete: function(id){
         const condition = { id }
