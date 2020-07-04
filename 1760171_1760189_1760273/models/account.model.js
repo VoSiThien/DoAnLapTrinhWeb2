@@ -12,6 +12,9 @@ module.exports = {
     loadUser: function (username, password) {
         return db.load(`select * from ${TBL_ACCOUNT} where tentaikhoan = '${username}' and matkhau = '${password}'`)
     },
+    loadReporter: function(){
+        return db.load(`select * from ${TBL_ACCOUNT} where vaitroID  = 3`);
+    },
     add: function (entity) {
         return db.add(TBL_ACCOUNT, entity);
     },

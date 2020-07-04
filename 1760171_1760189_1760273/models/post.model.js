@@ -14,7 +14,6 @@ module.exports= {
         where ${TBL_BAIVIET}.TrangThaiID = 2 and ${TBL_BAIVIET}.ChuyenMucID = ${TBL_TAIKHOAN}.ChuyenMucQuanLy and ${TBL_TAIKHOAN}.ChuyenMucQuanLy = ${category}`)
     },
     loadByAuthor:function (AuthorID){
-        console.log(`select * from ${TBL_BAIVIET} where TaiKhoanID = ${AuthorID} order by NgayXuatBan desc`);
         return db.load(`select * from ${TBL_BAIVIET} where TaiKhoanID = ${AuthorID} order by NgayXuatBan desc`);
     },
     getNewestID: function(){

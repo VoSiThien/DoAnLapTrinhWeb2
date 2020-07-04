@@ -30,7 +30,20 @@ router.get('/Categories', async function (req, res) {
 //----------------------------------------------Tag management------------------------------------
 //--List
 router.get('/Tag', async function (req, res) {
-    const list = await tagModel.load();
+    
+    var list = [];
+    const listAuthor = await accountModel.loadReporter();
+    list = listAuthor;
+    for(let i = 0; i < list.length; i++){
+        var listPost = await postsModel.loadByAuthor(list[i]["id"]);
+        for(let j = 0; j < listPost.length;j++){
+            list[i][j] = listPost[j];
+            var listTag = await tagModel.loadByPostID(list[i][j]["id"]);
+            for(let k = 0; k < listTag.length; k++){
+                list[i][j][k] = listTag[k];
+            }
+        }
+    }
     const newLocal = 'vwAdmin/Tags/list';
     res.render(newLocal, {List: list});
 });
