@@ -1,39 +1,98 @@
+{{#section 'js'}}
+<script>
+  function viewDetail(index) {
+    var detailIndex = "row" + index;
+    var rowDetail = document.getElementById(detailIndex)
+    if (rowDetail.style.display == "")
+      document.getElementById(detailIndex).style.display = "none";
+    else if (rowDetail.style.display == "none")
+      document.getElementById(detailIndex).style.display = "";
+  }
+</script>
+{{/section}}
 <div class="card">
   <div class="card-header">
     <h4>Danh sách chuyên mục</h4>
   </div>
-<div class="card">
-  <div class="card-header d-flex justify-content-between">
-    <h4>Chuyên mục</h4>
-    <a class="btn btn-outline-success" href="/admin/Categories/add" role="button">
-      <i class="fa fa-plus" aria-hidden="true"></i>
-      Thêm Chuyên mục
-    </a>
+  <div class="card">
+    <div class="card-header d-flex justify-content-between">
+      <h4>Chuyên mục</h4>
+      <a class="btn btn-outline-success" href="/admin/Categories/add" role="button">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+        Thêm Chuyên mục
+      </a>
+    </div>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col" class="text-left" style="width: 10%">#</th>
+          <th scope="col" style="width: 60%;" class="text-center">Tên chuyên mục</th>
+          <th scope="col" class="text-center">View detail</th>
+          <th scope="col" class="text-center">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each lcCats}}
+        <tr style="background-color:antiquewhite;">
+          <th scope="row" class="text-left">
+            <p>{{@index}}</p>
+          </th>
+          <td class="text-center">
+            <p>{{this.0.TenChuyenMuc}}</p>
+          </td>
+          <td class="text-center">
+            <button type="button" class="btn btn-primary" onclick="viewDetail({{this.0.id}})"><i class="fa fa-eye"
+                aria-hidden="true"></i></button>
+          </td>
+          <td class="text-center">
+            <a class="btn btn-primary btn-sm" href="/admin/Categories/edit/{{this.0.id}}" role="button"
+              title="Sửa chuyên mục">
+              <i class="fa fa-pencil" aria-hidden="true">sửa</i>
+            </a>
+            <a class="btn btn-danger btn-sm" href="/admin/Categories/del/{{this.0.id}}" role="button"
+              title="Xóa chuyên mục">
+              <i class="fa fa-trash" aria-hidden="true">Xóa</i>
+            </a>
+          </td>
+        </tr>
+
+        <tr id="row{{this.0.id}}" style = "display:none">
+          <td></td>
+          <td class="text-center" colspan="2">
+            <table class="table table-hover">
+              <thead>
+                <tr style="background-color:lightgray">
+                  <th scope="col" class="text-left" style="width: 20%">#</th>
+                  <th scope="col" style="width: 60%;" class="text-center">Tên chuyên mục con</th>
+                  <th scope="col" class="text-center">Action</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {{#each this}}
+                {{#if (isNotEqual @index 0)}}
+                <tr id="row{{ChuyenMucCon}}" class="childRow">
+                  <td></td>
+                  <td class="text-center">{{TenChuyenMuc}}</td>
+                  <td class="text-left">
+                    <a class="btn btn-primary btn-sm" href="/admin/Categories/edit/{{id}}" role="button"
+                      title="Sửa chuyên mục">
+                      <i class="fa fa-pencil" aria-hidden="true">sửa</i>
+                    </a>
+                    <a class="btn btn-danger btn-sm" href="/admin/Categories/del/{{id}}" role="button"
+                      title="Xóa chuyên mục">
+                      <i class="fa fa-trash" aria-hidden="true">Xóa</i>
+                    </a>
+                  </td>
+                </tr>
+                {{/if}}
+                {{/each}}
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
   </div>
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th scope="col" class="text-center">#</th>
-        <th scope="col">Tên chuyên mục</th>
-        <th scope="col">Chuyên mục con</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each this.List}}
-      <tr>
-        <th scope="row" class="text-center">{{id}}</th>
-        <td>{{TenChuyenMuc}}</td>
-        <td>{{ChuyenMucCon}}</td>
-        <td class="text-right">
-          <a class="btn btn-primary btn-sm" href="/admin/Categories/edit/{{id}}" role="button" title="Sửa chuyên mục">
-            <i class="fa fa-pencil" aria-hidden="true">sửa</i>
-          </a>
-          <a class="btn btn-danger btn-sm" href="/admin/Categories/del/{{id}}" role="button" title="Xóa chuyên mục">
-            <i class="fa fa-trash" aria-hidden="true">Xóa</i>
-          </a>
-        </td>
-      </tr>
-      {{/each}}
-    </tbody>
-  </table>
+</div>

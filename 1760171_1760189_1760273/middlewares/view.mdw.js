@@ -15,6 +15,9 @@ module.exports = function (app) {
         },
         isEqual: function (a,b){
           return a == b;
+        },
+        isNotEqual: function(a, b){
+          return a != b;
         }
       }
     })

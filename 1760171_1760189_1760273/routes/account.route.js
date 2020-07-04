@@ -50,7 +50,7 @@ router.post('/register', async function (req, res) {
         ChuyenMucQuanLy: null
     }
     await accountModel.add(entityAccount);
-    res.render('vwAccount/login');
+    res.redirect('/account/login');
 });
 
 //-------------------------------------------Profile------------------------------------------------------------

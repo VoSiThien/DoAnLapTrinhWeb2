@@ -96,7 +96,7 @@ router.post('/edit/:id', upload.single('urlImage'), async function (req, res) {
         TieuDe: req.body.TieuDe,
         NoiDungTat: req.body.NoiDungTat,
         NoiDung: req.body.NoiDung,
-        NgayXuatBan: '0000-00-00 00:00:00',
+        NgayXuatBan: null,
         HinhAnh: imageName,
         LuotXem: 0,
         TrangThaiID: 2,
