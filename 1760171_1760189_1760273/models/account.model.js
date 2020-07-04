@@ -9,8 +9,8 @@ module.exports = {
     loadByID: function (ID) {
         return db.load(`select * from ${TBL_ACCOUNT} where id = '${ID}'`)
     },
-    loadUser: function (username, password) {
-        return db.load(`select * from ${TBL_ACCOUNT} where tentaikhoan = '${username}' and matkhau = '${password}'`)
+    loadUser: function (username) {
+        return db.load(`select * from ${TBL_ACCOUNT} where tentaikhoan = '${username}'`)
     },
     add: function (entity) {
         return db.add(TBL_ACCOUNT, entity);
