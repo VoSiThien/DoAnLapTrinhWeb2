@@ -2,60 +2,31 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{{_sections.title}}}</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  {{{_sections.css}}}
-
-  <style>
-    nav .dropdown:hover>.dropdown-menu {
-      display: block;
-    }
-
-    nav .dropdown>.dropdown-toggle:active {
-      /*Without this, clicking will make it sticky*/
-      pointer-events: none;
-    }
-  </style>
+    <title>{{{_sections.title}}}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="public/images/icons/favicon.png" />
+    <link rel="stylesheet" type="text/css" href="public/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="public/fonts/iconic/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" type="text/css" href="public/vendor/animate/animate.css">
+    <link rel="stylesheet" type="text/css" href="public/vendor/css-hamburgers/hamburgers.min.css">
+    <link rel="stylesheet" type="text/css" href="public/vendor/animsition/css/animsition.min.css">
+    <link rel="stylesheet" type="text/css" href="public/css/util.min.css">
+    <link rel="stylesheet" type="text/css" href="public/css/main.css">
+    {{{_sections.css}}}
 </head>
 
-<body>
-  {{> nav}}
-  {{{body}}}
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-  {{{_sections.js}}}
+<body class="animsition">
+    {{> nav}}
+    {{{body}}}
 
-  <script>
-    $(document).ready(function () {
-      $('body').on('mouseenter mouseleave', '.dropdown', function (e) {
-        var _d = $(e.target).closest('.dropdown');
-        if (e.type === 'mouseenter') _d.addClass('show');
-        setTimeout(function () {
-          _d.toggleClass('show', _d.is(':hover'));
-          $('[data-toggle="dropdown"]', _d).attr('aria-expanded', _d.is(':hover'));
-        }, 50);
-      });
-
-      // swap the first child element of each main category and the last child element of one
-      var parCats = document.querySelectorAll('.parent-cat');
-
-      for (var i = 0; i < parCats.length; i++) {
-        var head = parCats[i].firstChild.nextSibling;
-        var tail = parCats[i].lastChild.previousSibling;
-        var tmpHref = head.href;
-        var tmpInner = head.innerHTML;
-
-        head.href = tail.href.replace(/^.*\/\/[^\/]+/, '');
-        head.innerHTML = tail.innerHTML;
-        tail.href = tmpHref.replace(/^.*\/\/[^\/]+/, '');
-        tail.innerHTML = tmpInner;
-      }
-    });
-  </script>
+    <script src="public/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <script src="public/vendor/animsition/js/animsition.min.js"></script>
+    <script src="public/vendor/bootstrap/js/popper.js"></script>
+    <script src="public/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="public/js/main.js"></script>
+    {{{_sections.js}}}
 </body>
 
 </html>
