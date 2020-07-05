@@ -2,38 +2,44 @@
   <div class="card-header">
     <h4>Danh sách bài viết</h4>
   </div>
-<div class="card">
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th scope="col" class="text-center">#</th>
-        <th scope="col">Tiêu đề</th>
-        <th scope="col">Nội dung tắt</th>
-        <th scope="col">Ngày xuất bản</th>
-        <th scope="col">Người viết</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each this.List}}
-      <tr>
-        <th scope="row" class="text-center">{{id}}</th>
-        <td>{{{TieuDe}}}</td>
-        <td>{{{NoiDungTat}}}</td>
-        <td>{{{NgayXuatBan}}}</td>
-        <td>{{TaiKhoanID}}</td>
-        <td class="text-right">
-          <a class="btn btn-primary btn-sm" href="/admin/QLBaiViet/detail/{{id}}" role="button" title="">
-            <i class="fa fa-pencil" aria-hidden="true">Chi tiết</i>
-          </a>
-          <a class="btn btn-danger btn-sm" href="/admin/Posts/{{id}}&3" role="button" title="">
-            <i class="fa fa-trash" aria-hidden="true">Cập nhật</i>
-          </a>
-          <a class="btn btn-danger btn-sm" href="/admin/Posts/{{id}}&4" role="button" title="">
-            <i class="fa fa-trash" aria-hidden="true">Xóa</i>
-          </a>
-        </td>
-      </tr>
-      {{/each}}
-    </tbody>
-  </table>
+  <div class="card">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col" class="text-center">#</th>
+          <th scope="col">Tiêu đề</th>
+          <th scope="col">Nội dung tắt</th>
+          <th scope="col">Ngày xuất bản</th>
+          <th scope="col">Người viết</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each this.List}}
+        <tr>
+          <th scope="row" class="text-center">{{id}}</th>
+          <td>{{{TieuDe}}}</td>
+          <td>{{{NoiDungTat}}}</td>
+          <td>{{{NgayXuatBan}}}</td>
+          <td>{{TaiKhoanID}}</td>
+          <td class="text-right">
+            <a class="btn btn-primary btn-sm" href="/admin/Posts/{{id}}&2" role="button" title="">
+              <i class="fa fa-pencil" aria-hidden="true">Chi tiết</i>
+            </a>
+            <a class="btn btn-danger btn-sm" href="/admin/accept/{{id}}" role="button" title="">
+              <i class="fa fa-trash" aria-hidden="true">Cập nhật</i>
+            </a>
+            <a class="btn btn-danger btn-sm" href="/admin/Posts/{{id}}&3" role="button" title="">
+              <i class="fa fa-trash" aria-hidden="true">thêm tag</i>
+            </a>
+            <a class="btn btn-danger" href="/admin/Posts/{{id}}&1" role="button" title="">
+              <i class="fa fa-trash" aria-hidden="true">Xuất Bản</i>
+            </a>
+            <a class="btn btn-danger btn-sm" href="/admin/Posts/{{id}}&4" role="button" title="">
+              <i class="fa fa-trash" aria-hidden="true">Xóa</i>
+            </a>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
