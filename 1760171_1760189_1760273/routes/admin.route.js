@@ -20,6 +20,42 @@ router.get('/Posts', async function (req, res) {
     const newLocal = 'vwAdmin/Posts/list';
     res.render(newLocal, {List: list});
 });
+router.get('/Posts/:id&:key', async function (req, res) {
+    const id = +req.params.id || -1;
+    const key = +req.params.key || -1;
+    if(key == 1){
+        await postsModel.updatePulishedDate(id);
+        const newLocal = '/admin/Posts';
+        res.redirect(newLocal);
+    }
+    if(key == 2){
+        const list = await postsModel.loadByID(id);
+        const row = list[0];
+        const newLocal = 'vwAdmin/Posts/Detail';
+        res.render(newLocal, {row});
+    }
+    if(key == 3){
+        const list = await postsModel.loadByID(id);
+        const row = list[0];
+        const newLocal = 'vwAdmin/Posts/edit';
+        res.render(newLocal, {row});
+    }
+    if(key == 4){
+        const BaiVietID = id;
+        await tagModel.deleteAllPostID(BaiVietID);
+        await postsModel.delete(id);
+        res.redirect('/admin/Posts');
+    }
+});
+router.post('/Posts/edit', async function (req, res) {
+    const NXB = moment(req.body.NgayXuatBan, 'YYYY/MM/DD HH:mm:SS').format('YYYY/MM/DD HH:mm:SS');
+    const entityPost = {
+        id: req.body.id,
+        NgayXuatBan: NXB
+    }
+    await postsModel.update(entityPost);
+    res.redirect('/admin/Posts');
+});
 //----------------------------------------------Categories management------------------------------------
 //--List
 router.get('/Categories', async function (req, res) {

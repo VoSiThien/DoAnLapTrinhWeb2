@@ -1,0 +1,25 @@
+<div class="card">
+    <div class="card-header">
+        <h4>Cập nhật ngày xuất bản</h4>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="" style="width: 50%; margin-left: 20%">
+            <div class="form-group">
+                <label for="id">#</label>
+                <input type="text" class="form-control" id="id" name="id" placeholder="" value="{{this.row.id}}"
+                    readonly>
+            </div>
+            <div class="form-group">
+                <label for="NgayXuatBan">Thời gian xuất bản</label>
+                <input type="datetime-local" name="NgayXuatBan" id="NgayXuatBan" class="form-control">
+            </div>
+            <a class="btn btn-success" href="/admin/Posts" role="button" title="Back to List">
+                <i class="fa fa-backward" aria-hidden="true"></i>
+            </a>
+            <a class="btn btn-danger" href="/admin/Posts/{{this.row.id}}&1" role="button" title="">
+                <i class="fa fa-trash" aria-hidden="true">Xuất Bản</i>
+            </a>
+            <input type="submit" value="Submit" class="btn btn-primary" formaction="/admin/Posts/edit">
+        </form>
+    </div>
+</div>

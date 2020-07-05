@@ -24,5 +24,9 @@ module.exports = {
     delete: function (id) {
         const condition = { id }
         return db.del(TBL_TAG, condition);
+    },
+    deleteAllPostID: function (BaiVietID) {
+        const condition = { BaiVietID }
+        return db.del(TBL_TAG, condition);
     }
 }
