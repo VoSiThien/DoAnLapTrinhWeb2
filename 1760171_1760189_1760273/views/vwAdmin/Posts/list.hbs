@@ -3,6 +3,13 @@
     <h4>Danh sách bài viết</h4>
   </div>
   <div class="card">
+    <div class="card-header d-flex justify-content-between">
+    <h4>Tag</h4>
+    <a class="btn btn-outline-success" href="/admin/Posts/add" role="button">
+      <i class="fa fa-plus" aria-hidden="true"></i>
+      Thêm bài viết
+    </a>
+  </div>
     <table class="table table-hover">
       <thead>
         <tr>
@@ -26,7 +33,7 @@
             <a class="btn btn-primary btn-sm" href="/admin/Posts/{{id}}&2" role="button" title="">
               <i class="fa fa-pencil" aria-hidden="true">Chi tiết</i>
             </a>
-            <a class="btn btn-danger btn-sm" href="/admin/accept/{{id}}" role="button" title="">
+            <a class="btn btn-danger btn-sm" href="/admin/Posts/accept/{{id}}" role="button" title="">
               <i class="fa fa-trash" aria-hidden="true">Cập nhật</i>
             </a>
             <a class="btn btn-danger btn-sm" href="/admin/Posts/{{id}}&3" role="button" title="">

@@ -4,14 +4,25 @@
   </div>
   <div class="card-body">
     <form method="POST" action="" style="width: 50%; margin-left: 20%">
-      <div class="form-group" >
+      <div class="form-group">
         <label for="TagName">Tên Tag</label>
         <input type="PostID" class="form-control" id="TenTag" name="TenTag" autofocus>
       </div>
-      <a class="btn btn-success" href="/admin/QLTag" role="button" title="Back to List">
+      <div class="form-group">
+
+        <label for="txtType">Chuyên mục:</label>
+
+        <select id="cbParentType" name="BaiVietID" class="form-control">
+          {{#each this.List}}
+          <option value="{{id}}" selected>{{TieuDe}}</option>
+          </optgroup>
+          {{/each}}
+        </select>
+      </div>
+      <a class="btn btn-success" href="/admin/Tag" role="button" title="Back to List">
         <i class="fa fa-backward" aria-hidden="true"></i>
       </a>
-      <input type="submit" value="Submit" class="btn btn-primary" formaction="/admin/QLTag/StartAdd">
+      <input type="submit" value="Submit" class="btn btn-primary">
     </form>
   </div>
 </div>

@@ -45,29 +45,30 @@ router.get('/Posts', async function (req, res) {
 router.get('/Posts/:id&:key', async function (req, res) {
     const id = +req.params.id || -1;
     const key = +req.params.key || -1;
-    if(key == 1){
+    if(key == 1){//xaut ban
         await postsModel.updatePulishedDate(id);
         const newLocal = '/admin/Posts';
         res.redirect(newLocal);
     }
-    if(key == 2){
+    if(key == 2){//detail
         const list = await postsModel.loadByID(id);
         const row = list[0];
         const newLocal = 'vwAdmin/Posts/Detail';
         res.render(newLocal, {row});
     }
-    if(key == 3){
+    if(key == 3){//them tag
         const row = id;
         const newLocal = 'vwAdmin/Posts/addTag';
         res.render(newLocal, {row});
     }
-    if(key == 4){
+    if(key == 4){//xoa bai
         const BaiVietID = id;
         await tagModel.deleteAllPostID(BaiVietID);
         await postsModel.delete(id);
         res.redirect('/admin/Posts');
     }
 });
+//--them tag
 router.post('/Posts/addTag', async function (req, res) {
     const entity = {
         TenTag: req.body.TenTag,
@@ -76,7 +77,8 @@ router.post('/Posts/addTag', async function (req, res) {
     await tagModel.insert(entity);
     req.headers.referer;//ko bik dung
 });
-router.get('/accept/:id', async function (req, res) {
+//-- duyet bai/edit bai
+router.get('/Posts/accept/:id', async function (req, res) {
     var postID = req.params.id;
     const row = await postModel.loadByID(postID);
     const tagsRow = await tagModel.loadByPostID(postID);
@@ -94,7 +96,7 @@ router.get('/accept/:id', async function (req, res) {
 });
 
 const directory = 'public/reporterImage/';
-router.post('/accept/:id', upload.single('urlImage'), async function (req, res) {
+router.post('/Posts/accept/:id', upload.single('urlImage'), async function (req, res) {
     var postID = req.params.id;
     const row = await postModel.loadByID(postID);
     imageName = row[0]["HinhAnh"];
@@ -157,6 +159,37 @@ router.post('/accept/:id', upload.single('urlImage'), async function (req, res) 
     req.session.tagIndex = null;
     res.redirect('/admin/Posts');
 });
+//--add
+router.get('/Posts/add', async function(req,res){
+    res.render('vwAdmin/Posts/add');
+})
+router.post('/Posts/add', upload.single('urlImage'), async function (req, res) {
+    //insert post
+    var newestPostID = await postModel.getNewestID();
+    var postEntity = {
+        TieuDe: req.body.TieuDe,
+        NoiDungTat: req.body.NoiDungTat,
+        NoiDung: req.body.NoiDung,
+        NgayXuatBan: '0/0/0',
+        HinhAnh: req.file.filename,
+        LuotXem: 0,
+        TrangThaiID: 2,
+        ChuyenMucID: +req.body.ChuyenMucID,
+        TaiKhoanID: 1,//sửa lại sau
+        isPremium: 0
+    }
+    await postModel.insert(postEntity);
+    //insert tag
+    const tags = req.body.tag.split(',');
+    for (let i = 0; i < tags.length; i++) {
+        var tagEntity = {
+            TenTag: tags[i],
+            BaiVietID: +newestPostID[0]["newest"]
+        }
+        await tagModel.insert(tagEntity);
+    }
+    res.redirect('/admin/Posts/add');
+});
 //----------------------------------------------Categories management------------------------------------
 //--List
 router.get('/Categories', async function (req, res) {
@@ -172,10 +205,40 @@ router.get('/Tag', async function (req, res) {
     res.render(newLocal, {List: list});
 });
 //--add
-router.get('/add', async function (req, res) {
-    
+router.get('/Tag/add', async function (req, res) {
+    const list = await postsModel.load();
+    res.render('vwAdmin/Tags/add', {List : list});
 });
-
+router.post('/Tag/add', async function (req, res) {
+    const entity = {
+        TenTag: req.body.TenTag,
+        BaiVietID: req.body.BaiVietID
+    }
+    await tagModel.insert(entity);
+    res.redirect('/admin/Tag/add');
+});
+//--edit
+router.get('/Tag/edit/:id', async function (req, res) {
+    const id = +req.params.id || -1;
+    const list = await postsModel.load();
+    const list1 = await tagModel.loadByID(id);
+    res.render('vwAdmin/Tags/edit', {List : list, row: list1[0]});
+});
+router.post('/Tag/edit/:id', async function (req, res) {
+    const entity = {
+        id: req.body.id,
+        TenTag: req.body.TenTag,
+        BaiVietID: req.body.BaiVietID
+    }
+    await tagModel.update(entity);
+    res.redirect('/admin/Tag');
+});
+//--delete
+router.get('/Tag/del/:id', async function (req, res) {
+    const id = +req.params.id || -1;
+   await tagModel.delete(id);
+   res.redirect('/admin/Tag');
+});
 //----------------------------------------------User management------------------------------------
 //--List
 router.get('/User', async function (req, res) {
