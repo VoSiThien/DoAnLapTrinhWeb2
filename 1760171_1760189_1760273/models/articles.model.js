@@ -3,6 +3,6 @@ const db = require("../utils/db");
 
 module.exports = {
   load4OutstandingPosts: function () {
-    return db.load(queries.load4OutstandingArticles);
+    return db.load(queries.load4OutstandingArticles());
   },
 };
