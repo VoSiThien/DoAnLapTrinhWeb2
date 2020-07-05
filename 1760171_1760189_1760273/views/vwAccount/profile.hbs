@@ -33,14 +33,6 @@
     }
 </style>
 {{/section}}
-{{#each lcUser}}
-{{#if RoleID}}
-<h6 class="d-block"><a href="javascript:void(0)">Vai trò:Admin</h6>
-{{else}}
-<h6 class="d-block"><a href="javascript:void(0)">Vai trò:User</h6>
-{{/if}}
-
-{{/each}}
 
 {{#each lcUser}}
 <div class="row">
@@ -49,30 +41,6 @@
             <div class="card-body">
                 <div class="card-title mb-4">
                     <div class="d-flex justify-content-start">
-                        <div class="image-container">
-                            <img src="/public/account_image/{{urlImage}}.jpg" id="imgProfile"
-                                style="width: 150px; height: 150px" class="img-thumbnail" />
-                            <div class="middle">
-                                <form method="POST" action="" enctype="multipart/form-data">
-                                    <input type="file">
-                                    <input type="submit" class="btn btn-secondary" id="btnChangePicture"
-                                        value="Change" />
-                                </form>
-                                <input type="file" style="display: none;" id="profilePicture" name="file" />
-                            </div>
-                        </div>
-                        <div class="userData ml-3">
-                            <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold"><a
-                                    href="javascript:void(0);">{{UserName}}</a></h2>
-                            {{!-- <h6 class="d-block"><a href="javascript:void(0)">1,500</a> Video Uploads</h6>
-                            <h6 class="d-block"><a href="javascript:void(0)">300</a> Blog Posts</h6> --}}
-
-                        </div>
-                        <div class="ml-auto">
-                            <input type="button" class="btn btn-primary d-none" id="btnDiscard"
-                                value="Discard Changes" />
-                        </div>
-                    </div>
                 </div>
 
                 <div class="row">
@@ -94,61 +62,70 @@
                                 aria-labelledby="basicInfo-tab">
                                 <div class="row">
                                     <div class="col-sm-3 col-md-2 col-5">
+                                        <label style="font-weight:bold;">Tên tài khoản:</label>
+                                    </div>
+                                    <div class="col-md-8 col-6">
+                                        {{TenTaiKhoan}}
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-3 col-md-2 col-5">
+                                        <label style="font-weight:bold;">Họ và tên:</label>
+                                    </div>
+                                    <div class="col-md-8 col-6">
+                                        {{HoTen}}
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-3 col-md-2 col-5">
+                                        <label style="font-weight:bold;">Bút danh:</label>
+                                    </div>
+                                    <div class="col-md-8 col-6">
+                                        {{ButDanh}}
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-3 col-md-2 col-5">
                                         <label style="font-weight:bold;">Email:</label>
                                     </div>
                                     <div class="col-md-8 col-6">
-                                        {{Email}}
+                                        {{email}}
                                     </div>
                                 </div>
                                 <hr />
-
                                 <div class="row">
                                     <div class="col-sm-3 col-md-2 col-5">
-                                        <label style="font-weight:bold;">Số điện thoại:</label>
+                                        <label style="font-weight:bold;">Ngày sinh:</label>
                                     </div>
                                     <div class="col-md-8 col-6">
-                                        {{PhoneNumber}}
+                                        {{NgaySinh}}
                                     </div>
                                 </div>
                                 <hr />
-
-                            </div>
-                            {{/each}}
-                            <div class="tab-pane fade" id="connectedServices" role="tabpanel"
-                                aria-labelledby="ConnectedServices-tab">
                                 <div class="row">
-                                    {{#each this.List}}
-                                    <div class="col-sm-4">
-                                        <div class="card h-100">
-                                            <div class="card-body">
-                                                <img class="card-img-top"
-                                                    src="/public/conferenceImage/{{urlImage}}"
-                                                    alt="Card image cap">
-                                                <h4 class="card-title">{{name}}</h4>
-                                                <p class="card-text"><b>Mô tả :</b>{{tinyDes}}</p>
-                                                <p class="card-text"><b>Thời gian diễn ra:</b> {{beginDate}}</p>
-                                            </div>
-                                            <div class="card-footer text-muted">
-                                                <a name="detail" id="btnDetail" class="btn btn-primary btn-sm"
-                                                    href="/conference/detail/{{ConferenceID}}" role="button">
-                                                    <i class="fa fa-bullseye" aria-hidden="true"></i></i>
-                                                    Xem chi tiết!
-                                                </a>
-                                                {{#if IsAccepted}}
-                                                <div class="alert alert-primary" role="alert">
-                                                    <strong>Đã duyệt</strong>
-                                                </div>
-                                                {{else}}
-                                                <div class="alert alert-primary" role="alert">
-                                                    <strong>Chưa được duyệt</strong>
-                                                </div>
-                                                {{/if}}
-                                            </div>
-                                        </div>
+                                    <div class="col-sm-3 col-md-2 col-5">
+                                        <label style="font-weight:bold;">Thời hạn tài khoản:</label>
                                     </div>
-                                    {{/each}}
+                                    <div class="col-md-8 col-6">
+                                        {{ThoiHan}}
+                                    </div>
                                 </div>
+                                {{/each}}
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-3 col-md-2 col-5">
+                                        <label style="font-weight:bold;">Chuyên mục quản lý:</label>
+                                    </div>
+                                    <div class="col-md-8 col-6">
+                                        {{this.row.TenChuyenMuc}}
+                                    </div>
+                                </div>
+                                <hr />
                             </div>
+                            
                         </div>
                     </div>
                 </div>

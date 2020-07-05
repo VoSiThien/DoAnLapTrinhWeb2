@@ -4,6 +4,7 @@ const accountModel = require('../models/account.model');
 const moment = require('moment');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const categoriesModel = require('../models/categories.model');
 
 
 //------------------------------------------------LOGIN------------------------------------------------------
@@ -71,7 +72,8 @@ router.post('/register', async function (req, res) {
 //-------------------------------------------Profile------------------------------------------------------------
 restrict = require('../middlewares/isAuthenticated.mdw')
 router.get('/profile', restrict, async function (req, res) {
-    res.render('vwAccount/profile');
+    const rows = await categoriesModel.loadChuyenMucByID(res.locals.lcUser[0].ChuyenMucQuanLy);
+    res.render('vwAccount/profile', {row: rows[0]});
 });
 
 

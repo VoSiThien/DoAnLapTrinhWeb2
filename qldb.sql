@@ -6,9 +6,7 @@
 -- Thời gian đã tạo: Th7 04, 2020 lúc 03:26 PM
 -- Phiên bản máy phục vụ: 10.4.11-MariaDB
 -- Phiên bản PHP: 7.2.29
-Drop database qldb;
-create database qldb;
-use qldb;
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -79,7 +77,6 @@ INSERT INTO `baiviet` (`id`, `TieuDe`, `NoiDungTat`, `NoiDung`, `NgayXuatBan`, `
 --
 -- Cấu trúc bảng cho bảng `binhluan`
 --
-
 CREATE TABLE `binhluan` (
   `id` int(11) UNSIGNED NOT NULL,
   `NoiDung` varchar(100) DEFAULT NULL,
