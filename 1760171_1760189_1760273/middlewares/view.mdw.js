@@ -11,13 +11,29 @@ module.exports = function (app) {
       extname: ".hbs",
       helpers: {
         section: hbs_sections(),
-        isNull: function(value) {
+        isNull: function (value) {
           return value === null;
         },
-        formatDate: function(value) {
+        formatDate: function (value) {
           const sqlDate = new Date(value);
 
-          return moment(sqlDate).format('DD/MM');
+          return moment(sqlDate).format("DD/MM");
+        },
+        when: function (operand_1, operator, operand_2, options) {
+          let operators = {
+            eq: (l, r) => l == r,
+            noteq: (l, r) => l != r,
+            gt: (l, r) => +l > +r,
+            gteq: (l, r) => +l > +r || l == r,
+            lt: (l, r) => +l < +r,
+            lteq: (l, r) => +l < +r || l == r,
+            or: (l, r) => l || r,
+            and: (l, r) => l && r,
+            "%": (l, r) => l % r === 0,
+          };
+          let result = operators[operator](operand_1, operand_2);
+          if (result) return options.fn(this);
+          return options.inverse(this);
         }
       }
     })

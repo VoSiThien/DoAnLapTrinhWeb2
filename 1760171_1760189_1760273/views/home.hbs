@@ -116,7 +116,7 @@ Trang chủ
 
           <div class="col-sm-6 p-rl-1 p-b-2">
             <div class="bg-img1 size-a-5 how1 pos-relative"
-              style="background-image: url({{this._4OutstandingArticles.2.HinhAnh}});">
+              style="background-image: url({{this._4OutstandingArticles.2.HinhAnh}});" title="{{this._4OutstandingArticles.2.NoiDungTat}}">
               <a href="/article/{{this._4OutstandingArticles.2.id}}" class="dis-block how1-child1 trans-03"></a>
 
               <div class="flex-col-e-s s-full p-rl-25 p-tb-20">
@@ -151,7 +151,7 @@ Trang chủ
 
           <div class="col-sm-6 p-rl-1 p-b-2">
             <div class="bg-img1 size-a-5 how1 pos-relative"
-              style="background-image: url({{this._4OutstandingArticles.3.HinhAnh}});">
+              style="background-image: url({{this._4OutstandingArticles.3.HinhAnh}});" title="{{this._4OutstandingArticles.3.NoiDungTat}}">
               <a href="/article/{{this._4OutstandingArticles.3.id}}" class="dis-block how1-child1 trans-03"></a>
 
               <div class="flex-col-e-s s-full p-rl-25 p-tb-20">
@@ -207,23 +207,34 @@ Trang chủ
 								<!-- - -->
 								<div class="tab-pane fade show active" id="tab1-1" role="tabpanel">
 									<div class="row">
-										<div class="col-sm-6 p-r-25 p-r-15-sr991">
+										<div class="col-md-4 p-r-25 p-r-15-sr991 h-100">
 											<!-- Item post -->	
 											<div class="m-b-30">
-												<a href="blog-detail-01.html" class="wrap-pic-w hov1 trans-03">
-													<img src="images/post-05.jpg" alt="IMG">
+												<a href="/article/{{this._10MostViewArticles.0.id}}" class="wrap-pic-w hov1 trans-03">
+													<img src="{{this._10MostViewArticles.0.HinhAnh}}" alt="IMG">
 												</a>
 
 												<div class="p-t-20">
 													<h5 class="p-b-5">
-														<a href="blog-detail-01.html" class="f1-m-3 cl2 hov-cl10 trans-03">
-															American live music lorem ipsum dolor sit amet consectetur 
+														<a href="/article/{{this._10MostViewArticles.0.id}}" class="f1-m-3 cl2 hov-cl10 trans-03">
+															{{this._10MostViewArticles.0.TieuDe}} 
 														</a>
+                            <p>
+                              <small class="text-dark">{{this._10MostViewArticles.0.NoiDungTat}}</small>
+                            </p>
 													</h5>
 
 													<span class="cl8">
-														<a href="#" class="f1-s-4 cl8 hov-cl10 trans-03">
-															Music
+                            <a href="/category/{{this._10MostViewArticles.0.ChuyenMucID}}" class="f1-s-4 cl8 hov-cl10 trans-03 border border-dark rounded p-1">
+															{{this._10MostViewArticles.0.TenChuyenMuc}}
+														</a>
+
+                            <span class="f1-s-3 m-rl-3">
+															-
+														</span>
+
+														<a href="javascript:;" class="f1-s-4 cl8 hov-cl10 trans-03">
+															{{this._10MostViewArticles.0.ButDanh}}
 														</a>
 
 														<span class="f1-s-3 m-rl-3">
@@ -231,30 +242,75 @@ Trang chủ
 														</span>
 
 														<span class="f1-s-3">
-															Feb 18
+															{{formatDate this._10MostViewArticles.0.NgayXuatBan}}
+														</span>
+													</span>
+												</div>
+											</div>
+
+                      <div class="flex-wr-sb-s m-b-30" title="{{this._10MostViewArticles.1.NoiDungTat}}">
+												<a href="/article/{{this._10MostViewArticles.1.id}}" class="size-w-1 wrap-pic-w hov1 trans-03">
+													<img src="{{this._10MostViewArticles.1.HinhAnh}}" alt="IMG">
+												</a>
+
+												<div class="size-w-2">
+													<h5 class="p-b-5">
+														<a href="/article/{{this._10MostViewArticles.1.id}}" class="f1-s-5 cl3 hov-cl10 trans-03">
+															{{this._10MostViewArticles.1.TieuDe}}
+														</a>
+													</h5>
+
+													<span class="cl8">
+                            <a href="/category/{{this._10MostViewArticles.1.ChuyenMucID}}" class="f1-s-4 cl8 hov-cl10 trans-03 border border-dark rounded p-1">
+															{{this._10MostViewArticles.1.TenChuyenMuc}}
+														</a>
+
+                            <span class="f1-s-3 m-rl-3">
+															-
+														</span>
+
+														<a href="javascript:;" class="f1-s-6 cl8 hov-cl10 trans-03">
+															{{this._10MostViewArticles.1.ButDanh}}
+														</a>
+
+														<span class="f1-s-3 m-rl-3">
+															-
+														</span>
+
+														<span class="f1-s-3">
+															{{formatDate this._10MostViewArticles.1.NgayXuatBan}}
 														</span>
 													</span>
 												</div>
 											</div>
 										</div>
 
-										<div class="col-sm-6 p-r-25 p-r-15-sr991">
-											<!-- Item post -->	
-											<div class="flex-wr-sb-s m-b-30">
-												<a href="blog-detail-01.html" class="size-w-1 wrap-pic-w hov1 trans-03">
-													<img src="images/post-06.jpg" alt="IMG">
+                    <div class="col-md-4 p-r-25 p-r-15-sr991 h-100">
+											{{#each this._10MostViewArticles}}
+                      {{#when @index 'gt' 1}}{{#when @index 'lt' 6}}
+                      <div class="flex-wr-sb-s m-b-30" title="{{NoiDungTat}}" style="height: 102px;">
+												<a href="/article/{{id}}" class="size-w-1 wrap-pic-w hov1 trans-03">
+													<img src="{{HinhAnh}}" alt="IMG">
 												</a>
 
 												<div class="size-w-2">
 													<h5 class="p-b-5">
-														<a href="blog-detail-01.html" class="f1-s-5 cl3 hov-cl10 trans-03">
-															Donec metus orci, malesuada et lectus vitae
+														<a href="/article/{{id}}" class="f1-s-5 cl3 hov-cl10 trans-03">
+															{{TieuDe}}
 														</a>
 													</h5>
 
 													<span class="cl8">
-														<a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
-															Music
+                            <a href="/category/{{ChuyenMucID}}" class="f1-s-4 cl8 hov-cl10 trans-03 border border-dark rounded p-1">
+															{{TenChuyenMuc}}
+														</a>
+
+                            <span class="f1-s-3 m-rl-3">
+															-
+														</span>
+
+														<a href="javascript:;" class="f1-s-6 cl8 hov-cl10 trans-03">
+															{{ButDanh}}
 														</a>
 
 														<span class="f1-s-3 m-rl-3">
@@ -262,28 +318,42 @@ Trang chủ
 														</span>
 
 														<span class="f1-s-3">
-															Feb 17
+															{{formatDate NgayXuatBan}}
 														</span>
 													</span>
 												</div>
 											</div>
+                      {{/when}}{{/when}}
+                      {{/each}}
 											
-											<!-- Item post -->
-											<div class="flex-wr-sb-s m-b-30">
-												<a href="blog-detail-01.html" class="size-w-1 wrap-pic-w hov1 trans-03">
-													<img src="images/post-07.jpg" alt="IMG">
+										</div>
+
+                    <div class="col-md-4 p-r-25 p-r-15-sr991 h-100">
+											{{#each this._10MostViewArticles}}
+                      {{#when @index 'gt' 5}}{{#when @index 'lt' 10}}
+                      <div class="flex-wr-sb-s m-b-30" title="{{NoiDungTat}}" style="height: 102px;">
+												<a href="/article/{{id}}" class="size-w-1 wrap-pic-w hov1 trans-03">
+													<img src="{{HinhAnh}}" alt="IMG">
 												</a>
 
 												<div class="size-w-2">
 													<h5 class="p-b-5">
-														<a href="blog-detail-01.html" class="f1-s-5 cl3 hov-cl10 trans-03">
-															Donec metus orci, malesuada et lectus vitae
+														<a href="/article/{{id}}" class="f1-s-5 cl3 hov-cl10 trans-03">
+															{{TieuDe}}
 														</a>
 													</h5>
 
 													<span class="cl8">
-														<a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
-															Game
+                            <a href="/category/{{ChuyenMucID}}" class="f1-s-4 cl8 hov-cl10 trans-03 border border-dark rounded p-1">
+															{{TenChuyenMuc}}
+														</a>
+
+                            <span class="f1-s-3 m-rl-3">
+															-
+														</span>
+
+														<a href="javascript:;" class="f1-s-6 cl8 hov-cl10 trans-03">
+															{{ButDanh}}
 														</a>
 
 														<span class="f1-s-3 m-rl-3">
@@ -291,42 +361,18 @@ Trang chủ
 														</span>
 
 														<span class="f1-s-3">
-															Feb 16
+															{{formatDate NgayXuatBan}}
 														</span>
 													</span>
 												</div>
 											</div>
-
-											<!-- Item post -->
-											<div class="flex-wr-sb-s m-b-30">
-												<a href="blog-detail-01.html" class="size-w-1 wrap-pic-w hov1 trans-03">
-													<img src="images/post-08.jpg" alt="IMG">
-												</a>
-
-												<div class="size-w-2">
-													<h5 class="p-b-5">
-														<a href="blog-detail-01.html" class="f1-s-5 cl3 hov-cl10 trans-03">
-															Donec metus orci, malesuada et lectus vitae
-														</a>
-													</h5>
-
-													<span class="cl8">
-														<a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
-															Celebrity
-														</a>
-
-														<span class="f1-s-3 m-rl-3">
-															-
-														</span>
-
-														<span class="f1-s-3">
-															Feb 12
-														</span>
-													</span>
-												</div>
-											</div>
+                      {{/when}}{{/when}}
+                      {{/each}}
+											
 										</div>
 									</div>
+
+                  
 								</div>
 
 								<!-- - -->
