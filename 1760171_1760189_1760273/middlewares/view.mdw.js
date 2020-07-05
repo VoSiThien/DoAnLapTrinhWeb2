@@ -1,4 +1,5 @@
 const exphbs = require("express-handlebars");
+const moment = require("moment");
 const hbs_sections = require("express-handlebars-sections");
 
 module.exports = function (app) {
@@ -12,6 +13,11 @@ module.exports = function (app) {
         section: hbs_sections(),
         isNull: function(value) {
           return value === null;
+        },
+        formatDate: function(value) {
+          const sqlDate = new Date(value);
+
+          return moment(sqlDate).format('DD/MM');
         }
       }
     })
