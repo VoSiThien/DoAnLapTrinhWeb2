@@ -19,10 +19,10 @@ module.exports = {
     },
     update: function (entity) {
         const condition = {
-            username: entity.username
+            id: entity.id
         }
         delete entity.id;
-        return db.update(TBL_ACCOUNT, entity, condition);
+        return db.patch(TBL_ACCOUNT, entity, condition);
     }
 }
 

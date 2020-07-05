@@ -77,9 +77,33 @@ router.get('/profile', restrict, async function (req, res) {
 });
 
 
-
-router.post('/profile', restrict, async function (req, res) {
-    //var list = await registerModel.allbyUser(req.session.userID);
-    res.render('vwAccount/profile', { List: list });
+router.get('/profile/edit', restrict, async function (req, res) {
+    var check = false;
+    if(res.locals.lcUser[0].id == 3){
+        check = true
+    }
+    res.render('vwAccount/editProfile', {check});
+});
+router.post('/profile/edit', restrict, async function (req, res) {
+    const hash = bcrypt.hashSync(req.body.MatKhau, saltRounds);
+    const NS = moment(req.body.NgaySinh, 'YYYY/MM/DD').format('YYYY/MM/DD');
+    var BD = null;
+    if(req.body.id == 3){
+        BD = req.body.ButDanh;
+    }
+    const entity = {
+        id: req.body.id,
+        TenTaiKhoan: req.body.TenTaiKhoan,
+        MatKhau: hash,
+        HoTen: req.body.HoTen,
+        ButDanh: BD,
+        email: req.body.email,
+        NgaySinh: NS,
+        ThoiHan: res.locals.lcUser[0].ThoiHan,
+        VaiTroID: res.locals.lcUser[0].VaiTroID,
+        ChuyenMucQuanLy: res.locals.lcUser[0].ChuyenMucQuanLy
+    }
+    await accountModel.update(entity);
+    res.redirect('/account/profile');
 });
 module.exports = router;

@@ -41,95 +41,99 @@
             <div class="card-body">
                 <div class="card-title mb-4">
                     <div class="d-flex justify-content-start">
-                </div>
+                    </div>
 
-                <div class="row">
-                    <div class="col-12">
-                        <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="basicInfo-tab" data-toggle="tab" href="#basicInfo"
-                                    role="tab" aria-controls="basicInfo" aria-selected="true">Thông tin cơ bản</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="connectedServices-tab" data-toggle="tab"
-                                    href="#connectedServices" role="tab" aria-controls="connectedServices"
-                                    aria-selected="false">Danh sách
-                                    hội nghị đã đăng ký</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content ml-1" id="myTabContent">
-                            <div class="tab-pane fade show active" id="basicInfo" role="tabpanel"
-                                aria-labelledby="basicInfo-tab">
-                                <div class="row">
-                                    <div class="col-sm-3 col-md-2 col-5">
-                                        <label style="font-weight:bold;">Tên tài khoản:</label>
+                    <div class="row">
+                        <div class="col-12">
+                            <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="basicInfo-tab" data-toggle="tab" href="#basicInfo"
+                                        role="tab" aria-controls="basicInfo" aria-selected="true">Thông tin cơ bản</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="connectedServices-tab" data-toggle="tab"
+                                        href="#connectedServices" role="tab" aria-controls="connectedServices"
+                                        aria-selected="false">Danh sách
+                                        hội nghị đã đăng ký</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content ml-1" id="myTabContent">
+                                <div class="tab-pane fade show active" id="basicInfo" role="tabpanel"
+                                    aria-labelledby="basicInfo-tab">
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Tên tài khoản:</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            {{TenTaiKhoan}}
+                                        </div>
                                     </div>
-                                    <div class="col-md-8 col-6">
-                                        {{TenTaiKhoan}}
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Họ và tên:</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            {{HoTen}}
+                                        </div>
                                     </div>
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Bút danh:</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            {{ButDanh}}
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Email:</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            {{email}}
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Ngày sinh:</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            {{NgaySinh}}
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Thời hạn tài khoản:</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            {{ThoiHan}}
+                                        </div>
+                                    </div>
+                                    {{/each}}
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Chuyên mục quản lý:</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            {{this.row.TenChuyenMuc}}
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <a class="btn btn-primary btn-sm" href="/account/profile/edit" role="button"
+                                        title="">
+                                        <i class="fa fa-pencil" aria-hidden="true">Sửa thông tin</i>
+                                    </a>
                                 </div>
-                                <hr />
-                                <div class="row">
-                                    <div class="col-sm-3 col-md-2 col-5">
-                                        <label style="font-weight:bold;">Họ và tên:</label>
-                                    </div>
-                                    <div class="col-md-8 col-6">
-                                        {{HoTen}}
-                                    </div>
-                                </div>
-                                <hr />
-                                <div class="row">
-                                    <div class="col-sm-3 col-md-2 col-5">
-                                        <label style="font-weight:bold;">Bút danh:</label>
-                                    </div>
-                                    <div class="col-md-8 col-6">
-                                        {{ButDanh}}
-                                    </div>
-                                </div>
-                                <hr />
-                                <div class="row">
-                                    <div class="col-sm-3 col-md-2 col-5">
-                                        <label style="font-weight:bold;">Email:</label>
-                                    </div>
-                                    <div class="col-md-8 col-6">
-                                        {{email}}
-                                    </div>
-                                </div>
-                                <hr />
-                                <div class="row">
-                                    <div class="col-sm-3 col-md-2 col-5">
-                                        <label style="font-weight:bold;">Ngày sinh:</label>
-                                    </div>
-                                    <div class="col-md-8 col-6">
-                                        {{NgaySinh}}
-                                    </div>
-                                </div>
-                                <hr />
-                                <div class="row">
-                                    <div class="col-sm-3 col-md-2 col-5">
-                                        <label style="font-weight:bold;">Thời hạn tài khoản:</label>
-                                    </div>
-                                    <div class="col-md-8 col-6">
-                                        {{ThoiHan}}
-                                    </div>
-                                </div>
-                                {{/each}}
-                                <hr />
-                                <div class="row">
-                                    <div class="col-sm-3 col-md-2 col-5">
-                                        <label style="font-weight:bold;">Chuyên mục quản lý:</label>
-                                    </div>
-                                    <div class="col-md-8 col-6">
-                                        {{this.row.TenChuyenMuc}}
-                                    </div>
-                                </div>
-                                <hr />
+
                             </div>
-                            
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
