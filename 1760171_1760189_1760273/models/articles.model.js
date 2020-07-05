@@ -8,5 +8,9 @@ module.exports = {
 
   load10MostViewArticles: function (exceptArticles) {
     return db.load(queries.load10MostViewArticles(exceptArticles));
+  },
+
+  load10LatestArticles: function (exceptArticles) {
+    return db.load(queries.load10LatestArticles(exceptArticles));
   }
 };
