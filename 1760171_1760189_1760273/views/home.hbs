@@ -576,6 +576,183 @@ Trang chủ
 								<i class="fa fa-bookmark" aria-hidden="true"></i> Top 10 chuyên mục trong tuần
 							</h3>
 						</div>
+
+						<div class="tab-content p-t-35">
+							<div class="tab-pane fade show active" id="tab1-1" role="tabpanel">
+								<div class="row">
+									<div class="col-md-4 p-r-25 p-r-15-sr991 h-100">
+										<div class="m-b-30">
+											<a href="/article/{{this._10EachCategories.0.id}}"
+												class="wrap-pic-w hov1 trans-03">
+												<img src="{{this._10EachCategories.0.HinhAnh}}" alt="IMG">
+											</a>
+
+											<div class="p-t-20">
+												<h5 class="p-b-5">
+													<a href="/article/{{this._10EachCategories.0.id}}"
+														class="f1-m-3 cl2 hov-cl10 trans-03">
+														{{this._10EachCategories.0.TieuDe}}
+													</a>
+													<p>
+														<small
+															class="text-dark">{{this._10EachCategories.0.NoiDungTat}}</small>
+													</p>
+												</h5>
+
+												<span class="cl8">
+													<a href="/category/{{this._10EachCategories.0.ChuyenMucID}}"
+														class="f1-s-4 cl8 hov-cl10 trans-03 border border-dark rounded p-1">
+														{{this._10EachCategories.0.TenChuyenMuc}}
+													</a>
+
+													<span class="f1-s-3 m-rl-3">
+														-
+													</span>
+
+													<a href="javascript:;" class="f1-s-4 cl8 hov-cl10 trans-03">
+														{{this._10EachCategories.0.ButDanh}}
+													</a>
+
+													<span class="f1-s-3 m-rl-3">
+														-
+													</span>
+
+													<span class="f1-s-3">
+														{{formatDate this._10EachCategories.0.NgayXuatBan}}
+													</span>
+												</span>
+											</div>
+										</div>
+
+										<div class="flex-wr-sb-s m-b-30"
+											title="{{this._10EachCategories.1.NoiDungTat}}">
+											<a href="/article/{{this._10EachCategories.1.id}}"
+												class="size-w-1 wrap-pic-w hov1 trans-03">
+												<img src="{{this._10EachCategories.1.HinhAnh}}" alt="IMG">
+											</a>
+
+											<div class="size-w-2">
+												<h5 class="p-b-5">
+													<a href="/article/{{this._10EachCategories.1.id}}"
+														class="f1-s-5 cl3 hov-cl10 trans-03">
+														{{this._10EachCategories.1.TieuDe}}
+													</a>
+												</h5>
+
+												<span class="cl8">
+													<a href="/category/{{this._10EachCategories.1.ChuyenMucID}}"
+														class="f1-s-4 cl8 hov-cl10 trans-03 border border-dark rounded p-1">
+														{{this._10EachCategories.1.TenChuyenMuc}}
+													</a>
+
+													<span class="f1-s-3 m-rl-3">
+														-
+													</span>
+
+													<a href="javascript:;" class="f1-s-6 cl8 hov-cl10 trans-03">
+														{{this._10EachCategories.1.ButDanh}}
+													</a>
+
+													<span class="f1-s-3 m-rl-3">
+														-
+													</span>
+
+													<span class="f1-s-3">
+														{{formatDate this._10EachCategories.1.NgayXuatBan}}
+													</span>
+												</span>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-4 p-r-25 p-r-15-sr991 h-100">
+										{{#each this._10EachCategories}}
+										{{#when @index 'gt' 1}}{{#when @index 'lt' 6}}
+										<div class="flex-wr-sb-s m-b-30" title="{{NoiDungTat}}" style="height: 102px;">
+											<a href="/article/{{id}}" class="size-w-1 wrap-pic-w hov1 trans-03">
+												<img src="{{HinhAnh}}" alt="IMG">
+											</a>
+
+											<div class="size-w-2">
+												<h5 class="p-b-5">
+													<a href="/article/{{id}}" class="f1-s-5 cl3 hov-cl10 trans-03">
+														{{TieuDe}}
+													</a>
+												</h5>
+
+												<span class="cl8">
+													<a href="/category/{{ChuyenMucID}}"
+														class="f1-s-4 cl8 hov-cl10 trans-03 border border-dark rounded p-1">
+														{{TenChuyenMuc}}
+													</a>
+
+													<span class="f1-s-3 m-rl-3">
+														-
+													</span>
+
+													<a href="javascript:;" class="f1-s-6 cl8 hov-cl10 trans-03">
+														{{ButDanh}}
+													</a>
+
+													<span class="f1-s-3 m-rl-3">
+														-
+													</span>
+
+													<span class="f1-s-3">
+														{{formatDate NgayXuatBan}}
+													</span>
+												</span>
+											</div>
+										</div>
+										{{/when}}{{/when}}
+										{{/each}}
+									</div>
+
+									<div class="col-md-4 p-r-25 p-r-15-sr991 h-100">
+										{{#each this._10EachCategories}}
+										{{#when @index 'gt' 5}}{{#when @index 'lt' 10}}
+										<div class="flex-wr-sb-s m-b-30" title="{{NoiDungTat}}" style="height: 102px;">
+											<a href="/article/{{id}}" class="size-w-1 wrap-pic-w hov1 trans-03">
+												<img src="{{HinhAnh}}" alt="IMG">
+											</a>
+
+											<div class="size-w-2">
+												<h5 class="p-b-5">
+													<a href="/article/{{id}}" class="f1-s-5 cl3 hov-cl10 trans-03">
+														{{TieuDe}}
+													</a>
+												</h5>
+
+												<span class="cl8">
+													<a href="/category/{{ChuyenMucID}}"
+														class="f1-s-4 cl8 hov-cl10 trans-03 border border-dark rounded p-1">
+														{{TenChuyenMuc}}
+													</a>
+
+													<span class="f1-s-3 m-rl-3">
+														-
+													</span>
+
+													<a href="javascript:;" class="f1-s-6 cl8 hov-cl10 trans-03">
+														{{ButDanh}}
+													</a>
+
+													<span class="f1-s-3 m-rl-3">
+														-
+													</span>
+
+													<span class="f1-s-3">
+														{{formatDate NgayXuatBan}}
+													</span>
+												</span>
+											</div>
+										</div>
+										{{/when}}{{/when}}
+										{{/each}}
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

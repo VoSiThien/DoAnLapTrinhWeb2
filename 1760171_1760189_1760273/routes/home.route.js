@@ -17,7 +17,13 @@ router.get("", async (req, res) => {
 
   const _10LatestArticles = await articles.load10LatestArticles(`(${[...res.locals.exceptArticles].join(',')})`);
 
-  res.render("home", { _4OutstandingArticles, _10MostViewArticles, _10LatestArticles });
+  _10LatestArticles.forEach(record => res.locals.exceptArticles.add(record['id']));
+
+  const _10EachCategories = await articles.load10EachCategories(`(${[...res.locals.exceptArticles].join(',')})`);
+
+  res.render("home", { _4OutstandingArticles, _10MostViewArticles, _10LatestArticles, _10EachCategories });
 });
 
 module.exports = router;
+
+

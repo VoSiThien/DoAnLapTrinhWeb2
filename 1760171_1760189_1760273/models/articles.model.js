@@ -12,5 +12,9 @@ module.exports = {
 
   load10LatestArticles: function (exceptArticles) {
     return db.load(queries.load10LatestArticles(exceptArticles));
+  },
+
+  load10EachCategories: function (exceptArticles) {
+    return db.load(queries.load10EachCategories(exceptArticles));
   }
 };
