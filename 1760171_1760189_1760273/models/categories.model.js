@@ -1,9 +1,12 @@
+const queries = require("../scripts/queries.scripts");
 const db = require("../utils/db");
-
-const TBL_CATEGORIES = "chuyenmuc";
 
 module.exports = {
   loadAll: function () {
-    return db.load(`select * from ${TBL_CATEGORIES}`);
+    return db.load(queries.loadAllCategories());
   },
+
+  load5CategoriesDesc:function () {
+    return db.load(queries.load5CategoriesDesc());
+  }
 };

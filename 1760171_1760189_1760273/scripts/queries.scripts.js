@@ -1,5 +1,5 @@
 module.exports = {
-  // get 4 outstanding articles with the most comments
+  // ARTICLES
   load4OutstandingArticles: function () {
     return `
       select bv.id, bv.TieuDe, bv.NoiDungTat, bv.NgayXuatBan, bv.HinhAnh, cm.id as ChuyenMucID, cm.TenChuyenMuc, tk.ButDanh
@@ -41,12 +41,27 @@ module.exports = {
       limit 10`;
   },
 
-  loadAllTags: function () {
+  // TAGS
+  load20Tags: function () {
     return `
       select distinct tg.TenTag, count(tg.id) as SoLuong
       from tag tg
       group by tg.TenTag
       order by count(tg.id) desc
       limit 20`;
+  },
+
+  // CATEGORIES
+  loadAllCategories: function () {
+    return `select * from chuyenmuc`;
+  },
+
+  load5CategoriesDesc: function () {
+    return `
+      select cm.TenChuyenMuc, cm.id, count(bv.id) as SoLuong
+      from chuyenmuc cm join baiviet bv on bv.ChuyenMucID = cm.id
+      group by cm.id
+      order by count(bv.id) desc
+      limit 5`;
   }
 };

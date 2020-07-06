@@ -1,7 +1,8 @@
 const express = require("express");
 
+const categories = require("../models/categories.model");
 const articles = require("../models/articles.model");
-const tags = require("../models/tags.model"); 
+const tags = require("../models/tags.model");
 
 const router = express.Router();
 
@@ -30,11 +31,12 @@ router.get("", async (req, res) => {
     res.locals.exceptArticles.add(record["id"])
   );
 
-  const [_10EachCategories, _tags] = await Promise.all([
+  const [_10EachCategories, _20tags, _5Categories] = await Promise.all([
     articles.load10EachCategories(
       `(${[...res.locals.exceptArticles].join(",")})`
     ),
-    tags.loadAllTags()
+    tags.load20Tags(),
+    categories.load5CategoriesDesc()
   ]);
 
   res.render("home", {
@@ -42,7 +44,8 @@ router.get("", async (req, res) => {
     _10MostViewArticles,
     _10LatestArticles,
     _10EachCategories,
-    _tags
+    _20tags,
+    _5Categories
   });
 });
 

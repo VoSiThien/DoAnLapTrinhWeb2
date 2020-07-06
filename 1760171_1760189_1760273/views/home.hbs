@@ -787,17 +787,17 @@ Trang chủ
         <div class="col-sm-6 col-lg-4 p-b-20">
           <div class="size-h-3 flex-s-c">
             <h5 class="f1-m-7 cl0">
-              Danh sách các <span style="color: #15a752;">#tag</span> nổi bật
+              Danh sách 20 <span style="color: #15a752;">#tag</span> nổi bật
             </h5>
           </div>
 
           <div class="size-w-5">
             <h6 class="p-b-5">
-              <a href="/tag/{{this._tags.0.TenTag}}" class="f1-s-5 cl11 hov-cl10 trans-03">
-                #{{this._tags.0.TenTag}} ({{this._tags.0.SoLuong}})
+              <a href="/tag/{{this._20tags.0.TenTag}}" class="f1-s-5 cl11 hov-cl10 trans-03">
+                #{{this._20tags.0.TenTag}} ({{this._20tags.0.SoLuong}})
               </a>
 
-              {{#each this._tags}}
+              {{#each this._20tags}}
               {{#when @index 'noteq' 0}}
                 , <a href="/tag/{{TenTag}}" class="f1-s-5 cl11 hov-cl10 trans-03">
                   #{{TenTag}} ({{SoLuong}})
@@ -811,40 +811,18 @@ Trang chủ
         <div class="col-sm-6 col-lg-4 p-b-20">
           <div class="size-h-3 flex-s-c">
             <h5 class="f1-m-7 cl0">
-              Danh sách các chuyên mục
+              Danh sách 5 chuyên mục nổi bật
             </h5>
           </div>
 
           <ul class="m-t--12">
+            {{#each this._5Categories}}
             <li class="how-bor1 p-rl-5 p-tb-10">
-              <a href="#" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
-                Fashion (22)
+              <a href="/category/{{id}}" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
+                {{TenChuyenMuc}} ({{SoLuong}})
               </a>
             </li>
-
-            <li class="how-bor1 p-rl-5 p-tb-10">
-              <a href="#" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
-                Technology (29)
-              </a>
-            </li>
-
-            <li class="how-bor1 p-rl-5 p-tb-10">
-              <a href="#" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
-                Street Style (15)
-              </a>
-            </li>
-
-            <li class="how-bor1 p-rl-5 p-tb-10">
-              <a href="#" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
-                Life Style (28)
-              </a>
-            </li>
-
-            <li class="how-bor1 p-rl-5 p-tb-10">
-              <a href="#" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
-                DIY & Crafts (16)
-              </a>
-            </li>
+            {{/each}}
           </ul>
         </div>
       </div>
