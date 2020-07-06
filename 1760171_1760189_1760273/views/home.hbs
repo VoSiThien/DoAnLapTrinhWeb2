@@ -776,7 +776,8 @@ Trang chủ
             </p>
 
             <div class="p-t-15">
-              <a href="https://github.com/VoSiThien/DoAnLapTrinhWeb2" target="_blank" class="fs-18 cl11 hov-cl10 trans-03 m-r-8">
+              <a href="https://github.com/VoSiThien/DoAnLapTrinhWeb2" target="_blank"
+                class="fs-18 cl11 hov-cl10 trans-03 m-r-8">
                 <i class="fa fa-github-alt" aria-hidden="true"></i> Latest release on GitHub
               </a>
             </div>
@@ -786,71 +787,31 @@ Trang chủ
         <div class="col-sm-6 col-lg-4 p-b-20">
           <div class="size-h-3 flex-s-c">
             <h5 class="f1-m-7 cl0">
-              Popular Posts
+              Danh sách các <span style="color: #15a752;">#tag</span> nổi bật
             </h5>
           </div>
 
-          <ul>
-            <li class="flex-wr-sb-s p-b-20">
-              <a href="#" class="size-w-4 wrap-pic-w hov1 trans-03">
-                <img src="public/images/icons/popular-post-01.jpg" alt="IMG">
+          <div class="size-w-5">
+            <h6 class="p-b-5">
+              <a href="/tag/{{this._tags.0.TenTag}}" class="f1-s-5 cl11 hov-cl10 trans-03">
+                #{{this._tags.0.TenTag}} ({{this._tags.0.SoLuong}})
               </a>
 
-              <div class="size-w-5">
-                <h6 class="p-b-5">
-                  <a href="#" class="f1-s-5 cl11 hov-cl10 trans-03">
-                    Donec metus orci, malesuada et lectus vitae
-                  </a>
-                </h6>
-
-                <span class="f1-s-3 cl6">
-                  Feb 17
-                </span>
-              </div>
-            </li>
-
-            <li class="flex-wr-sb-s p-b-20">
-              <a href="#" class="size-w-4 wrap-pic-w hov1 trans-03">
-                <img src="images/popular-post-02.jpg" alt="IMG">
-              </a>
-
-              <div class="size-w-5">
-                <h6 class="p-b-5">
-                  <a href="#" class="f1-s-5 cl11 hov-cl10 trans-03">
-                    Lorem ipsum dolor sit amet, consectetur
-                  </a>
-                </h6>
-
-                <span class="f1-s-3 cl6">
-                  Feb 16
-                </span>
-              </div>
-            </li>
-
-            <li class="flex-wr-sb-s p-b-20">
-              <a href="#" class="size-w-4 wrap-pic-w hov1 trans-03">
-                <img src="images/popular-post-03.jpg" alt="IMG">
-              </a>
-
-              <div class="size-w-5">
-                <h6 class="p-b-5">
-                  <a href="#" class="f1-s-5 cl11 hov-cl10 trans-03">
-                    Suspendisse dictum enim quis imperdiet auctor
-                  </a>
-                </h6>
-
-                <span class="f1-s-3 cl6">
-                  Feb 15
-                </span>
-              </div>
-            </li>
-          </ul>
+              {{#each this._tags}}
+              {{#when @index 'noteq' 0}}
+                , <a href="/tag/{{TenTag}}" class="f1-s-5 cl11 hov-cl10 trans-03">
+                  #{{TenTag}} ({{SoLuong}})
+                </a>
+              {{/when}}
+              {{/each}}
+            </h6>
+          </div>
         </div>
 
         <div class="col-sm-6 col-lg-4 p-b-20">
           <div class="size-h-3 flex-s-c">
             <h5 class="f1-m-7 cl0">
-              Category
+              Danh sách các chuyên mục
             </h5>
           </div>
 

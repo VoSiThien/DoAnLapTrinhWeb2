@@ -40,4 +40,13 @@ module.exports = {
       group by cm2.id
       limit 10`;
   },
+
+  loadAllTags: function () {
+    return `
+      select distinct tg.TenTag, count(tg.id) as SoLuong
+      from tag tg
+      group by tg.TenTag
+      order by count(tg.id) desc
+      limit 20`;
+  }
 };
