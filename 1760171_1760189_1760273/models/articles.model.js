@@ -20,5 +20,9 @@ module.exports = {
 
   loadSingle: function (id) {
     return db.load(queries.loadSingle(id));
+  },
+
+  load5DependCategory: function (id, catID) {
+    return db.load(queries.load5DependCategory(id, catID));
   }
 };

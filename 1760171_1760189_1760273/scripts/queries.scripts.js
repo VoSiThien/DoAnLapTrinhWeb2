@@ -50,6 +50,15 @@ module.exports = {
       where bv.id = ${id}`;
   },
 
+  load5DependCategory: function (id, catID) {
+    return `
+      select bv.id, bv.TieuDe, bv.NoiDungTat, bv.NgayXuatBan, bv.HinhAnh, cm.id as ChuyenMucID, cm.TenChuyenMuc, tk.ButDanh
+      from baiviet bv join chuyenmuc cm on cm.id = bv.ChuyenMucID join taikhoan tk on tk.id = bv.TaiKhoanID
+      where bv.TrangThaiID = 3 and bv.ChuyenMucID = ${catID} and bv.id <> ${id}
+      order by UNIX_TIMESTAMP(bv.NgayXuatBan) desc
+      limit 5`;
+  },
+
   // TAGS
   load20Tags: function () {
     return `

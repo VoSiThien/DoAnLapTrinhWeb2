@@ -15,9 +15,12 @@ router.get("/:id", async (req, res) => {
   ]);
 
   if (row[0]) {
+    const _relatedArticles = await articles.load5DependCategory(id, row[0]['ChuyenMucID']);
+
     res.render("vwArticles/detail", {
       _article: row[0],
-      _tags
+      _tags,
+      _relatedArticles
     });
   }
 });
