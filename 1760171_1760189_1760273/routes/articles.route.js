@@ -6,7 +6,7 @@ const tags = require("../models/tags.model");
 
 const router = express.Router();
 
-router.get("/post", (req, res) => {
+router.get("/:id", (req, res) => {
   res.render("vwArticles/detail");
 });
 
