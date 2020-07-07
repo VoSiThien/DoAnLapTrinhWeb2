@@ -18,9 +18,8 @@ require("./middlewares/locals.mdw")(app);
 // home page
 app.use("/", require("./routes/home.route"));
 
-app.get('/category/:id', (req, res) => {
-  console.log(req.params.id);
-});
+// article page
+app.use("/article", require("./routes/articles.route"));
 
 const POST = 3000;
 app.listen(POST, function () {

@@ -39,7 +39,7 @@ router.get("", async (req, res) => {
     categories.load5CategoriesDesc()
   ]);
 
-  res.render("home", {
+  res.render("vwHome/home", {
     _4OutstandingArticles,
     _10MostViewArticles,
     _10LatestArticles,

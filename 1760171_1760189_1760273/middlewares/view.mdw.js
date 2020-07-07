@@ -1,6 +1,6 @@
 const exphbs = require("express-handlebars");
-const moment = require("moment");
 const hbs_sections = require("express-handlebars-sections");
+const moment = require("moment");
 
 module.exports = function (app) {
   app.engine(
@@ -34,8 +34,8 @@ module.exports = function (app) {
           let result = operators[operator](operand_1, operand_2);
           if (result) return options.fn(this);
           return options.inverse(this);
-        }
-      }
+        },
+      },
     })
   );
 
