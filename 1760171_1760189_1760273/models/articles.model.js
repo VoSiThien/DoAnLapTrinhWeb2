@@ -16,5 +16,9 @@ module.exports = {
 
   load10EachCategories: function (exceptArticles) {
     return db.load(queries.load10EachCategories(exceptArticles));
+  },
+
+  loadSingle: function (id) {
+    return db.load(queries.loadSingle(id));
   }
 };

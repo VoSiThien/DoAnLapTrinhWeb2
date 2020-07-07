@@ -1,21 +1,25 @@
+{{#section 'title'}}
+{{this._article.TieuDe}}
+{{/section}}
+
 <div class="container">
   <div class="headline bg0 flex-wr-sb-c p-rl-20 p-tb-8">
     <div class="f2-s-1 p-r-30 m-tb-6">
-      <a href="index.html" class="breadcrumb-item f1-s-3 cl9">
+      <a href="/" class="breadcrumb-item f1-s-3 cl9">
         Trang chủ
       </a>
 
-      <a href="blog-list-01.html" class="breadcrumb-item f1-s-3 cl9">
-        Blog
+      <a href="/category/{{this._article.ChuyenMucID}}" class="breadcrumb-item f1-s-3 cl9">
+        {{this._article.TenChuyenMuc}}
       </a>
 
       <span class="breadcrumb-item f1-s-3 cl9">
-        Nulla non interdum metus non laoreet nisi tellus eget aliquam lorem pellentesque
+        {{this._article.TieuDe}}
       </span>
     </div>
 
     <div class="pos-relative size-a-2 bo-1-rad-22 of-hidden bocl11 m-tb-6">
-      <input class="f1-s-1 cl6 plh9 s-full p-l-25 p-r-45" type="text" name="search" placeholder="Search">
+      <input class="f1-s-1 cl6 plh9 s-full p-l-25 p-r-45" type="text" name="search" placeholder="Tìm kiếm...">
       <button class="flex-c-c size-a-1 ab-t-r fs-20 cl2 hov-cl10 trans-03">
         <i class="zmdi zmdi-search"></i>
       </button>
@@ -31,38 +35,38 @@
         <div class="p-r-10 p-r-0-sr991">
           <!-- Blog Detail -->
           <div class="p-b-70">
-            <a href="#" class="f1-s-10 cl2 hov-cl10 trans-03 text-uppercase">
-              Technology
+            <a href="/category/{{this._article.ChuyenMucID}}" class="f1-s-10 cl2 hov-cl10 trans-03 text-uppercase">
+              {{this._article.TenChuyenMuc}}
             </a>
 
             <h3 class="f1-l-3 cl2 p-b-16 p-t-33 respon2">
-              Nulla non interdum metus non laoreet nisi tellus eget aliquam lorem pellentesque
+              {{this._article.TieuDe}}
             </h3>
 
             <div class="flex-wr-s-s p-b-40">
               <span class="f1-s-3 cl8 m-r-15">
-                <a href="#" class="f1-s-4 cl8 hov-cl10 trans-03">
-                  by John Alvarado
+                <a href="javascript:;" class="f1-s-4 cl8 hov-cl10 trans-03">
+                  {{this._article.ButDanh}}
                 </a>
 
                 <span class="m-rl-3">-</span>
 
                 <span>
-                  Feb 18
+                  {{formatDate this._article.NgayXuatBan}}
                 </span>
               </span>
 
               <span class="f1-s-3 cl8 m-r-15">
-                5239 Views
+                {{this._article.LuotXem}} <i class="fa fa-eye" aria-hidden="true"></i>
               </span>
 
               <a href="#" class="f1-s-3 cl8 hov-cl10 trans-03 m-r-15">
-                0 Comment
+                {{this._article.SoLuong}} <i class="fa fa-comment" aria-hidden="true"></i>
               </a>
             </div>
 
             <div class="wrap-pic-max-w p-b-30">
-              <img src="images/blog-list-01.jpg" alt="IMG">
+              <img src="/{{this._article.HinhAnh}}" alt="IMG">
             </div>
 
             <p class="f1-s-11 cl6 p-b-25">

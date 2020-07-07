@@ -6,8 +6,15 @@ const tags = require("../models/tags.model");
 
 const router = express.Router();
 
-router.get("/:id", (req, res) => {
-  res.render("vwArticles/detail");
+router.get("/:id", async (req, res) => {
+  const id = +req.params.id;
+  const row = (await articles.loadSingle(id))[0];
+
+  if (row) {
+    res.render("vwArticles/detail", {
+      _article: row
+    });
+  }
 });
 
 module.exports = router;

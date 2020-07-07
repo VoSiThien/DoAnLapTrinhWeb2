@@ -18,11 +18,11 @@ module.exports = function (app) {
       cats = rows;
       cache.set(GLB_CATEGORIES, rows); // put `rows` back into `cache`
 
-      console.log(`-- Fetch ${GLB_CATEGORIES}`);
+      // console.log(`-- Fetch ${GLB_CATEGORIES}`);
     } else {
       cats = data;
 
-      console.log(`++ Cache hit for ${GLB_CATEGORIES}`);
+      // console.log(`++ Cache hit for ${GLB_CATEGORIES}`);
     }
 
     // format `res.locals.lcCats`
@@ -40,8 +40,6 @@ module.exports = function (app) {
         }
       }
     });
-
-    // console.log(res.locals.lcCats); // return lift of row
 
     next();
   });
