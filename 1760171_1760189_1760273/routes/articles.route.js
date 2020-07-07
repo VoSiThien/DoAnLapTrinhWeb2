@@ -8,11 +8,16 @@ const router = express.Router();
 
 router.get("/:id", async (req, res) => {
   const id = +req.params.id;
-  const row = (await articles.loadSingle(id))[0];
 
-  if (row) {
+  const [row, _tags] = await Promise.all([
+    articles.loadSingle(id),
+    tags.loadArticleTags(id)
+  ]);
+
+  if (row[0]) {
     res.render("vwArticles/detail", {
-      _article: row
+      _article: row[0],
+      _tags
     });
   }
 });

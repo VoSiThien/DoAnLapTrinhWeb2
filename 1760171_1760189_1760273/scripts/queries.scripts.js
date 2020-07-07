@@ -72,5 +72,12 @@ module.exports = {
       group by cm.id
       order by count(bv.id) desc
       limit 5`;
+  },
+
+  loadArticleTags: function (id) {
+    return `
+      select tg.TenTag
+      from tag tg
+      where tg.BaiVietID = ${id}`;
   }
 };
