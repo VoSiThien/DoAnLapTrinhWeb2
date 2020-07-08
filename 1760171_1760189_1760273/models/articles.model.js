@@ -24,5 +24,9 @@ module.exports = {
 
   load5DependCategory: function (id, catID) {
     return db.load(queries.load5DependCategory(id, catID));
+  },
+
+  fullTextSearch: function (keyword) {
+    return db.load(queries.fullTextSearch(keyword));
   }
 };

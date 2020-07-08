@@ -59,6 +59,14 @@ module.exports = {
       limit 5`;
   },
 
+  fullTextSearch: function (keyword) {
+    return `
+      select bv.id, bv.TieuDe
+      from baiviet bv
+      where match(bv.TieuDe, bv.NoiDungTat) against ('${keyword}')
+      limit 7`;
+  },
+
   // TAGS
   load20Tags: function () {
     return `

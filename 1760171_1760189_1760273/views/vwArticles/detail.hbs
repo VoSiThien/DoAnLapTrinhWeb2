@@ -185,6 +185,7 @@
                       {{/each}}
                     </div>
                     <div class="flex-wr-c-c m-rl--7 p-t-15 float-right" id="comments-area">
+                      {{#when this._article.SoLuong 'noteq' 0}}
                       <input type="hidden" id="articleID" value="{{this._article.id}}">
                       <button class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7 pagi-active">1</button>
                       {{#each this._pagi}}
@@ -192,6 +193,7 @@
                       <button class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7">{{value}}</button>
                       {{/when}}
                       {{/each}}
+                      {{/when}}
                     </div>
                   </div>
                 </div>

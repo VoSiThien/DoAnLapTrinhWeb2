@@ -41,4 +41,12 @@ router.get("", async (req, res) => {
   });
 });
 
+router.get('/search', async (req, res) => {
+  const key = decodeURI(req.query.key);
+
+  const data = await articles.fullTextSearch(key);
+
+  res.json(data);
+});
+
 module.exports = router;
