@@ -101,32 +101,46 @@ CREATE TABLE `binhluan` (
   `id` int(11) UNSIGNED NOT NULL,
   `NoiDung` varchar(100) DEFAULT NULL,
   `TaiKhoanID` int(10) UNSIGNED NOT NULL,
-  `BaiVietID` int(10) UNSIGNED NOT NULL
+  `BaiVietID` int(10) UNSIGNED NOT NULL,
+  `NgayBinhLuan` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Đang đổ dữ liệu cho bảng `binhluan`
 --
 
-INSERT INTO `binhluan` (`id`, `NoiDung`, `TaiKhoanID`, `BaiVietID`) VALUES
-(1, 'Hay qúa', 4, 1);
-INSERT INTO `binhluan` (`id`, `NoiDung`, `TaiKhoanID`, `BaiVietID`) VALUES
-(2, N'Em à anh đã biết Là tình yêu này chẳng cần thiết Em cần nơi bình yên Chứ không phải anh kế bên Em đừng giữ lại anh Khi trái tim vụn vỡ chưa lành Điều ban nãy anh vừa thấy là gì đây?', 4, 1);
-INSERT INTO `binhluan` (`id`, `NoiDung`, `TaiKhoanID`, `BaiVietID`) VALUES
-(3, N'Chiều hôm ấy em nói với anh Rằng mình không nên gặp nhau nữa người ơi Em đâu biết anh đau thế nào? Khoảng lặng phủ kín căn phòng ấy Tim anh như thắt lại Và mong đó chỉ là mơ Vì anh còn yêu em rất nhiều.', 4, 1);
-INSERT INTO `binhluan` (`id`, `NoiDung`, `TaiKhoanID`, `BaiVietID`) VALUES
-(4, N'Em có nghe Ngàn muôn suy tư trong màn đêm Và em, em có nghe Lời yêu kia theo gió lay vội đêm Vụt qua con phố chắc có đến nơi bình yên Chẳng cần cơn mơ chiếu lấp lánh nơi thần tiên Từ bao tan nát hoá một trái tim vẹn nguyên Bầu trời kia tha thiết thêm chắc có lẽ là vì em', 4, 2);
-INSERT INTO `binhluan` (`id`, `NoiDung`, `TaiKhoanID`, `BaiVietID`) VALUES
-(5, N'Anh thật sự ngu ngốc Bảo vệ người ấy cũng không xong Nỡ làm người yêu khóc Thế thì còn xứng đáng yêu không? Anh biết rằng anh sai Nhưng không bao giờ tha thứ Người nào tổn thương đến trái tim em như anh đã từng như thế', 4, 3);
-INSERT INTO `binhluan` (`id`, `NoiDung`, `TaiKhoanID`, `BaiVietID`) VALUES
-(6, N'Tưởng chừng sẽ mãi bên nhau chẳng thề cách rời Vì tình yêu ấy trong tim còn đầy vơi Tưởng chừng sẽ nắm đôi tay bên nhau suốt đời Có đâu nào hay bây giờ đã không còn như mong đợi Chẳng thể nào cố níu lấy Khi người đã buông đôi tay Thôi đành chia li rồi nghe niềm đau giăng kiến đôi bờ mi', 4, 3);
-INSERT INTO `binhluan` (`id`, `NoiDung`, `TaiKhoanID`, `BaiVietID`) VALUES
-(7, N'Yêu là giây phút Hai người dưng tìm đến bên nhau Không cần gì, chỉ cần trái tim rung động Cần thêm một sự quan tâm Còn thương Là chung bước tiếp trên con đường Sau bao khó khăn qua, vẫn luôn ở lại Dù cho những lúc lầm lỗi Không làm ta xa nhau', 4, 4);
-INSERT INTO `binhluan` (`id`, `NoiDung`, `TaiKhoanID`, `BaiVietID`) VALUES
-(8, N'Lòng ta xin nguyện khắc ghi trong tim tình nồng mê say Mặc cho tóc mây vương lên đôi môi cay Bâng khuâng mình ta lạc trôi giữa đời Ta lạc trôi giữa trời One, two, three, go', 4, 4);
-INSERT INTO `binhluan` (`id`, `NoiDung`, `TaiKhoanID`, `BaiVietID`) VALUES
-(9, N'Em à, chúng ta không nên quay lại với nhau Vì mọi buồn đau trong lòng anh đủ lắm rồi Đời này rộng, tìm nhau quá khó, bên nhau rồi lại dễ mất nhau Vì những đúng sai trong câu chuyện đôi mình Chẳng đến một lúc sẽ phai.', 4, 5);
-
+INSERT INTO `binhluan` (`NgayBinhLuan`, `id`, `NoiDung`, `TaiKhoanID`, `BaiVietID`) VALUES
+('2020-07-08 00:00:00', 1, 'Hay qúa', 4, 1);
+INSERT INTO `binhluan` (`NgayBinhLuan`, `id`, `NoiDung`, `TaiKhoanID`, `BaiVietID`) VALUES
+('2020-07-08 00:00:00', 2, N'Em à anh đã biết Là tình yêu này chẳng cần thiết Em cần nơi bình yên Chứ không phải anh kế bên Em đừng giữ lại anh Khi trái tim vụn vỡ chưa lành Điều ban nãy anh vừa thấy là gì đây?', 4, 1);
+INSERT INTO `binhluan` (`NgayBinhLuan`, `id`, `NoiDung`, `TaiKhoanID`, `BaiVietID`) VALUES
+('2020-07-08 00:00:00', 3, N'Chiều hôm ấy em nói với anh Rằng mình không nên gặp nhau nữa người ơi Em đâu biết anh đau thế nào? Khoảng lặng phủ kín căn phòng ấy Tim anh như thắt lại Và mong đó chỉ là mơ Vì anh còn yêu em rất nhiều.', 4, 1);
+INSERT INTO `binhluan` (`NgayBinhLuan`, `id`, `NoiDung`, `TaiKhoanID`, `BaiVietID`) VALUES
+('2020-07-08 00:00:00', 4, N'Em có nghe Ngàn muôn suy tư trong màn đêm Và em, em có nghe Lời yêu kia theo gió lay vội đêm Vụt qua con phố chắc có đến nơi bình yên Chẳng cần cơn mơ chiếu lấp lánh nơi thần tiên Từ bao tan nát hoá một trái tim vẹn nguyên Bầu trời kia tha thiết thêm chắc có lẽ là vì em', 4, 2);
+INSERT INTO `binhluan` (`NgayBinhLuan`, `id`, `NoiDung`, `TaiKhoanID`, `BaiVietID`) VALUES
+('2020-07-08 00:00:00', 5, N'Anh thật sự ngu ngốc Bảo vệ người ấy cũng không xong Nỡ làm người yêu khóc Thế thì còn xứng đáng yêu không? Anh biết rằng anh sai Nhưng không bao giờ tha thứ Người nào tổn thương đến trái tim em như anh đã từng như thế', 4, 3);
+INSERT INTO `binhluan` (`NgayBinhLuan`, `id`, `NoiDung`, `TaiKhoanID`, `BaiVietID`) VALUES
+('2020-07-08 00:00:00', 6, N'Tưởng chừng sẽ mãi bên nhau chẳng thề cách rời Vì tình yêu ấy trong tim còn đầy vơi Tưởng chừng sẽ nắm đôi tay bên nhau suốt đời Có đâu nào hay bây giờ đã không còn như mong đợi Chẳng thể nào cố níu lấy Khi người đã buông đôi tay Thôi đành chia li rồi nghe niềm đau giăng kiến đôi bờ mi', 4, 3);
+INSERT INTO `binhluan` (`NgayBinhLuan`, `id`, `NoiDung`, `TaiKhoanID`, `BaiVietID`) VALUES
+('2020-07-08 00:00:00', 7, N'Yêu là giây phút Hai người dưng tìm đến bên nhau Không cần gì, chỉ cần trái tim rung động Cần thêm một sự quan tâm Còn thương Là chung bước tiếp trên con đường Sau bao khó khăn qua, vẫn luôn ở lại Dù cho những lúc lầm lỗi Không làm ta xa nhau', 4, 4);
+INSERT INTO `binhluan` (`NgayBinhLuan`, `id`, `NoiDung`, `TaiKhoanID`, `BaiVietID`) VALUES
+('2020-07-08 00:00:00', 8, N'Lòng ta xin nguyện khắc ghi trong tim tình nồng mê say Mặc cho tóc mây vương lên đôi môi cay Bâng khuâng mình ta lạc trôi giữa đời Ta lạc trôi giữa trời One, two, three, go', 4, 4);
+INSERT INTO `binhluan` (`NgayBinhLuan`, `id`, `NoiDung`, `TaiKhoanID`, `BaiVietID`) VALUES
+('2020-07-08 00:00:00', 9, N'Em à, chúng ta không nên quay lại với nhau Vì mọi buồn đau trong lòng anh đủ lắm rồi Đời này rộng, tìm nhau quá khó, bên nhau rồi lại dễ mất nhau Vì những đúng sai trong câu chuyện đôi mình Chẳng đến một lúc sẽ phai.', 4, 5);
+INSERT INTO `binhluan` (`NgayBinhLuan`, `id`, `NoiDung`, `TaiKhoanID`, `BaiVietID`) VALUES
+('2020-07-08 00:00:00', 10, 'Có làm thì mới có ăn, dòng thứ ko làm mà đòi ăn thì ăn...', 4, 1);
+INSERT INTO `binhluan` (`NgayBinhLuan`, `id`, `NoiDung`, `TaiKhoanID`, `BaiVietID`) VALUES
+('2020-07-08 00:00:00', 11, 'Dương Mạnh Cường đẹp trai vô địch siêu cấp vũ trụ', 4, 1);
+INSERT INTO `binhluan` (`NgayBinhLuan`, `id`, `NoiDung`, `TaiKhoanID`, `BaiVietID`) VALUES
+('2020-07-08 00:00:00', 12, 'Có con đường nào bước qua ta đến mang em món quà', 4, 1);
+INSERT INTO `binhluan` (`NgayBinhLuan`, `id`, `NoiDung`, `TaiKhoanID`, `BaiVietID`) VALUES
+('2020-07-08 00:00:00', 13, 'Bài báo cảm động viết về 1 thanh niên mới chia tay người yêu 3 tháng', 4, 1);
+INSERT INTO `binhluan` (`NgayBinhLuan`, `id`, `NoiDung`, `TaiKhoanID`, `BaiVietID`) VALUES
+('2020-07-08 00:00:00', 14, 'Gần mực thì đen - gần đèn thì sáng', 4, 1);
+INSERT INTO `binhluan` (`NgayBinhLuan`, `id`, `NoiDung`, `TaiKhoanID`, `BaiVietID`) VALUES
+('2020-07-08 00:00:00', 15, 'Có công mài sắt có ngày nên kim', 4, 1);
+INSERT INTO `binhluan` (`NgayBinhLuan`, `id`, `NoiDung`, `TaiKhoanID`, `BaiVietID`) VALUES
+('2020-07-08 00:00:00', 16, 'Thân em vừa trắng lại vừa tròn, bảy nổi ba chìm với nước non', 4, 1);
 -- --------------------------------------------------------
 
 --
