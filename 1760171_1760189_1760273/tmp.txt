@@ -8,11 +8,13 @@
     $("#comments-area button").on('click', function (e) {
       e.preventDefault();
 
-      if (!$(this).hasClass("pagi-active")) {
-        alert("click here");
-        $.getJSON(`/article?id=${$("#articleID").val()}&page=${$(this).html()}`, (data) => {
-          alert(data["page"]);
-        });
+      if ($(this).hasClass("pagi-active") === false) {
+        alert($(this).html());
+        var page = $(this).html();
+
+        $("#page").val(page);
+
+        $("#comments-area").off("submit").submit();
       }
     });
   });
@@ -151,11 +153,11 @@
                       </div>
                       {{/each}}
                     </div>
-                    <div class="flex-wr-c-c m-rl--7 p-t-15 float-right" id="comments-area">
-                      <input type="hidden" id="articleID" value="{{this._article.id}}">
-                      <button class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7 pagi-active">1</button>
-                      <button class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7">2</button>
-                    </div>
+                    <form method="POST" class="flex-wr-c-c m-rl--7 p-t-15 float-right" id="comments-area">
+                      <input type="hidden" name="page" id="page">
+                      <button class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7 pagi-active" type="submit">1</button>
+                      <button class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7" type="submit">2</button>
+                    </form>
                   </div>
                 </div>
               </div>

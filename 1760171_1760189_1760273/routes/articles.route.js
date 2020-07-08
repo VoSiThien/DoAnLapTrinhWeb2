@@ -7,24 +7,31 @@ const tags = require("../models/tags.model");
 const router = express.Router();
 
 router.get("/:id", async (req, res) => {
+  const page = +req.query.page || 1;
+  if (page < 1) page = 1;
+
   const id = +req.params.id;
 
-  const [row, _tags, _comments] = await Promise.all([
-    articles.loadSingle(id),
-    tags.loadArticleTags(id),
-    comments.load5CommentsOffset(id, 0)
-  ]);
+  const row = await articles.loadSingle(id);
 
   if (row[0]) {
-    const _relatedArticles = await articles.load5DependCategory(id, row[0]['ChuyenMucID']);
+    const [_relatedArticles, _tags, _comments] = await Promise.all([
+      articles.load5DependCategory(id, row[0]["ChuyenMucID"]),
+      tags.loadArticleTags(id),
+      comments.load5CommentsOffset(id, 0),
+    ]);
 
     res.render("vwArticles/detail", {
       _article: row[0],
       _tags,
       _relatedArticles,
-      _comments
+      _comments,
     });
   }
+});
+
+router.get("", (req, res) => {
+  res.json({"id": req.query.id, "page": req.query.page});
 });
 
 module.exports = router;

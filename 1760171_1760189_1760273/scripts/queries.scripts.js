@@ -43,7 +43,7 @@ module.exports = {
 
   loadSingle: function (id) {
     return `
-      select bv.HinhAnh, bv.LuotXem, bv.NgayXuatBan, bv.NoiDung, bv.NoiDung, bv.NoiDungTat, bv.PDF, bv.TieuDe, bv.ChuyenMucID, cm.TenChuyenMuc, tk.ButDanh, tmp.SoLuong
+      select bv.id, bv.HinhAnh, bv.LuotXem, bv.NgayXuatBan, bv.NoiDung, bv.NoiDung, bv.NoiDungTat, bv.PDF, bv.TieuDe, bv.ChuyenMucID, cm.TenChuyenMuc, tk.ButDanh, tmp.SoLuong
       from baiviet bv join chuyenmuc cm on cm.id = bv.ChuyenMucID join taikhoan tk on tk.id = bv.TaiKhoanID, (select count(bl.id) as SoLuong
                                                                                                               from baiviet bv1 join binhluan bl on bl.BaiVietID = bv1.id
       where bv1.id = ${id}) as tmp
