@@ -1,6 +1,6 @@
 const express = require("express");
 
-const categories = require("../models/categories.model");
+const comments = require("../models/comments.model");
 const articles = require("../models/articles.model");
 const tags = require("../models/tags.model");
 
@@ -9,9 +9,10 @@ const router = express.Router();
 router.get("/:id", async (req, res) => {
   const id = +req.params.id;
 
-  const [row, _tags] = await Promise.all([
+  const [row, _tags, _comments] = await Promise.all([
     articles.loadSingle(id),
-    tags.loadArticleTags(id)
+    tags.loadArticleTags(id),
+    comments.load5CommentsOffset(id, 0)
   ]);
 
   if (row[0]) {
@@ -20,7 +21,8 @@ router.get("/:id", async (req, res) => {
     res.render("vwArticles/detail", {
       _article: row[0],
       _tags,
-      _relatedArticles
+      _relatedArticles,
+      _comments
     });
   }
 });

@@ -100,12 +100,11 @@
           </div>
 
           <!-- list of comments -->
-          <div>
+          <div class="pb-5">
             <h4 class="f1-l-4 cl3 p-b-12">
               <i class="fa fa-comments fa-lg" aria-hidden="true"></i> Thảo luận
               <small>({{this._article.SoLuong}})</small>
             </h4>
-
           </div>
           <section class="bg0">
             <div class="container">
@@ -113,11 +112,11 @@
                 <div class="col-md-12">
                   <div class="p-r-10 p-r-0-sr991">
                     <div class="m-t--40">
-                      <!-- Item post -->
-                      <div class="flex-wr-sb-s p-t-40 p-b-15 how-bor2">
-                        <div class="cl8 p-b-18">
-                          <a href="#" class="f1-s-4 cl8 hov-cl10 trans-03">
-                            by John Alvarado
+                      {{#each this._comments}}
+                      <div class="flex-wr-sb-s p-t-15 p-b-15 how-bor2">
+                        <div class="cl8 w-100">
+                          <a href="javascript:;" class="f1-s-4 cl8 hov-cl10 trans-03">
+                            <i class="fa fa-user-circle-o fa-lg" aria-hidden="true"></i> {{HoTen}}
                           </a>
 
                           <span class="f1-s-3 m-rl-3">
@@ -125,37 +124,15 @@
                           </span>
 
                           <span class="f1-s-3">
-                            Feb 18
+                            <i class="fa fa-calendar fa-lg" aria-hidden="true"></i> {{formatDate NgayBinhLuan}}
                           </span>
                         </div>
 
-                        <p class="f1-s-1 cl6 p-b-24">
-                          Duis eu felis id tortor congue consequat. Sed vitae vestibulum enim, et pharetra magnaasdada
-                          ada dad ada adada dadasfs fsfs fsfsf afafafa f
+                        <p class="f1-s-1 cl6">
+                          {{NoiDung}}
                         </p>
                       </div>
-
-                      <!-- Item post -->
-                      <div class="flex-wr-sb-s p-t-40 p-b-15 how-bor2">
-                        <div class="cl8 p-b-18">
-                          <a href="#" class="f1-s-4 cl8 hov-cl10 trans-03">
-                            by John Alvarado
-                          </a>
-
-                          <span class="f1-s-3 m-rl-3">
-                            -
-                          </span>
-
-                          <span class="f1-s-3">
-                            Feb 18
-                          </span>
-                        </div>
-
-                        <p class="f1-s-1 cl6 p-b-24">
-                          Duis eu felis id tortor congue consequat. Sed vitae vestibulum enim, et pharetra magnaasdada
-                          ada dad ada adada dadasfs fsfs fsfsf afafafa f
-                        </p>
-                      </div>
+                      {{/each}}
                     </div>
                     <div class="flex-wr-c-c m-rl--7 p-t-15 float-right">
                       <a href="#" class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7 pagi-active">1</a>

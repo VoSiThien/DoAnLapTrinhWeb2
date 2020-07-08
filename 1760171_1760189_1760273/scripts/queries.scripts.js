@@ -88,5 +88,15 @@ module.exports = {
       select tg.TenTag
       from tag tg
       where tg.BaiVietID = ${id}`;
+  },
+
+  // COMMENTS
+  load5CommentsOffset: function (id, offset) {
+    return `
+      select bl.NoiDung, bl.NgayBinhLuan, tk.HoTen
+      from binhluan bl join taikhoan tk on tk.id = bl.TaiKhoanID
+      where bl.BaiVietID = ${id}
+      limit 5
+      offset ${offset}`;
   }
 };
