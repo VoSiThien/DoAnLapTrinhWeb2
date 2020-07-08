@@ -13,14 +13,11 @@ const cache = new LRU({
 
 module.exports = function (app) {
   app.use(async (req, res, next) => {
-    const data = cache.get(GLB_CATEGORIES);
-    let cats = undefined;
-    let fTags = undefined;
-    let fCats = undefined;
+    let cats = cache.get(GLB_CATEGORIES);
+    let fTags = cache.get(GLB_FOOTER_TAGS);
+    let fCats = cache.get(GBL_FOOTER_CATEGORIES);
 
-    if (!data) {
-      const rows = await catModel.loadAll();
-
+    if (!cats || !fTags || !fCats) {
       const [_cats, _fTags, _fCats] = await Promise.all([
         catModel.loadAll(),
         tagModel.load20Tags(),
@@ -31,15 +28,14 @@ module.exports = function (app) {
       fTags = _fTags;
       fCats = _fCats;
 
+      // save to cache
       cache.set(GLB_CATEGORIES, _cats);
       cache.set(GLB_FOOTER_TAGS, _fTags);
       cache.set(GBL_FOOTER_CATEGORIES, _fCats);
 
       // console.log(`-- Fetch ${GLB_CATEGORIES}`);
     } else {
-      cats = data;
-      fTags = cache.get(GLB_FOOTER_TAGS);
-      fCats = cache.get(GBL_FOOTER_CATEGORIES);
+      const x = -1;
 
       // console.log(`++ Cache hit for ${GLB_CATEGORIES}`);
     }

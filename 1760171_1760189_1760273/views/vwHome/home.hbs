@@ -793,11 +793,11 @@ Trang chủ
 
           <div class="size-w-5">
             <h6 class="p-b-5">
-              <a href="/tag/{{this._20tags.0.TenTag}}" class="f1-s-5 cl11 hov-cl10 trans-03">
-                #{{this._20tags.0.TenTag}} ({{this._20tags.0.SoLuong}})
+              <a href="/tag/{{lcFTags.0.TenTag}}" class="f1-s-5 cl11 hov-cl10 trans-03">
+                #{{lcFTags.0.TenTag}} ({{lcFTags.0.SoLuong}})
               </a>
 
-              {{#each this._20tags}}
+              {{#each lcFTags}}
               {{#when @index 'noteq' 0}}
                 , <a href="/tag/{{TenTag}}" class="f1-s-5 cl11 hov-cl10 trans-03">
                   #{{TenTag}} ({{SoLuong}})
@@ -816,7 +816,7 @@ Trang chủ
           </div>
 
           <ul class="m-t--12">
-            {{#each this._5Categories}}
+            {{#each lcFCats}}
             <li class="how-bor1 p-rl-5 p-tb-10">
               <a href="/category/{{id}}" class="f1-s-5 cl11 hov-cl10 trans-03 p-tb-8">
                 {{TenChuyenMuc}} ({{SoLuong}})
