@@ -2,6 +2,16 @@
 Trang chủ
 {{/section}}
 
+{{#section 'js'}}
+<script>
+  $(document).ready(function () {
+    $("#button-go-top").click(function () {
+      $(window).scrollTop(0);
+    });
+  });
+</script>
+{{/section}}
+
 <div class="container">
   <div class="bg0 flex-wr-sb-c p-rl-20 p-tb-8">
     <div class="f2-s-1 p-r-30 size-w-0 m-tb-6 flex-wr-s-c">
@@ -745,7 +755,7 @@ Trang chủ
         <div class="col-lg-4 p-b-20">
           <div class="size-h-3 flex-s-c">
             <a href="javascript:;">
-              <img class="max-s-full" src="public/images/icons/logo.png" alt="LOGO">
+              <img class="max-s-full" src="/public/images/icons/logo.png" alt="LOGO">
             </a>
           </div>
 
@@ -799,9 +809,9 @@ Trang chủ
 
               {{#each lcFTags}}
               {{#when @index 'noteq' 0}}
-                , <a href="/tag/{{TenTag}}" class="f1-s-5 cl11 hov-cl10 trans-03">
-                  #{{TenTag}} ({{SoLuong}})
-                </a>
+              , <a href="/tag/{{TenTag}}" class="f1-s-5 cl11 hov-cl10 trans-03">
+                #{{TenTag}} ({{SoLuong}})
+              </a>
               {{/when}}
               {{/each}}
             </h6>
@@ -823,7 +833,14 @@ Trang chủ
               </a>
             </li>
             {{/each}}
+
           </ul>
+          <div class="how-bor1 p-rl-5 p-tb-10 float-right">
+            <button class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5"
+              id="button-go-top">
+              <i class="fa fa-arrow-up fa-lg" aria-hidden="true"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
