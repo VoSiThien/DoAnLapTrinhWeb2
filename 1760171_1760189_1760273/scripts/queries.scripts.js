@@ -98,5 +98,12 @@ module.exports = {
       where bl.BaiVietID = ${id}
       limit 5
       offset ${offset}`;
+  },
+
+  getCommentsQuantity: function (id) {
+    return `
+      select count(bl.id) as SoLuong
+      from binhluan bl
+      where bl.BaiVietID = ${id}`;
   }
 };

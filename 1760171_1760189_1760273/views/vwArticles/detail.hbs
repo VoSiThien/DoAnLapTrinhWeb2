@@ -154,7 +154,11 @@
                     <div class="flex-wr-c-c m-rl--7 p-t-15 float-right" id="comments-area">
                       <input type="hidden" id="articleID" value="{{this._article.id}}">
                       <button class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7 pagi-active">1</button>
-                      <button class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7">2</button>
+                      {{#each this._pagi}}
+                      {{#when value 'gt' 1}}
+                      <button class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7">{{value}}</button>
+                      {{/when}}
+                      {{/each}}
                     </div>
                   </div>
                 </div>
