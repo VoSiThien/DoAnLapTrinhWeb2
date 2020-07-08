@@ -99,7 +99,7 @@ INSERT INTO `baiviet` (`PDF`, `HinhAnh`, `LuotXem`, `TrangThaiID`, `ChuyenMucID`
 
 CREATE TABLE `binhluan` (
   `id` int(11) UNSIGNED NOT NULL,
-  `NoiDung` varchar(100) DEFAULT NULL,
+  `NoiDung` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `TaiKhoanID` int(10) UNSIGNED NOT NULL,
   `BaiVietID` int(10) UNSIGNED NOT NULL,
   `NgayBinhLuan` datetime NOT NULL
