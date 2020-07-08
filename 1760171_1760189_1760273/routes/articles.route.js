@@ -26,9 +26,6 @@ const rangeOfPagination = (quantity, current) => {
 };
 
 router.get("/:id", async (req, res) => {
-  const page = +req.query.page || 1;
-  if (page < 1) page = 1;
-
   const id = +req.params.id;
 
   const row = await articles.loadSingle(id);
