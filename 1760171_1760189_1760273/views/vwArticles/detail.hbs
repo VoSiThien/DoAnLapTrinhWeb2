@@ -9,9 +9,37 @@
       e.preventDefault();
 
       if (!$(this).hasClass("pagi-active")) {
-        alert("click here");
         $.getJSON(`/article?id=${$("#articleID").val()}&page=${$(this).html()}`, (data) => {
-          alert(data["page"]);
+          $("#users-comments").empty();
+          $("#comments-area button.pagi-active").removeClass("pagi-active");
+          $(this).addClass("pagi-active");
+
+          data.forEach(val => {
+            var myDate = new Date(val['NgayBinhLuan']);
+            var date = myDate.getDate() < 10 ? `0${myDate.getDate()}` : `${myDate.getDate()}`;
+            var month = myDate.getMonth() + 1 < 10 ? `0${myDate.getMonth() + 1}` : `${myDate.getMonth() + 1}`;
+
+            var row = `<div class="flex-wr-sb-s p-t-15 p-b-15 how-bor2">
+                        <div class="cl8 w-100">
+                          <a href="javascript:;" class="f1-s-4 cl8 hov-cl10 trans-03">
+                            <i class="fa fa-user-circle-o fa-lg" aria-hidden="true"></i> ${val['HoTen']}
+                          </a>
+
+                          <span class="f1-s-3 m-rl-3">
+                            -
+                          </span>
+
+                          <span class="f1-s-3">
+                            <i class="fa fa-calendar fa-lg" aria-hidden="true"></i> ${date + '/' + month}
+                          </span>
+                        </div>
+
+                        <p class="f1-s-1 cl6">
+                          ${val['NoiDung']}
+                        </p>
+                      </div>`;
+            $("#users-comments").append(row);
+          });
         });
       }
     });
@@ -128,7 +156,7 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="p-r-10 p-r-0-sr991">
-                    <div class="m-t--40">
+                    <div class="m-t--40" id="users-comments">
                       {{#each this._comments}}
                       <div class="flex-wr-sb-s p-t-15 p-b-15 how-bor2">
                         <div class="cl8 w-100">

@@ -32,12 +32,6 @@ module.exports = function (app) {
       cache.set(GLB_CATEGORIES, _cats);
       cache.set(GLB_FOOTER_TAGS, _fTags);
       cache.set(GBL_FOOTER_CATEGORIES, _fCats);
-
-      // console.log(`-- Fetch ${GLB_CATEGORIES}`);
-    } else {
-      const x = -1;
-
-      // console.log(`++ Cache hit for ${GLB_CATEGORIES}`);
     }
 
     res.locals.lcFTags = fTags;

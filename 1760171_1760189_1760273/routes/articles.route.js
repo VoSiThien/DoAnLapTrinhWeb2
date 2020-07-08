@@ -51,8 +51,12 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.get("", (req, res) => {
-  res.json({ id: req.query.id, page: req.query.page });
+router.get("", async (req, res) => {
+  const [id, page] = [req.query.id, req.query.page];
+  
+  const _comments = await comments.load5CommentsOffset(id, (page - 1)*5);
+
+  res.json(_comments);
 });
 
 module.exports = router;
