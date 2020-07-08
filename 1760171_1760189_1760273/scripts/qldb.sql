@@ -44,7 +44,9 @@ CREATE TABLE `baiviet` (
   `TrangThaiID` int(10) UNSIGNED NOT NULL,
   `ChuyenMucID` int(10) UNSIGNED NOT NULL,
   `TaiKhoanID` int(10) UNSIGNED NOT NULL,
-  `isPremium` int(11) NOT NULL
+  `isPremium` int(11) NOT NULL,
+  
+  fulltext (`TieuDe`, `NoiDungTat`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
