@@ -58,8 +58,9 @@ router.get('/category-load-more', async (req, res) => {
 
   if (categoryName['ChuyenMucCon'] === null) {
     res.json(await articles.load7DependCategoryOffset(id, offset * 2));
+  } else {
+    res.json(await articles.load7DependCategoryOffsetChild(id, offset * 2));
   }
-
 });
 
 module.exports = router;

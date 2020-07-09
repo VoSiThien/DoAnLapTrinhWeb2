@@ -73,7 +73,7 @@ module.exports = {
     return `
       select bv.id, bv.TieuDe, bv.NoiDungTat, bv.NgayXuatBan, bv.HinhAnh, tk.ButDanh
       from baiviet bv join taikhoan tk on tk.id = bv.TaiKhoanID
-      where bv.TrangThaiID = 3 and bv.id = ${id}
+      where bv.TrangThaiID = 3 and bv.ChuyenMucID = ${id}
       order by UNIX_TIMESTAMP(bv.NgayXuatBan) desc
       limit 2
       offset ${offset}`;
