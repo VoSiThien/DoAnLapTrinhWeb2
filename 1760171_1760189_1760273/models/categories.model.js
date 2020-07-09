@@ -8,5 +8,9 @@ module.exports = {
 
   load5CategoriesDesc:function () {
     return db.load(queries.load5CategoriesDesc());
+  },
+
+  loadCategoryTitle: function (id) {
+    return db.load(queries.loadCategoryTitle(id))
   }
 };

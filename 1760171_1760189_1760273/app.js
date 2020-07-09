@@ -21,6 +21,9 @@ app.use("/", require("./routes/home.route"));
 // article page
 app.use("/article", require("./routes/articles.route"));
 
+// categories page
+app.use("/category", require("./routes/categories.route"));
+
 const POST = 3000;
 app.listen(POST, function () {
   console.log(`Server is running on PORT: ${POST}`);

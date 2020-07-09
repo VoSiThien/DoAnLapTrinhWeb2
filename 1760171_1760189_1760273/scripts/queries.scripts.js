@@ -59,6 +59,15 @@ module.exports = {
       limit 5`;
   },
 
+  load7DependCategoryOffset: function (id, offset) {
+    return `
+      select bv.id, bv.TieuDe, bv.NoiDungTat, bv.NgayXuatBan, bv.HinhAnh, tk.ButDanh
+      from baiviet bv join taikhoan tk on tk.id = bv.TaiKhoanID
+      where bv.TrangThaiID = 3 and bv.ChuyenMucID in (select cm.id from chuyenmuc cm where cm.ChuyenMucCon = ${id})
+      limit 2
+      offset ${offset}`;
+  },
+
   fullTextSearch: function (keyword) {
     return `
       select bv.id, bv.TieuDe
@@ -77,6 +86,13 @@ module.exports = {
       limit 20`;
   },
 
+  loadArticleTags: function (id) {
+    return `
+      select tg.TenTag
+      from tag tg
+      where tg.BaiVietID = ${id}`;
+  },
+
   // CATEGORIES
   loadAllCategories: function () {
     return `select * from chuyenmuc`;
@@ -91,11 +107,11 @@ module.exports = {
       limit 5`;
   },
 
-  loadArticleTags: function (id) {
+  loadCategoryTitle: function (id) {
     return `
-      select tg.TenTag
-      from tag tg
-      where tg.BaiVietID = ${id}`;
+      select cm.id, cm.TenChuyenMuc, cm.ChuyenMucCon
+      from chuyenmuc cm
+      where cm.id = ${id}`;
   },
 
   // COMMENTS

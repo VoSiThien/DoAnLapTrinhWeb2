@@ -1,6 +1,7 @@
 const express = require("express");
 
 const articles = require("../models/articles.model");
+const categories = require("../models/categories.model");
 
 const router = express.Router();
 
@@ -47,6 +48,18 @@ router.get('/search', async (req, res) => {
   const data = await articles.fullTextSearch(key);
 
   res.json(data);
+});
+
+router.get('/category-load-more', async (req, res) => {
+  const id = +req.query.id;
+  const offset = +req.query.offset;
+
+  const categoryName = (await categories.loadCategoryTitle(id))[0];
+
+  if (categoryName['ChuyenMucCon'] === null) {
+    res.json(await articles.load7DependCategoryOffset(id, offset * 2));
+  }
+
 });
 
 module.exports = router;

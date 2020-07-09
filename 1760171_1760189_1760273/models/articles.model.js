@@ -26,6 +26,10 @@ module.exports = {
     return db.load(queries.load5DependCategory(id, catID));
   },
 
+  load7DependCategoryOffset: function (id, offset) {
+    return db.load(queries.load7DependCategoryOffset(id, offset));
+  },
+
   fullTextSearch: function (keyword) {
     return db.load(queries.fullTextSearch(keyword));
   }
