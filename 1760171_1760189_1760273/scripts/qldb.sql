@@ -322,7 +322,7 @@ CREATE TABLE `taikhoan` (
   `MatKhau` varchar(50) NOT NULL,
   `HoTen` varchar(100) DEFAULT NULL,
   `ButDanh` varchar(50) DEFAULT NULL,
-  `email` varchar(50) DEFAULT NULL,
+  `Email` varchar(50) DEFAULT NULL,
   `NgaySinh` date DEFAULT NULL,
   `ThoiHan` datetime default NULL,
   `VaiTroID` int(11) UNSIGNED NOT NULL,
@@ -333,13 +333,13 @@ CREATE TABLE `taikhoan` (
 -- Đang đổ dữ liệu cho bảng `taikhoan`
 --
 
-INSERT INTO `taikhoan` (`MatKhau`, `HoTen`, `ButDanh`, `email`, `NgaySinh`, `ThoiHan`, `VaiTroID`, `ChuyenMucQuanLy`) VALUES
+INSERT INTO `taikhoan` (`MatKhau`, `HoTen`, `ButDanh`, `Email`, `NgaySinh`, `ThoiHan`, `VaiTroID`, `ChuyenMucQuanLy`) VALUES
 ('1', 'Lê Văn Chủ', NULL, 'admin@gmail.com', '1999-11-20', '2030-12-30 00:00:00', 1, NULL),
 ('1', 'Lý Thái Tổ', NULL, 'Ly@gmail.com', '1996-10-19', '2030-12-30 00:00:00', 2, 6),
 ('1', 'Lý Thường Kiệt', 'Anh Hùng Xạ Điêu', 'Kiet@gmail.com', '2000-01-25', '2030-12-30 00:00:00', 3, NULL),
 ('1', 'Phạm Văn Đồng', NULL, 'Pham@gmail.com', '2003-05-01', '2020-12-30 00:00:00', 4, NULL),
 ('1', 'Dương Mạnh Cường', NULL, 'us1@gc', '1999-04-08', NULL, 4, NULL);
-INSERT INTO `taikhoan` (`MatKhau`, `HoTen`, `email`, `VaiTroID`) VALUES
+INSERT INTO `taikhoan` (`MatKhau`, `HoTen`, `Email`, `VaiTroID`) VALUES
 ('1', 'Lady Gaga', 'us2@gc', 4);
 -- --------------------------------------------------------
 
