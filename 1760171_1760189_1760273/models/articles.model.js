@@ -30,6 +30,10 @@ module.exports = {
     return db.load(queries.load7DependCategoryOffset(id, offset));
   },
 
+  loadRightArticlesColumn: function (id) {
+    return db.load(queries.loadRightArticlesColumn(id));
+  },
+
   fullTextSearch: function (keyword) {
     return db.load(queries.fullTextSearch(keyword));
   }

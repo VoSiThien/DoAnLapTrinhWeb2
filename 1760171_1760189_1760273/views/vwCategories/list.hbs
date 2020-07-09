@@ -193,112 +193,49 @@
           <div class="p-b-23">
             <div class="how2 how2-cl4 flex-s-c">
               <h3 class="f1-m-2 cl3 tab01-title">
-                Most Popular
+                <i class="fa fa-quote-right" aria-hidden="true"></i> Các bài viết khác
               </h3>
             </div>
-
             <ul class="p-t-35">
-              <li class="flex-wr-sb-s p-b-22">
-                <div class="size-a-8 flex-c-c borad-3 size-a-8 bg9 f1-m-4 cl0 m-b-6">
-                  1
-                </div>
-
-                <a href="#" class="size-w-3 f1-s-7 cl3 hov-cl10 trans-03">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit
+              {{#each this._otherArticles}}
+              <li class="flex-wr-sb-s p-b-30" title="{{NoiDungTat}}">
+                <a href="/article/{{id}}" class="size-w-10 wrap-pic-w hov1 trans-03">
+                  <img src="{{HinhAnh}}" alt="IMG">
                 </a>
-              </li>
 
-              <li class="flex-wr-sb-s p-b-22">
-                <div class="size-a-8 flex-c-c borad-3 size-a-8 bg9 f1-m-4 cl0 m-b-6">
-                  2
+                <div class="size-w-11">
+                  <h6 class="p-b-4">
+                    <a href="/article/{{id}}" class="f1-s-5 cl3 hov-cl10 trans-03">
+                      {{TieuDe}}
+                    </a>
+                  </h6>
+
+                  <span class="cl8 txt-center p-b-24">
+                    <a href="/category/{{ChuyenMucID}}"
+                      class="f1-s-4 cl8 hov-cl10 trans-03 border border-dark rounded p-1">
+                      {{TenChuyenMuc}}
+                    </a>
+
+                    <span class="f1-s-3 m-rl-3">
+                      -
+                    </span>
+
+                    <a href="javascript:;" class="f1-s-6 cl8 hov-cl10 trans-03">
+                      {{ButDanh}}
+                    </a>
+
+                    <span class="f1-s-3 m-rl-3">
+                      -
+                    </span>
+
+                    <span class="f1-s-3">
+                      {{formatDate NgayXuatBan}}
+                    </span>
+                  </span>
                 </div>
-
-                <a href="#" class="size-w-3 f1-s-7 cl3 hov-cl10 trans-03">
-                  Proin velit consectetur non neque
-                </a>
               </li>
-
-              <li class="flex-wr-sb-s p-b-22">
-                <div class="size-a-8 flex-c-c borad-3 size-a-8 bg9 f1-m-4 cl0 m-b-6">
-                  3
-                </div>
-
-                <a href="#" class="size-w-3 f1-s-7 cl3 hov-cl10 trans-03">
-                  Nunc vestibulum, enim vitae condimentum volutpat lobortis ante
-                </a>
-              </li>
-
-              <li class="flex-wr-sb-s p-b-22">
-                <div class="size-a-8 flex-c-c borad-3 size-a-8 bg9 f1-m-4 cl0 m-b-6">
-                  4
-                </div>
-
-                <a href="#" class="size-w-3 f1-s-7 cl3 hov-cl10 trans-03">
-                  Proin velit justo consectetur non neque elementum
-                </a>
-              </li>
-
-              <li class="flex-wr-sb-s p-b-22">
-                <div class="size-a-8 flex-c-c borad-3 size-a-8 bg9 f1-m-4 cl0">
-                  5
-                </div>
-
-                <a href="#" class="size-w-3 f1-s-7 cl3 hov-cl10 trans-03">
-                  Proin velit consectetur non neque
-                </a>
-              </li>
+              {{/each}}
             </ul>
-          </div>
-
-          <!-- Tag -->
-          <div>
-            <div class="how2 how2-cl4 flex-s-c m-b-30">
-              <h3 class="f1-m-2 cl3 tab01-title">
-                Tags
-              </h3>
-            </div>
-
-            <div class="flex-wr-s-s m-rl--5">
-              <a href="#"
-                class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
-                Fashion
-              </a>
-
-              <a href="#"
-                class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
-                Lifestyle
-              </a>
-
-              <a href="#"
-                class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
-                Denim
-              </a>
-
-              <a href="#"
-                class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
-                Streetstyle
-              </a>
-
-              <a href="#"
-                class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
-                Crafts
-              </a>
-
-              <a href="#"
-                class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
-                Magazine
-              </a>
-
-              <a href="#"
-                class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
-                News
-              </a>
-
-              <a href="#"
-                class="flex-c-c size-h-2 bo-1-rad-20 bocl12 f1-s-1 cl8 hov-btn2 trans-03 p-rl-20 p-tb-5 m-all-5">
-                Blogs
-              </a>
-            </div>
           </div>
         </div>
       </div>

@@ -64,8 +64,18 @@ module.exports = {
       select bv.id, bv.TieuDe, bv.NoiDungTat, bv.NgayXuatBan, bv.HinhAnh, tk.ButDanh
       from baiviet bv join taikhoan tk on tk.id = bv.TaiKhoanID
       where bv.TrangThaiID = 3 and bv.ChuyenMucID in (select cm.id from chuyenmuc cm where cm.ChuyenMucCon = ${id})
+      order by UNIX_TIMESTAMP(bv.NgayXuatBan) desc
       limit 2
       offset ${offset}`;
+  },
+
+  loadRightArticlesColumn: function (id) {
+    return `
+      select bv.id, bv.TieuDe, bv.NoiDungTat, bv.NgayXuatBan, bv.HinhAnh, cm.id as ChuyenMucID, cm.TenChuyenMuc, tk.ButDanh
+      from baiviet bv join chuyenmuc cm on cm.id = bv.ChuyenMucID join taikhoan tk on tk.id = bv.TaiKhoanID
+      where bv.TrangThaiID = 3 and cm.ChuyenMucCon is not null and cm.ChuyenMucCon <> ${id}
+      order by UNIX_TIMESTAMP(bv.NgayXuatBan) desc
+      limit 7`;
   },
 
   fullTextSearch: function (keyword) {
