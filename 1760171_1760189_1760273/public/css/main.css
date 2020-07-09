@@ -76,6 +76,9 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 [ Bootstrap ]*/
 .container {max-width: 1080px;}
 
+#_home a i:hover {
+  color: #17b978;
+}
 
 
 /*//////////////////////////////////////////////////////////////////
