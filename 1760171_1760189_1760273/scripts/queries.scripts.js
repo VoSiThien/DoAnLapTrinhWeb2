@@ -97,12 +97,31 @@ module.exports = {
       limit 7`;
   },
 
+  getArticleDependTag: function (tag, offset) {
+    return `
+      select bv.id, bv.TieuDe, bv.NoiDungTat, bv.NgayXuatBan, bv.HinhAnh, cm.id as ChuyenMucID, cm.TenChuyenMuc, tk.ButDanh
+      from baiviet bv join chuyenmuc cm on cm.id = bv.ChuyenMucID join taikhoan tk on tk.id = bv.TaiKhoanID join tag tg on tg.BaiVietID = bv.id
+      where bv.TrangThaiID = 3 and tg.TenTag = '${tag}'
+      order by UNIX_TIMESTAMP(bv.NgayXuatBan) desc
+      limit 2
+      offset ${offset}`;
+  },
+
   fullTextSearch: function (keyword) {
     return `
       select bv.id, bv.TieuDe
       from baiviet bv
-      where match(bv.TieuDe, bv.NoiDungTat) against ('${keyword}')
+      where match(bv.TieuDe, bv.NoiDungTat) against ('${keyword}') and bv.TrangThaiID = 3
       limit 7`;
+  },
+
+  fullTextSearchOffset: function (keyword, offset) {
+    return `
+      select bv.id, bv.TieuDe, bv.NoiDungTat, bv.NgayXuatBan, bv.HinhAnh, cm.id as ChuyenMucID, cm.TenChuyenMuc, tk.ButDanh
+      from baiviet bv join chuyenmuc cm on cm.id = bv.ChuyenMucID join taikhoan tk on tk.id = bv.TaiKhoanID
+      where match(bv.TieuDe, bv.NoiDungTat) against ('${keyword}') and bv.TrangThaiID = 3
+      limit 2
+      offset ${offset}`;
   },
 
   // TAGS

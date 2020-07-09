@@ -42,7 +42,15 @@ module.exports = {
     return db.load(queries.loadRightArticlesColumnChild(id));
   },
 
+  getArticleDependTag: function (tag, offset) {
+    return db.load(queries.getArticleDependTag(tag, offset));
+  },
+
   fullTextSearch: function (keyword) {
     return db.load(queries.fullTextSearch(keyword));
+  },
+
+  fullTextSearchOffset: function (keyword, offset) {
+    return db.load(queries.fullTextSearchOffset(keyword, offset));
   }
 };

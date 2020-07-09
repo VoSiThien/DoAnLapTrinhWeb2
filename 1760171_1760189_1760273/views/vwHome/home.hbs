@@ -26,11 +26,17 @@ Trang chủ
 {{#section 'js'}}
 <script>
   $(document).ready(function () {
+    $('#search').on('keypress', function (e) {
+      if (e.which === 13) {
+        $("#search-box").submit();
+      }
+    });
+
     $("#button-go-top").click(function () {
       $(window).scrollTop(0);
     });
 
-    $("#search").on("input", function () {
+    $("#search").on("input", function (e) {
       $("#match-list").removeClass("show");
 
       $.getJSON(`/search?key=${$("#search").val()}`, (data) => {
@@ -41,7 +47,7 @@ Trang chủ
           data.forEach((val, index) => {
             const row = `<li class="my-dropdown-item"><a href="/article/${val["id"]}">${val["TieuDe"]}</a></li>`;
 
-            if (index !== 0) $("#match-list").append('<hr style="padding: 0; margin: 0;">'); 
+            if (index !== 0) $("#match-list").append('<hr style="padding: 0; margin: 0;">');
             $("#match-list").append(row);
           });
         }
@@ -73,17 +79,17 @@ Trang chủ
       </span>
     </div>
 
-    <div class="dropdown">
+    <form class="dropdown" method="post" action="/search-enter" id="search-box">
       <div class="size-a-2 bo-1-rad-22 of-hidden bocl11 m-tb-6 ">
-        <input class="f1-s-1 cl6 plh9 s-full p-l-25 p-r-45" type="text" id="search" placeholder="Tìm kiếm...">
-        <button class="flex-c-c size-a-1 ab-t-r fs-20 cl2 hov-cl10 trans-03">
+        <input autocomplete="off" class="f1-s-1 cl6 plh9 s-full p-l-25 p-r-45" type="text" name="search" id="search" placeholder="Tìm kiếm...">
+        <button class="flex-c-c size-a-1 ab-t-r fs-20 cl2 hov-cl10 trans-03" type="submit">
           <i class="zmdi zmdi-search"></i>
         </button>
       </div>
 
       <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton" id="match-list">
       </ul>
-    </div>
+    </form>
   </div>
 </div>
 

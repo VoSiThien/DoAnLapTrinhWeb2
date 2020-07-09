@@ -63,4 +63,24 @@ router.get('/category-load-more', async (req, res) => {
   }
 });
 
+router.post('/search-enter', async (req, res) => {
+  const searchText = req.body.search;
+
+  const _articles = await articles.fullTextSearchOffset(searchText, 0);
+
+  res.render('vwHome/search-result', {
+    _searchText: searchText,
+    _articles,
+    _offset: 0
+  });
+});
+
+router.post('/load-search-area', async (req, res) => {
+  const searchText = req.body.searchText;
+  const offset = req.body.offset;
+  const data = await articles.fullTextSearchOffset(searchText, (offset + 1) * 2);
+
+  res.json(data);
+});
+
 module.exports = router;
