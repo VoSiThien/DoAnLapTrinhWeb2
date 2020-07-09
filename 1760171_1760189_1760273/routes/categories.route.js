@@ -23,6 +23,18 @@ router.get('/:id', async (req, res) => {
       _offset: 0,
       _otherArticles
     });
+  } else {
+    const [_articles, _otherArticles] = await Promise.all([
+      articles.load7DependCategoryOffsetChild(id, 0),
+      articles.loadRightArticlesColumnChild(id)
+    ]);
+
+    res.render('vwCategories/list', {
+      _categoryName: categoryName,
+      _articles,
+      _offset: 0,
+      _otherArticles
+    });
   }
 });
 
