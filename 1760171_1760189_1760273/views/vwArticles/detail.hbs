@@ -5,12 +5,11 @@
 {{#section 'css'}}
 <style>
   .my-dropdown-item:hover {
-    background-color: #17b978
+    background-color: #17b978;
   }
 
   .my-dropdown-item {
-    margin-top: 5px;
-    margin-bottom: 5px;
+    padding: 0;
     padding-left: 15px;
     padding-right: 7px;
     color: darkgray;
@@ -35,8 +34,10 @@
           $("#match-list").addClass("show");
           $("#match-list").empty();
 
-          data.forEach(val => {
+          data.forEach((val, index) => {
             const row = `<li class="my-dropdown-item"><a href="/article/${val["id"]}">${val["TieuDe"]}</a></li>`;
+
+            if (index !== 0) $("#match-list").append('<hr style="padding: 0; margin: 0;">'); 
             $("#match-list").append(row);
           });
         }
