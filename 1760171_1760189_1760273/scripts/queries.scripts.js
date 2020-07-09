@@ -79,6 +79,17 @@ module.exports = {
       offset ${offset}`;
   },
 
+  load7RightArticlesColumnDependTag: function (tag) {
+    return `
+      select bv.id, bv.TieuDe, bv.NoiDungTat, bv.NgayXuatBan, bv.HinhAnh, cm.id as ChuyenMucID, cm.TenChuyenMuc, tk.ButDanh
+      from baiviet bv join chuyenmuc cm on cm.id = bv.ChuyenMucID join taikhoan tk on tk.id = bv.TaiKhoanID
+      where bv.TrangThaiID = 3 and bv.id not in (select bv1.id
+                                                 from baiviet bv1 join tag tg on tg.BaiVietID = bv1.id
+                                                 where tg.TenTag = '${tag}')
+      order by UNIX_TIMESTAMP(bv.NgayXuatBan) desc
+      limit 7`;
+  },
+
   loadRightArticlesColumn: function (id) {
     return `
       select bv.id, bv.TieuDe, bv.NoiDungTat, bv.NgayXuatBan, bv.HinhAnh, cm.id as ChuyenMucID, cm.TenChuyenMuc, tk.ButDanh

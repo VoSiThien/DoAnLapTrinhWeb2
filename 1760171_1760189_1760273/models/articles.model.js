@@ -34,6 +34,10 @@ module.exports = {
     return db.load(queries.load7DependCategoryOffsetChild(id, offset));
   },
 
+  load7RightArticlesColumnDependTag: function(tag) {
+    return db.load(queries.load7RightArticlesColumnDependTag(tag));
+  },
+
   loadRightArticlesColumn: function (id) {
     return db.load(queries.loadRightArticlesColumn(id));
   },

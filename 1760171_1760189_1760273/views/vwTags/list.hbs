@@ -1,0 +1,270 @@
+{{#section 'title'}}
+#{{this._tagName}}
+{{/section}}
+
+{{#section 'css'}}
+<style>
+  .my-dropdown-item:hover {
+    background-color: #17b978;
+  }
+
+  .my-dropdown-item {
+    padding: 0;
+    padding-left: 15px;
+    padding-right: 7px;
+    color: darkgray;
+    font-family: Roboto-Regular;
+  }
+
+  .my-dropdown-item a {
+    text-decoration: none;
+    color: gray;
+  }
+</style>
+{{/section}}
+
+{{#section 'js'}}
+<script>
+  $(document).ready(function () {
+    $('#search').on('keypress', function (e) {
+      if (e.which === 13) {
+        $("#search-box").submit();
+      }
+    });
+
+    $("#button-go-top").click(function () {
+      $(window).scrollTop(0);
+    });
+
+    $("#search").on("input", function () {
+      $("#match-list").removeClass("show");
+
+      $.getJSON(`/search?key=${$("#search").val()}`, (data) => {
+        if (data.length !== 0) {
+          $("#match-list").addClass("show");
+          $("#match-list").empty();
+
+          data.forEach((val, index) => {
+            const row = `<li class="my-dropdown-item"><a href="/article/${val["id"]}">${val["TieuDe"]}</a></li>`;
+
+            if (index !== 0) $("#match-list").append('<hr style="padding: 0; margin: 0;">');
+            $("#match-list").append(row);
+          });
+        }
+      });
+    });
+
+    $("#button-load-more").on("click", function () {
+      $.post('/load-tag-article-area', { tagName: $('#tag-name').val(), offset: $('#offset').val() }, (data) => {
+        if (data.length !== 0) {
+          data.forEach(val => {
+            var myDate = new Date(val['NgayXuatBan']);
+            var date = myDate.getDate() < 10 ? `0${myDate.getDate()}` : `${myDate.getDate()}`;
+            var month = myDate.getMonth() + 1 < 10 ? `0${myDate.getMonth() + 1}` : `${myDate.getMonth() + 1}`;
+
+            const row = `
+            <div class="flex-wr-sb-s p-t-40 p-b-15 how-bor2">
+              <a href="/article/${val['id']}" class="size-w-8 wrap-pic-w hov1 trans-03 w-full-sr575 m-b-25">
+                <img src="${val['HinhAnh']}" alt="IMG">
+              </a>
+
+              <div class="size-w-9 w-full-sr575 m-b-25">
+                <h5 class="p-b-12">
+                  <a href="/article/${val['id']}" class="f1-l-1 cl2 hov-cl10 trans-03 respon2">
+                    ${val['TieuDe']}
+                  </a>
+                </h5>
+
+                <div class="cl8 p-b-18">
+                  <a href="/category/{{ChuyenMucID}}"
+                    class="f1-s-4 cl8 hov-cl10 trans-03 border border-dark rounded p-1">
+                    ${val['TenChuyenMuc']}
+                  </a>
+
+                  <span class="f1-s-3 m-rl-3">
+                    -
+                  </span>
+
+                  <a href="javascript:;" class="f1-s-4 cl8 hov-cl10 trans-03">
+                    ${val['ButDanh']}
+                  </a>
+
+                  <span class="f1-s-3 m-rl-3">
+                    -
+                  </span>
+
+                  <span class="f1-s-3">
+                    ${date + '/' + month}
+                  </span>
+                </div>
+
+                <p class="f1-s-1 cl6 p-b-24">
+                  ${val['NoiDungTat']}
+                </p>
+              </div>
+            </div>`;
+
+            $("#articles-area").append(row);
+            $("#offset").val(+$('#offset').val() + 1);
+            $("#button-load-more").removeAttr("disabled");
+            $("#button-load-more").addClass("hov-btn1");
+          });
+        } else {
+          $("#button-load-more").attr('disabled', 'disabled');
+          $("#button-load-more").removeClass("hov-btn1");
+        }
+      });
+    });
+  });
+</script>
+{{/section}}
+
+<!-- Breadcrumb -->
+<div class="container">
+  <div class="bg0 flex-wr-sb-c p-rl-20 p-tb-8">
+    <div class="f2-s-1 p-r-30 m-tb-6">
+      <a href="/" class="breadcrumb-item f1-s-3 cl9">
+        Trang chủ
+      </a>
+
+      <span class="breadcrumb-item f1-s-3 cl9">
+        #{{this._tagName}}
+      </span>
+    </div>
+
+    <form class="dropdown" method="post" action="/search-enter" id="search-box">
+      <div class="size-a-2 bo-1-rad-22 of-hidden bocl11 m-tb-6 ">
+        <input autocomplete="off" class="f1-s-1 cl6 plh9 s-full p-l-25 p-r-45" type="text" name="search" id="search"
+          placeholder="Tìm kiếm...">
+        <button class="flex-c-c size-a-1 ab-t-r fs-20 cl2 hov-cl10 trans-03" type="submit">
+          <i class="zmdi zmdi-search"></i>
+        </button>
+      </div>
+
+      <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton" id="match-list">
+      </ul>
+    </form>
+  </div>
+</div>
+
+<div class="container p-t-4 p-b-40">
+  <h2 class="f1-l-1 cl2">
+    <i class="fa fa-paperclip" aria-hidden="true"></i> Danh sách bài viết liên quan đến "<span style="color: #17b978;">#{{this._tagName}}</span>"
+  </h2>
+</div>
+
+<section class="bg0 p-b-55">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-10 col-lg-8 p-b-30">
+        <div class="p-r-10 p-r-0-sr991">
+          <div class="m-t--40 p-b-40" id="articles-area">
+            {{#each this._articles}}
+            <div class="flex-wr-sb-s p-t-40 p-b-15 how-bor2">
+              <a href="/article/{{id}}" class="size-w-8 wrap-pic-w hov1 trans-03 w-full-sr575 m-b-25">
+                <img src="{{HinhAnh}}" alt="IMG">
+              </a>
+
+              <div class="size-w-9 w-full-sr575 m-b-25">
+                <h5 class="p-b-12">
+                  <a href="/article/{{id}}" class="f1-l-1 cl2 hov-cl10 trans-03 respon2">
+                    {{TieuDe}}
+                  </a>
+                </h5>
+
+                <div class="cl8 p-b-18">
+                  <a href="/category/{{ChuyenMucID}}"
+                    class="f1-s-4 cl8 hov-cl10 trans-03 border border-dark rounded p-1">
+                    {{TenChuyenMuc}}
+                  </a>
+
+                  <span class="f1-s-3 m-rl-3">
+                    -
+                  </span>
+
+                  <a href="javascript:;" class="f1-s-4 cl8 hov-cl10 trans-03">
+                    {{ButDanh}}
+                  </a>
+
+                  <span class="f1-s-3 m-rl-3">
+                    -
+                  </span>
+
+                  <span class="f1-s-3">
+                    {{formatDate NgayXuatBan}}
+                  </span>
+                </div>
+
+                <p class="f1-s-1 cl6 p-b-24">
+                  {{NoiDungTat}}
+                </p>
+              </div>
+            </div>
+            {{/each}}
+          </div>
+
+          <button class="flex-c-c size-a-13 bo-all-1 bocl11 f1-m-6 cl6 hov-btn1 trans-03" id="button-load-more">
+            <input type="hidden" id="offset" value="{{this._offset}}">
+            <input type="hidden" id="tag-name" value="{{this._tagName}}">
+            Xem thêm
+          </button>
+        </div>
+      </div>
+
+      <div class="col-md-10 col-lg-4 p-b-30">
+        <div class="p-l-10 p-rl-0-sr991">
+          <div class="p-b-30">
+            <div class="how2 how2-cl4 flex-s-c">
+              <h3 class="f1-m-2 cl3 tab01-title">
+                <i class="fa fa-quote-right" aria-hidden="true"></i> Các bài viết khác
+              </h3>
+            </div>
+
+            <ul class="p-t-35">
+              {{#each this._rightArticles}}
+              <li class="flex-wr-sb-s p-b-30" title="{{NoiDungTat}}">
+                <a href="/article/{{id}}" class="size-w-10 wrap-pic-w hov1 trans-03">
+                  <img src="{{HinhAnh}}" alt="IMG">
+                </a>
+
+                <div class="size-w-11">
+                  <h6 class="p-b-4">
+                    <a href="/article/{{id}}" class="f1-s-5 cl3 hov-cl10 trans-03">
+                      {{TieuDe}}
+                    </a>
+                  </h6>
+
+                  <span class="cl8 txt-center p-b-24">
+                    <a href="/category/{{ChuyenMucID}}"
+                      class="f1-s-4 cl8 hov-cl10 trans-03 border border-dark rounded p-1">
+                      {{TenChuyenMuc}}
+                    </a>
+
+                    <span class="f1-s-3 m-rl-3">
+                      -
+                    </span>
+
+                    <a href="javascript:;" class="f1-s-6 cl8 hov-cl10 trans-03">
+                      {{ButDanh}}
+                    </a>
+
+                    <span class="f1-s-3 m-rl-3">
+                      -
+                    </span>
+
+                    <span class="f1-s-3">
+                      {{formatDate NgayXuatBan}}
+                    </span>
+                  </span>
+                </div>
+              </li>
+              {{/each}}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{> footer}}

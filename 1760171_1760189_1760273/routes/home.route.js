@@ -83,4 +83,12 @@ router.post('/load-search-area', async (req, res) => {
   res.json(data);
 });
 
+router.post('/load-tag-article-area', async (req, res) => {
+  const tagName = req.body.tagName;
+  const offset = req.body.offset;
+  const data = await articles.getArticleDependTag(tagName, (offset + 1) * 2);
+
+  res.json(data);
+});
+
 module.exports = router;
