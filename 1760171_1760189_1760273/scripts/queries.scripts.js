@@ -188,5 +188,13 @@ module.exports = {
       select count(bl.id) as SoLuong
       from binhluan bl
       where bl.BaiVietID = ${id}`;
+  },
+
+  // ACCOUNTS
+  accountSingle: function (email) { 
+    return `
+      select tk.id
+      from taikhoan tk
+      where tk.email = '${email}'`;
   }
 };

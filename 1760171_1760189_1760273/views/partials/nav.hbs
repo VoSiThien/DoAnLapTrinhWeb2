@@ -1,33 +1,36 @@
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
+<div class="modal fade" id="modal-register" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel"><strong>Đăng kí tài khoản</strong></h5>
+        <h5 class="modal-title"><strong>Đăng kí tài khoản</strong></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
+
       </div>
-      <div class="modal-body justify-content-center">
-        <form>
-          <input class="bo-1-rad-3 bocl13 size-a-16 f1-s-13 cl5 plh6 p-rl-18 m-b-20 mw-100" type="text" name="name"
-            placeholder="Họ tên*">
+      <div class="pl-3 pr-3 pt-3">
+        <div class="alert alert-warning w-100 text-center" role="alert" id="alert" style="display: none;">
+        </div>
+      </div>
 
-          <input class="bo-1-rad-3 bocl13 size-a-16 f1-s-13 cl5 plh6 p-rl-18 m-b-20 mw-100" type="text" name="account"
-            placeholder="Tên tài khoản*">
+      <div class="modal-body">
+        <form id="form-register" method="POST" action="/account/register">
+          <input class="bo-1-rad-3 bocl13 size-a-16 f1-s-13 cl5 plh6 p-rl-18 m-b-20 mw-100" type="text" id="name"
+            name="name" placeholder="Họ tên*" required>
 
-          <input class="bo-1-rad-3 bocl13 size-a-16 f1-s-13 cl5 plh6 p-rl-18 m-b-20 mw-100" type="text" name="email"
-            placeholder="Email*">
+          <input class="bo-1-rad-3 bocl13 size-a-16 f1-s-13 cl5 plh6 p-rl-18 m-b-20 mw-100" type="text" id="email"
+            name="email" placeholder="Email*" required>
+
+          <input class="bo-1-rad-3 bocl13 size-a-16 f1-s-13 cl5 plh6 p-rl-18 m-b-20 mw-100" id="password"
+            type="password" name="password" placeholder="Mật khẩu*" required>
 
           <input class="bo-1-rad-3 bocl13 size-a-16 f1-s-13 cl5 plh6 p-rl-18 m-b-20 mw-100" type="password"
-            name="password" placeholder="Mật khẩu*">
-
-          <input class="bo-1-rad-3 bocl13 size-a-16 f1-s-13 cl5 plh6 p-rl-18 m-b-20 mw-100" type="password"
-            name="password" placeholder="Nhập lại*">
+            id="repassword" placeholder="Nhập lại*" required>
         </form>
       </div>
       <div class="modal-footer">
-        <button class="size-a-17 bg2 borad-3 f1-s-12 cl0 hov-btn1 trans-03 p-rl-15 m-t-10">
+        <button class="size-a-17 bg2 borad-3 f1-s-12 cl0 hov-btn1 trans-03 p-rl-15 m-t-10" type="submit"
+          form="form-register" id="btn-register">
           Đăng kí
         </button>
       </div>
@@ -39,11 +42,11 @@
     <div class="topbar">
       <div class="content-topbar container h-100">
         <div class="left-topbar">
-          <a href="#" class="left-topbar-item" data-toggle="modal" data-target="#exampleModal">
+          <a href="javascript:;" class="left-topbar-item" data-toggle="modal" data-target="#modal-register">
             <i class="fa fa-user-plus" aria-hidden="true"></i> Đăng kí
           </a>
 
-          <a href="#" class="left-topbar-item">
+          <a href="javascript:;" class="left-topbar-item">
             <i class="fa fa-sign-in" aria-hidden="true"></i> Đăng nhập
           </a>
         </div>

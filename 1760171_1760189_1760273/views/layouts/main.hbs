@@ -7,7 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" href="/public/images/icons/favicon.png" />
   <link rel="stylesheet" type="text/css" href="/public/vendor/bootstrap/css/bootstrap.min.css" />
-  <link rel="stylesheet" type="text/css" href="/https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" type="text/css"
+    href="/https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
   <link rel="stylesheet" type="text/css" href="/public/fonts/fontawesome-5.0.8/css/fontawesome-all.min.css">
   <link rel="stylesheet" type="text/css" href="/public/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" type="text/css" href="/public/fonts/iconic/css/material-design-iconic-font.min.css" />
@@ -36,6 +37,28 @@
         var href = $(this).attr('href');
         window.location.replace(href);
       });
+
+      $('#btn-register').on('click', function (e) {
+        var passwordMatch = $('#password').val() === $('#repassword').val();
+
+        if (passwordMatch === false) {
+          $('#alert').html('Mật khẩu đánh lại không khớp, vui lòng kiểm tra lại!');
+          $('#alert').css('display', 'block');
+
+          e.preventDefault();
+        } else {
+          $.getJSON(`/check-user-exist?email=${$('#email').val()}`, (data) => {
+            if (data.length !== 0) {
+              $('#alert').html('Email này đã được đăng kí, vui lòng kiểm tra lại!');
+              $('#alert').css('display', 'block');
+
+              e.preventDefault();
+            } else {
+              $('#alert').css('display', 'none');
+            }
+          });
+        }
+      })
     });
   </script>
 </body>

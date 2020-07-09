@@ -1,7 +1,9 @@
 const express = require("express");
+const bcrypt = require("bcryptjs");
 
 const articles = require("../models/articles.model");
 const categories = require("../models/categories.model");
+const accounts = require("../models/accounts.model");
 
 const router = express.Router();
 
@@ -89,6 +91,13 @@ router.post('/load-tag-article-area', async (req, res) => {
   const data = await articles.getArticleDependTag(tagName, (offset + 1) * 2);
 
   res.json(data);
+});
+
+router.get('/check-user-exist', async (req, res) => {
+  const email = req.query.email;
+  const data = await accounts.accountSingle(email);
+
+  res.send(data);
 });
 
 module.exports = router;
