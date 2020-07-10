@@ -1,4 +1,5 @@
 const express = require("express");
+const passport = require("passport");
 require("express-async-errors");
 // const exphbs = require('express-handlebars');
 
@@ -11,6 +12,9 @@ app.use(
 );
 
 app.use("/public", express.static("public"));
+
+app.use(passport.initialize());
+app.use(passport.session);
 
 require("./middlewares/view.mdw")(app);
 require("./middlewares/locals.mdw")(app);
