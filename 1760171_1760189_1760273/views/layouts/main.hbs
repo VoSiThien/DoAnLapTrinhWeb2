@@ -42,23 +42,38 @@
         var passwordMatch = $('#password').val() === $('#repassword').val();
 
         if (passwordMatch === false) {
+          e.preventDefault();
+
           $('#alert').html('Mật khẩu đánh lại không khớp, vui lòng kiểm tra lại!');
           $('#alert').css('display', 'block');
-
-          e.preventDefault();
         } else {
+          e.preventDefault();
+
           $.getJSON(`/check-user-exist?email=${$('#email').val()}`, (data) => {
             if (data.length !== 0) {
               $('#alert').html('Email này đã được đăng kí, vui lòng kiểm tra lại!');
               $('#alert').css('display', 'block');
-
-              e.preventDefault();
             } else {
               $('#alert').css('display', 'none');
+              alert('go here');
+              $('#form-register').submit();
             }
           });
         }
-      })
+      });
+
+      $('#btn-login').on('click', (e) => {
+        e.preventDefault();
+
+        $.post('/login-validate', { email: $('#_email').val(), password: $('#_password').val() }, (data) => {
+          if (!data) {
+            $('#alert-login').html('Đăng nhập không thành công, vui lòng kiểm tra lại!');
+            $('#alert-login').css('display', 'block');
+          } else {
+            $('#form-login').submit();
+          }
+        });
+      });
     });
   </script>
 </body>

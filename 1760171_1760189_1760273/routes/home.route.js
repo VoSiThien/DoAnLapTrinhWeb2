@@ -100,4 +100,22 @@ router.get('/check-user-exist', async (req, res) => {
   res.send(data);
 });
 
+router.post('/login-validate', async (req, res) => {
+  const [email, password] = [req.body.email, req.body.password];
+  const acc = await accounts.accountSingle(email);
+
+  // exist an account with email field equal to `email` variable
+  if (acc.length !== 0) {
+    console.log(password);
+
+    if (bcrypt.compareSync(password, acc[0]['MatKhau'])) { // password is correct
+      console.log('validate')
+      return res.json(true);
+    }
+  }
+
+  // password is incorrect or does not have any account with info which user provides
+  return res.json(false);
+});
+
 module.exports = router;

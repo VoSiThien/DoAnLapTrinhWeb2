@@ -19,6 +19,13 @@ router.post("/register", async (req, res) => {
   };
 
   await accounts.readerAdding(entity);
+  res.send('Register email success');
+});
+
+router.post('/login', async (req, res) => {
+  const acc = await accounts.accountSingle(req.body._email);
+
+  res.send(acc);
 });
 
 // GOOGLE LOGIN
