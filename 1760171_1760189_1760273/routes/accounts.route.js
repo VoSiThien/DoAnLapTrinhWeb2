@@ -19,10 +19,11 @@ router.post("/register", async (req, res) => {
   };
 
   await accounts.readerAdding(entity);
-  res.send('Register email success');
+ 
+  res.send("Register email success");
 });
 
-router.post('/login', async (req, res) => {
+router.post("/login", async (req, res) => {
   const acc = await accounts.accountSingle(req.body._email);
 
   res.send(acc);
@@ -31,7 +32,7 @@ router.post('/login', async (req, res) => {
 // GOOGLE LOGIN
 router.get("/google/failed", (req, res) => res.send("Login failed"));
 router.get("/google/success", (req, res) => {
-  res.send(req.query.id)
+  res.send(req.query.id);
 });
 
 router.get(

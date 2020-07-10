@@ -102,14 +102,12 @@ router.get('/check-user-exist', async (req, res) => {
 
 router.post('/login-validate', async (req, res) => {
   const [email, password] = [req.body.email, req.body.password];
+  // get user info from mysql db
   const acc = await accounts.accountSingle(email);
 
   // exist an account with email field equal to `email` variable
   if (acc.length !== 0) {
-    console.log(password);
-
     if (bcrypt.compareSync(password, acc[0]['MatKhau'])) { // password is correct
-      console.log('validate')
       return res.json(true);
     }
   }
