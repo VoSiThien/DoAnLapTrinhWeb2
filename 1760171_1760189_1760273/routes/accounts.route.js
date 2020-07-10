@@ -19,25 +19,34 @@ router.post("/register", async (req, res) => {
   };
 
   await accounts.readerAdding(entity);
- 
+
   res.send("Register email success");
 });
 
 router.post("/login", async (req, res) => {
   const acc = await accounts.accountSingle(req.body._email);
 
-  delete acc['MatKhau'];
+  delete acc["MatKhau"];
 
   req.session.isAuthenticated = true;
-  req.session.authUser = {id: acc[0]['id'], HoTen: acc[0]['HoTen']};
+  req.session.authUser = { id: acc[0]["id"], HoTen: acc[0]["HoTen"] };
 
-  res.redirect('/');
+  res.redirect("/");
 });
 
 // GOOGLE LOGIN
 router.get("/google/failed", (req, res) => res.send("Login failed"));
-router.get("/google/success", (req, res) => {
-  res.send(req.query.id);
+router.get("/google/success", async (req, res) => {
+  const email = decodeURI(req.query.email);
+
+  const acc = await accounts.accountSingle(email);
+
+  delete acc["MatKhau"];
+
+  req.session.isAuthenticated = true;
+  req.session.authUser = { id: acc[0]["id"], HoTen: acc[0]["HoTen"] };
+
+  res.redirect("/");
 });
 
 router.get(
@@ -52,7 +61,7 @@ router.get(
     failureRedirect: "/account/google/failed",
   }),
   function (req, res) {
-    res.redirect(`/account/google/success?id=${req.user.id}`);
+    res.redirect(`/account/google/success?email=${req.user.Email}`);
   }
 );
 

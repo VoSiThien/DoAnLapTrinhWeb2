@@ -10,7 +10,7 @@ module.exports = {
       limit 4`;
   },
 
-  load10MostViewArticles: function (exceptArticles = '(-1)') {
+  load10MostViewArticles: function (exceptArticles = "(-1)") {
     return `
       select bv.id, bv.TieuDe, bv.NoiDungTat, bv.NgayXuatBan, bv.HinhAnh, cm.id as ChuyenMucID, cm.TenChuyenMuc, tk.ButDanh
       from baiviet bv join chuyenmuc cm on cm.id = bv.ChuyenMucID join taikhoan tk on tk.id = bv.TaiKhoanID
@@ -19,7 +19,7 @@ module.exports = {
       limit 10`;
   },
 
-  load10LatestArticles: function (exceptArticles = '(-1)') {
+  load10LatestArticles: function (exceptArticles = "(-1)") {
     return `
       select bv.id, bv.TieuDe, bv.NoiDungTat, bv.NgayXuatBan, bv.HinhAnh, cm.id as ChuyenMucID, cm.TenChuyenMuc, tk.ButDanh
       from baiviet bv join chuyenmuc cm on cm.id = bv.ChuyenMucID join taikhoan tk on tk.id = bv.TaiKhoanID
@@ -28,7 +28,7 @@ module.exports = {
       limit 10`;
   },
 
-  load10EachCategories: function (exceptArticles = '(-1)') {
+  load10EachCategories: function (exceptArticles = "(-1)") {
     return `
       select bv.id, bv.TieuDe, bv.NoiDungTat, bv.NgayXuatBan, bv.HinhAnh, cm2.id as ChuyenMucID, cm2.TenChuyenMuc, tk.ButDanh
       from (select bv.*
@@ -191,14 +191,10 @@ module.exports = {
   },
 
   // ACCOUNTS
-  accountSingle: function (email) { 
+  accountSingle: function (email) {
     return `
       select tk.id, tk.MatKhau, tk.HoTen
       from taikhoan tk
       where tk.email = '${email}'`;
   },
-
-  getMaxID: function () {
-    return `select max(id) as maxID from taikhoan`;
-  }
 };

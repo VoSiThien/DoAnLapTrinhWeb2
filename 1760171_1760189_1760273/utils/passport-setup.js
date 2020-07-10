@@ -26,17 +26,15 @@ passport.use(
         Email: profile._json["email"],
         VaiTroID: 4,
       };
-      
-      const userFind = await accounts.accountSingle(acc['Email']);
-      
+
+      const userFind = await accounts.accountSingle(acc["Email"]);
+
       // this email has not existed in the database
       if (userFind.length === 0) {
         await accounts.readerAdding(acc);
-
-        return done(null, {id: (await accounts.getMaxID())[0]['maxID']});
-      } else { // has existed in database
-        return done(null, {id: userFind[0]['id']});
       }
+
+      return done(null, { Email: acc["Email"] });
     }
   )
 );
