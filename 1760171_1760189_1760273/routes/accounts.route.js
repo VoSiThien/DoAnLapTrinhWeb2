@@ -46,8 +46,6 @@ router.get(
 router.get("/profile", (req, res) => res.send("You are login!"));
 
 router.get("/logout", (req, res) => {
-  console.log(req.session.userID);
-
   req.session.destroy((e) => {
     req.logout();
     res.redirect("/account/profile");
