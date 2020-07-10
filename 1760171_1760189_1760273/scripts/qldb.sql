@@ -340,7 +340,8 @@ INSERT INTO `taikhoan` (`MatKhau`, `HoTen`, `ButDanh`, `Email`, `NgaySinh`, `Tho
 ('1', 'Phạm Văn Đồng', NULL, 'Pham@gmail.com', '2003-05-01', '2020-12-30 00:00:00', 4, NULL),
 ('1', 'Dương Mạnh Cường', NULL, 'us1@gc', '1999-04-08', NULL, 4, NULL);
 INSERT INTO `taikhoan` (`MatKhau`, `HoTen`, `Email`, `VaiTroID`) VALUES
-('1', 'Lady Gaga', 'us2@gc', 4);
+('1', 'Lady Gaga', 'us2@gc', 4),
+('', 'Cường Dương', 'cuongpigerr@gmail.com', 4);
 -- --------------------------------------------------------
 
 --

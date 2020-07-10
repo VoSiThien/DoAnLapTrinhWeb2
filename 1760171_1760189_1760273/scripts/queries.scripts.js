@@ -196,5 +196,9 @@ module.exports = {
       select tk.id
       from taikhoan tk
       where tk.email = '${email}'`;
+  },
+
+  getMaxID: function () {
+    return `select max(id) as maxID from taikhoan`;
   }
 };

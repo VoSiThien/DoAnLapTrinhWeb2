@@ -10,8 +10,9 @@
 
     "authentication": {
         "saltRounds": 8,
-        "GOOGLE_CLIENT_ID": "571565159797-c4g45ba1lraatv8hfk8h86l3t161v8uu.apps.googleusercontent.com",
-        "GOOGLE_CLIENT_SECRET": "0TvVt4qRAui8Iu9bQBD76PfW",
-        "GOOGLE_CALLBACK_URL": "http://localhost:3000/account/google/callback"
+        "GOOGLE_CLIENT_ID": "934415223725-t9i9hk7q2u3qjl9uggfefehkcdsu2ags.apps.googleusercontent.com",
+        "GOOGLE_CLIENT_SECRET": "lcJ6HLJ9SDvvKk6TvaGyWaeY",
+        "GOOGLE_CALLBACK_URL": "/account/google/callback",
+        "GOOGLE_USER_INFO": "https://www.googleapis.com/oauth2/v3/userinfo"
     }
 }

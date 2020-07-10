@@ -1,6 +1,5 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
-const session = require("express-session");
 const passport = require("passport");
 
 const config = require("../config/default.json");
@@ -23,17 +22,9 @@ router.post("/register", async (req, res) => {
 });
 
 // GOOGLE LOGIN
-const isLoggedIn = (req, res, next) => {
-  if (req.user) {
-    next();
-  } else {
-    res.sendStatus(401);
-  }
-};
-
 router.get("/google/failed", (req, res) => res.send("Login failed"));
-router.get("/google/success", isLoggedIn, (req, res) => {
-  res.send(`Welcome ${req.user._json['email']}`);
+router.get("/google/success", (req, res) => {
+  res.send(req.query.id)
 });
 
 router.get(
@@ -44,20 +35,23 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
+    prompt: "select_account",
     failureRedirect: "/account/google/failed",
   }),
   function (req, res) {
-    // Successful authentication, redirect home.
-    res.redirect("/account/google/success");
+    res.redirect(`/account/google/success?id=${req.user.id}`);
   }
 );
 
-router.get("/profile", (req, res) => res.send("You are not login!"));
+router.get("/profile", (req, res) => res.send("You are login!"));
 
 router.get("/logout", (req, res) => {
-  req.session = null;
-  req.logout();
-  res.redirect("/account/profile");
+  console.log(req.session.userID);
+
+  req.session.destroy((e) => {
+    req.logout();
+    res.redirect("/account/profile");
+  });
 });
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const config = require("../config/default.json");
+const accounts = require("../models/accounts.model");
 
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
@@ -18,9 +19,24 @@ passport.use(
       clientSecret: config.authentication.GOOGLE_CLIENT_SECRET,
       callbackURL: config.authentication.GOOGLE_CALLBACK_URL,
     },
-    function (accessToken, refreshToken, profile, done) {
-      // use the profile info (mainly profile id) to check if user is registered in accounts db
-      return done(null, profile);
+    async (accessToken, refreshToken, profile, done) => {
+      const acc = {
+        MatKhau: "",
+        HoTen: profile._json["name"],
+        Email: profile._json["email"],
+        VaiTroID: 4,
+      };
+      
+      const userFind = await accounts.accountSingle(acc['Email']);
+      
+      // this email has not existed in the database
+      if (userFind.length === 0) {
+        await accounts.readerAdding(acc);
+
+        return done(null, {id: (await accounts.getMaxID())[0]['maxID']});
+      } else { // has existed in database
+        return done(null, {id: userFind[0]['id']});
+      }
     }
   )
 );
