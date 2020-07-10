@@ -1,21 +1,13 @@
 const express = require("express");
-const passport = require("passport");
 require("express-async-errors");
-// const exphbs = require('express-handlebars');
+
+require("./utils/passport-setup");
 
 const app = express();
 
-app.use(
-  express.urlencoded({
-    extended: true,
-  })
-);
-
-app.use("/public", express.static("public"));
-
-app.use(passport.initialize());
-app.use(passport.session);
-
+require("./middlewares/default-setup.mdw")(app);
+require("./middlewares/cookie-session.mdw")(app);
+require("./middlewares/passport.mdw")(app);
 require("./middlewares/view.mdw")(app);
 require("./middlewares/locals.mdw")(app);
 
