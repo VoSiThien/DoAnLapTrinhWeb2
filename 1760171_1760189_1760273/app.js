@@ -1,3 +1,4 @@
+const PORT = require('./config/default.json').PORT;
 const express = require("express");
 require("express-async-errors");
 
@@ -26,7 +27,6 @@ app.use("/tag", require("./routes/tags.route"));
 // accounts
 app.use("/account", require("./routes/accounts.route"));
 
-const POST = 3000;
-app.listen(POST, function () {
-  console.log(`Server is running on PORT: ${POST}`);
+app.listen(PORT, function () {
+  console.log(`Server is running on PORT: ${PORT}`);
 });
