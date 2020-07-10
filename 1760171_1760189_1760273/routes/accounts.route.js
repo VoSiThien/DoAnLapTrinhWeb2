@@ -4,6 +4,7 @@ const passport = require("passport");
 
 const config = require("../config/default.json");
 const accounts = require("../models/accounts.model");
+const mdlFunction = require("../middlewares/middle-functions.mdw");
 
 const router = express.Router();
 
@@ -67,10 +68,10 @@ router.get(
 
 router.get("/profile", (req, res) => res.send("You are login!"));
 
-router.get("/logout", (req, res) => {
+router.get("/logout", mdlFunction.isLoggedIn, (req, res) => {
   req.session.destroy((e) => {
     req.logout();
-    res.redirect("/account/profile");
+    res.redirect("/");
   });
 });
 
