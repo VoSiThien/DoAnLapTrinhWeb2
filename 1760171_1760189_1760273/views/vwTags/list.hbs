@@ -2,62 +2,9 @@
 #{{this._tagName}}
 {{/section}}
 
-{{#section 'css'}}
-<style>
-  .my-dropdown-item:hover {
-    background-color: #17b978;
-  }
-
-  .my-dropdown-item {
-    padding: 0;
-    padding-left: 15px;
-    padding-right: 7px;
-    color: darkgray;
-    font-family: Roboto-Regular;
-  }
-
-  .my-dropdown-item a {
-    text-decoration: none;
-    color: gray;
-  }
-
-  #match-list li:hover a {
-    color: white;
-  }
-</style>
-{{/section}}
-
 {{#section 'js'}}
 <script>
   $(document).ready(function () {
-    $('#search').on('keypress', function (e) {
-      if (e.which === 13) {
-        $("#search-box").submit();
-      }
-    });
-
-    $("#button-go-top").click(function () {
-      $(window).scrollTop(0);
-    });
-
-    $("#search").on("input", function () {
-      $("#match-list").removeClass("show");
-
-      $.getJSON(`/search?key=${$("#search").val()}`, (data) => {
-        if (data.length !== 0) {
-          $("#match-list").addClass("show");
-          $("#match-list").empty();
-
-          data.forEach((val, index) => {
-            const row = `<li class="my-dropdown-item"><a href="/article/${val["id"]}">${val["TieuDe"]}</a></li>`;
-
-            if (index !== 0) $("#match-list").append('<hr style="padding: 0; margin: 0;">');
-            $("#match-list").append(row);
-          });
-        }
-      });
-    });
-
     $("#button-load-more").on("click", function () {
       $.post('/load-tag-article-area', { tagName: $('#tag-name').val(), offset: $('#offset').val() }, (data) => {
         if (data.length !== 0) {

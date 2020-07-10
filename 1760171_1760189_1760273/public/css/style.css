@@ -1,0 +1,20 @@
+.my-dropdown-item:hover {
+  background-color: #17b978;
+}
+
+.my-dropdown-item {
+  padding: 0;
+  padding-left: 15px;
+  padding-right: 7px;
+  color: darkgray;
+  font-family: Roboto-Regular;
+}
+
+.my-dropdown-item a {
+  text-decoration: none;
+  color: gray;
+}
+
+#match-list li:hover a {
+  color: white;
+}

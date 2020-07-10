@@ -2,62 +2,9 @@
 {{this._article.TieuDe}}
 {{/section}}
 
-{{#section 'css'}}
-<style>
-  .my-dropdown-item:hover {
-    background-color: #17b978;
-  }
-
-  .my-dropdown-item {
-    padding: 0;
-    padding-left: 15px;
-    padding-right: 7px;
-    color: darkgray;
-    font-family: Roboto-Regular;
-  }
-
-  .my-dropdown-item a {
-    text-decoration: none;
-    color: gray;
-  }
-
-  #match-list li:hover a {
-    color: white;
-  }
-</style>
-{{/section}}
-
 {{#section 'js'}}
 <script>
   $(document).ready(function () {
-    $('#search').on('keypress', function (e) {
-      if (e.which === 13) {
-        $("#search-box").submit();
-      }
-    });
-
-    $("#search").on("input", function () {
-      $("#match-list").removeClass("show");
-
-      $.getJSON(`/search?key=${$("#search").val()}`, (data) => {
-        if (data.length !== 0) {
-          $("#match-list").addClass("show");
-          $("#match-list").empty();
-
-          data.forEach((val, index) => {
-            const row = `<li class="my-dropdown-item"><a href="/article/${val["id"]}">${val["TieuDe"]}</a></li>`;
-
-            if (index !== 0) $("#match-list").append('<hr style="padding: 0; margin: 0;">'); 
-            $("#match-list").append(row);
-          });
-        }
-      });
-    });
-
-    $("#button-go-top").click(function () {
-      $(window).scrollTop(0);
-    });
-
     $("#comments-area button").on('click', function (e) {
       e.preventDefault();
 
@@ -119,7 +66,8 @@
 
     <form class="dropdown" method="post" action="/search-enter" id="search-box">
       <div class="size-a-2 bo-1-rad-22 of-hidden bocl11 m-tb-6 ">
-        <input autocomplete="off" class="f1-s-1 cl6 plh9 s-full p-l-25 p-r-45" type="text" name="search" id="search" placeholder="Tìm kiếm...">
+        <input autocomplete="off" class="f1-s-1 cl6 plh9 s-full p-l-25 p-r-45" type="text" name="search" id="search"
+          placeholder="Tìm kiếm...">
         <button class="flex-c-c size-a-1 ab-t-r fs-20 cl2 hov-cl10 trans-03" type="submit">
           <i class="zmdi zmdi-search"></i>
         </button>
@@ -261,9 +209,9 @@
             </h4>
 
             <p class="f1-s-13 cl8 p-b-40 font-italic">
-							<span class="text-danger"><strong>*</strong></span> Bạn phải đăng nhập để sử dụng tính năng này.
-						</p>
-            
+              <span class="text-danger"><strong>*</strong></span> Bạn phải đăng nhập để sử dụng tính năng này.
+            </p>
+
             <form>
               <textarea class="bo-1-rad-3 bocl13 size-a-15 f1-s-13 cl5 plh6 p-rl-18 p-tb-14 m-b-20" name="msg"
                 placeholder="Để lại ý kiến của bạn tại đây..."></textarea>
