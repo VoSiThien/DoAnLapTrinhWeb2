@@ -29,7 +29,8 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button class="size-a-17 bg2 borad-3 f1-s-12 cl0 hov-btn1 trans-03 p-rl-15 m-t-10" type="button" id="btn-register">
+        <button class="size-a-17 bg2 borad-3 f1-s-12 cl0 hov-btn1 trans-03 p-rl-15 m-t-10" type="button"
+          id="btn-register">
           Đăng kí
         </button>
       </div>
@@ -63,9 +64,10 @@
       </div>
       <div class="modal-footer">
         <a href="/account/google">
-        <button type="button" style="background-color: #cf4332;" class="size-a-17 bg2 borad-3 f1-s-12 cl0 hov-btn1 trans-03 p-rl-15 m-t-10">
-          <i class="fa fa-google-plus" aria-hidden="true"></i> Đăng nhập với Google
-        </button></a>
+          <button type="button" style="background-color: #cf4332;"
+            class="size-a-17 bg2 borad-3 f1-s-12 cl0 hov-btn1 trans-03 p-rl-15 m-t-10">
+            <i class="fa fa-google-plus" aria-hidden="true"></i> Đăng nhập với Google
+          </button></a>
         <button class="size-a-17 bg2 borad-3 f1-s-12 cl0 hov-btn1 trans-03 p-rl-15 m-t-10" type="submit"
           form="form-login" id="btn-login">
           Đăng nhập
@@ -79,21 +81,12 @@
   <div class="container-menu-desktop">
     <div class="topbar">
       <div class="content-topbar container h-100">
-        <div class="left-topbar">
-          <a href="javascript:;" class="left-topbar-item" data-toggle="modal" data-target="#modal-register">
-            <i class="fa fa-user-plus" aria-hidden="true"></i> Đăng kí
-          </a>
-
-          <a href="javascript:;" class="left-topbar-item" data-toggle="modal" data-target="#modal-login">
-            <i class="fa fa-sign-in" aria-hidden="true"></i> Đăng nhập
-          </a>
-        </div>
-
+        {{#if lcIsAuthenticated}}
         <div class="right-topbar">
           <div class="nav-item dropdown">
             <a class="nav-link dropdown-toggle left-topbar-item" href="#" id="navbarDropdown" role="button"
               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fa fa-user" aria-hidden="true"></i> Xin chào, Cường!
+              <i class="fa fa-user" aria-hidden="true"></i> Xin chào, {{lcAuthUser.HoTen}}!
             </a>
             <div class="dropdown-menu" style="z-index: 10;" aria-labelledby="navbarDropdown">
               <a class="dropdown-item left-topbar-item" href="/account/profile">
@@ -106,6 +99,17 @@
             </div>
           </div>
         </div>
+        {{else}}
+        <div class="left-topbar">
+          <a href="javascript:;" class="left-topbar-item" data-toggle="modal" data-target="#modal-register">
+            <i class="fa fa-user-plus" aria-hidden="true"></i> Đăng kí
+          </a>
+
+          <a href="javascript:;" class="left-topbar-item" data-toggle="modal" data-target="#modal-login">
+            <i class="fa fa-sign-in" aria-hidden="true"></i> Đăng nhập
+          </a>
+        </div>
+        {{/if}}
       </div>
     </div>
 

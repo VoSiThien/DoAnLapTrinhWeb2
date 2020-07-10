@@ -24,9 +24,15 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
+  console.log('login')
   const acc = await accounts.accountSingle(req.body._email);
 
-  res.send(acc);
+  delete acc['MatKhau'];
+
+  req.session.isAuthenticated = true;
+  req.session.authUser = {id: acc[0]['id'], HoTen: acc[0]['HoTen']};
+
+  res.redirect('/');
 });
 
 // GOOGLE LOGIN

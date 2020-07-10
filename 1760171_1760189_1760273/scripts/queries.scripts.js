@@ -193,7 +193,7 @@ module.exports = {
   // ACCOUNTS
   accountSingle: function (email) { 
     return `
-      select tk.id, tk.MatKhau
+      select tk.id, tk.MatKhau, tk.HoTen
       from taikhoan tk
       where tk.email = '${email}'`;
   },

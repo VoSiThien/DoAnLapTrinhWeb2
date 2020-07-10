@@ -21,7 +21,7 @@ module.exports = function (app) {
       const [_cats, _fTags, _fCats] = await Promise.all([
         catModel.loadAll(),
         tagModel.load20Tags(),
-        catModel.load5CategoriesDesc()
+        catModel.load5CategoriesDesc(),
       ]);
 
       cats = _cats;

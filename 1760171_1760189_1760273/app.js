@@ -6,11 +6,22 @@ require("./utils/passport-setup");
 const app = express();
 
 require("./middlewares/default-setup.mdw")(app);
-require("./middlewares/cookie-session.mdw")(app);
+require("./middlewares/session.mdw")(app);
 require("./middlewares/passport.mdw")(app);
 require("./middlewares/view.mdw")(app);
 require("./middlewares/locals.mdw")(app);
 
+app.use((req, res, next) => {
+  console.log(req.session.isAuthenticated);
+  if (req.session.isAuthenticated || req.session.isAuthenticated === null) {
+    req.session.isAuthenticated = false;
+  }
+
+  res.locals.lcIsAuthenticated = req.session.isAuthenticated;
+  res.locals.lcAuthUser = req.session.authUser;
+
+  next();
+});
 // home page
 app.use("/", require("./routes/home.route"));
 

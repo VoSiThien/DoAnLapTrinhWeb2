@@ -8,6 +8,7 @@ const accounts = require("../models/accounts.model");
 const router = express.Router();
 
 router.get("", async (req, res) => {
+  console.log('home');
   res.locals.exceptArticles = new Set();
 
   const _4OutstandingArticles = await articles.load4OutstandingPosts();
