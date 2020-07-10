@@ -1,5 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
+const moment = require("moment");
 
 const articles = require("../models/articles.model");
 const categories = require("../models/categories.model");
@@ -40,11 +41,11 @@ router.get("", async (req, res) => {
     _4OutstandingArticles,
     _10MostViewArticles,
     _10LatestArticles,
-    _10EachCategories
+    _10EachCategories,
   });
 });
 
-router.get('/search', async (req, res) => {
+router.get("/search", async (req, res) => {
   const key = decodeURI(req.query.key);
 
   const data = await articles.fullTextSearch(key);
@@ -52,40 +53,43 @@ router.get('/search', async (req, res) => {
   res.json(data);
 });
 
-router.get('/category-load-more', async (req, res) => {
+router.get("/category-load-more", async (req, res) => {
   const id = +req.query.id;
   const offset = +req.query.offset;
 
   const categoryName = (await categories.loadCategoryTitle(id))[0];
 
-  if (categoryName['ChuyenMucCon'] === null) {
+  if (categoryName["ChuyenMucCon"] === null) {
     res.json(await articles.load7DependCategoryOffset(id, offset * 2));
   } else {
     res.json(await articles.load7DependCategoryOffsetChild(id, offset * 2));
   }
 });
 
-router.post('/search-enter', async (req, res) => {
+router.post("/search-enter", async (req, res) => {
   const searchText = req.body.search;
 
   const _articles = await articles.fullTextSearchOffset(searchText, 0);
 
-  res.render('vwHome/search-result', {
+  res.render("vwHome/search-result", {
     _searchText: searchText,
     _articles,
-    _offset: 0
+    _offset: 0,
   });
 });
 
-router.post('/load-search-area', async (req, res) => {
+router.post("/load-search-area", async (req, res) => {
   const searchText = req.body.searchText;
   const offset = req.body.offset;
-  const data = await articles.fullTextSearchOffset(searchText, (offset + 1) * 2);
+  const data = await articles.fullTextSearchOffset(
+    searchText,
+    (offset + 1) * 2
+  );
 
   res.json(data);
 });
 
-router.post('/load-tag-article-area', async (req, res) => {
+router.post("/load-tag-article-area", async (req, res) => {
   const tagName = req.body.tagName;
   const offset = req.body.offset;
   const data = await articles.getArticleDependTag(tagName, (offset + 1) * 2);
@@ -93,27 +97,50 @@ router.post('/load-tag-article-area', async (req, res) => {
   res.json(data);
 });
 
-router.get('/check-user-exist', async (req, res) => {
+router.get("/check-user-exist", async (req, res) => {
   const email = req.query.email;
   const data = await accounts.accountSingle(email);
 
   res.send(data);
 });
 
-router.post('/login-validate', async (req, res) => {
+router.post("/login-validate", async (req, res) => {
   const [email, password] = [req.body.email, req.body.password];
   // get user info from mysql db
   const acc = await accounts.accountSingle(email);
 
   // exist an account with email field equal to `email` variable
   if (acc.length !== 0) {
-    if (bcrypt.compareSync(password, acc[0]['MatKhau'])) { // password is correct
+    if (bcrypt.compareSync(password, acc[0]["MatKhau"])) {
+      // password is correct
       return res.json(true);
     }
   }
 
   // password is incorrect or does not have any account with info which user provides
   return res.json(false);
+});
+
+router.get("/reader-allow-access", async (req, res) => {
+  if (req.session.authUser) {
+    const articleID = req.query.id;
+
+    const [timeOut, isPremium] = await Promise.all([
+      accounts.readerPremium(req.session.authUser["id"]),
+      articles.articlePremium(articleID),
+    ]);
+
+    const mysqlTime = moment(new Date(timeOut[0]["ThoiHan"]));
+    const now = moment();
+
+    if ((+isPremium[0]["IsPremium"] === 1 && mysqlTime >= now) || +isPremium[0]["IsPremium"] === 0) {
+      return res.json(1); // can access
+    } else if (+isPremium[0]["IsPremium"] === 1 && mysqlTime < now) {
+      return res.json(0); // expired
+    }
+  } else {
+    return res.json(-1); // not log in
+  }
 });
 
 module.exports = router;

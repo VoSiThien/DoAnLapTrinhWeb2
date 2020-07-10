@@ -6,7 +6,11 @@ module.exports = {
     return db.load(queries.accountSingle(email));
   },
 
+  readerPremium: function (id) {
+    return db.load(queries.readerPremium(id));
+  },
+
   readerAdding: function (entity) { 
     return db.add('taikhoan', entity);
-  },
+  }
 };

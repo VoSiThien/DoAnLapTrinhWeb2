@@ -135,6 +135,13 @@ module.exports = {
       offset ${offset}`;
   },
 
+  articlePremium: function (id) {
+    return `
+      select bv.IsPremium
+      from baiviet bv
+      where bv.id = ${id}`;
+  },
+
   // TAGS
   load20Tags: function () {
     return `
@@ -197,4 +204,11 @@ module.exports = {
       from taikhoan tk
       where tk.email = '${email}'`;
   },
+
+  readerPremium:  function (id) {
+    return `
+      select tk.ThoiHan
+      from taikhoan tk
+      where tk.id = ${id}`;
+  }
 };

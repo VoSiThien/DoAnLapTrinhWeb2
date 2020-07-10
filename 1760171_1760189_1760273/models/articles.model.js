@@ -56,5 +56,9 @@ module.exports = {
 
   fullTextSearchOffset: function (keyword, offset) {
     return db.load(queries.fullTextSearchOffset(keyword, offset));
+  },
+
+  articlePremium: function (id) {
+    return db.load(queries.articlePremium(id));
   }
 };

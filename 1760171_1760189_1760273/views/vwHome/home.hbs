@@ -2,6 +2,24 @@
 Trang chủ
 {{/section}}
 
+{{#section 'js'}}
+<script>
+  $(document).ready(function () {
+    $('._article').on('click', function (e) {
+      e.preventDefault();
+
+      var href = $(this).attr('href');
+      var id = +$(this).attr('href').match(/\d+$/);
+
+      $.getJSON(`reader-allow-access?id=${id}`, (data) => {
+        
+      });
+      // window.location.replace($(this).attr('href'));
+    });
+  });
+</script>
+{{/section}}
+
 <div class="container">
   <div class="bg0 flex-wr-sb-c p-rl-20 p-tb-8">
     <div class="f2-s-1 p-r-30 size-w-0 m-tb-6 flex-wr-s-c">
@@ -45,7 +63,7 @@ Trang chủ
       <div class="col-md-6 p-rl-1 p-b-2">
         <div class="bg-img1 size-a-3 how1 pos-relative"
           style="background-image: url({{this._4OutstandingArticles.0.HinhAnh}});">
-          <a href="/article/{{this._4OutstandingArticles.0.id}}" class="dis-block how1-child1 trans-03"></a>
+          <a href="/article/{{this._4OutstandingArticles.0.id}}" class="dis-block how1-child1 trans-03 _article"></a>
 
           <div class="flex-col-e-s s-full p-rl-25 p-tb-20">
             <a href="/category/{{this._4OutstandingArticles.0.ChuyenMucID}}"
@@ -55,7 +73,7 @@ Trang chủ
 
             <h3 class="how1-child2 m-t-14 m-b-10">
               <a href="/article/{{this._4OutstandingArticles.0.id}}"
-                class="how-txt1 size-a-6 f1-l-1 cl0 hov-cl10 trans-03">
+                class="how-txt1 size-a-6 f1-l-1 cl0 hov-cl10 trans-03 _article">
                 {{this._4OutstandingArticles.0.TieuDe}}
               </a>
               <p class="text-white">
@@ -85,7 +103,8 @@ Trang chủ
           <div class="col-12 p-rl-1 p-b-2">
             <div class="bg-img1 size-a-4 how1 pos-relative"
               style="background-image: url({{this._4OutstandingArticles.1.HinhAnh}});">
-              <a href="/article/{{this._4OutstandingArticles.1.id}}" class="dis-block how1-child1 trans-03"></a>
+              <a href="/article/{{this._4OutstandingArticles.1.id}}"
+                class="dis-block how1-child1 trans-03 _article"></a>
 
               <div class="flex-col-e-s s-full p-rl-25 p-tb-24">
                 <a href="/category/{{this._4OutstandingArticles.1.ChuyenMucID}}"
@@ -95,7 +114,7 @@ Trang chủ
 
                 <h3 class="how1-child2 m-t-14">
                   <a href="/article/{{this._4OutstandingArticles.1.id}}"
-                    class="how-txt1 size-a-7 f1-l-2 cl0 hov-cl10 trans-03">
+                    class="how-txt1 size-a-7 f1-l-2 cl0 hov-cl10 trans-03 _article">
                     {{this._4OutstandingArticles.1.TieuDe}}
                   </a>
                   <p class="text-white">
@@ -124,7 +143,8 @@ Trang chủ
             <div class="bg-img1 size-a-5 how1 pos-relative"
               style="background-image: url({{this._4OutstandingArticles.2.HinhAnh}});"
               title="{{this._4OutstandingArticles.2.NoiDungTat}}">
-              <a href="/article/{{this._4OutstandingArticles.2.id}}" class="dis-block how1-child1 trans-03"></a>
+              <a href="/article/{{this._4OutstandingArticles.2.id}}"
+                class="dis-block how1-child1 trans-03 _article"></a>
 
               <div class="flex-col-e-s s-full p-rl-25 p-tb-20">
                 <a href="/category/{{this._4OutstandingArticles.2.ChuyenMucID}}"
@@ -134,7 +154,7 @@ Trang chủ
 
                 <h3 class="how1-child2 m-t-14">
                   <a href="/article/{{this._4OutstandingArticles.2.id}}"
-                    class="how-txt1 size-h-1 f1-m-1 cl0 hov-cl10 trans-03">
+                    class="how-txt1 size-h-1 f1-m-1 cl0 hov-cl10 trans-03 _article">
                     {{this._4OutstandingArticles.2.TieuDe}}
                   </a>
                 </h3>
@@ -160,7 +180,8 @@ Trang chủ
             <div class="bg-img1 size-a-5 how1 pos-relative"
               style="background-image: url({{this._4OutstandingArticles.3.HinhAnh}});"
               title="{{this._4OutstandingArticles.3.NoiDungTat}}">
-              <a href="/article/{{this._4OutstandingArticles.3.id}}" class="dis-block how1-child1 trans-03"></a>
+              <a href="/article/{{this._4OutstandingArticles.3.id}}"
+                class="dis-block how1-child1 trans-03 _article"></a>
 
               <div class="flex-col-e-s s-full p-rl-25 p-tb-20">
                 <a href="/category/{{this._4OutstandingArticles.3.ChuyenMucID}}"
@@ -170,7 +191,7 @@ Trang chủ
 
                 <h3 class="how1-child2 m-t-14">
                   <a href="/article/{{this._4OutstandingArticles.3.id}}"
-                    class="how-txt1 size-h-1 f1-m-1 cl0 hov-cl10 trans-03">
+                    class="how-txt1 size-h-1 f1-m-1 cl0 hov-cl10 trans-03 _article">
                     {{this._4OutstandingArticles.3.TieuDe}}
                   </a>
                 </h3>
@@ -214,13 +235,14 @@ Trang chủ
                 <div class="row">
                   <div class="col-md-4 p-r-25 p-r-15-sr991 h-100">
                     <div class="m-b-30">
-                      <a href="/article/{{this._10MostViewArticles.0.id}}" class="wrap-pic-w hov1 trans-03">
+                      <a href="/article/{{this._10MostViewArticles.0.id}}" class="wrap-pic-w hov1 trans-03 _article">
                         <img src="{{this._10MostViewArticles.0.HinhAnh}}" alt="IMG">
                       </a>
 
                       <div class="p-t-20">
                         <h5 class="p-b-5">
-                          <a href="/article/{{this._10MostViewArticles.0.id}}" class="f1-m-3 cl2 hov-cl10 trans-03">
+                          <a href="/article/{{this._10MostViewArticles.0.id}}"
+                            class="f1-m-3 cl2 hov-cl10 trans-03 _article">
                             {{this._10MostViewArticles.0.TieuDe}}
                           </a>
                           <p>
@@ -254,13 +276,15 @@ Trang chủ
                     </div>
 
                     <div class="flex-wr-sb-s m-b-30" title="{{this._10MostViewArticles.1.NoiDungTat}}">
-                      <a href="/article/{{this._10MostViewArticles.1.id}}" class="size-w-1 wrap-pic-w hov1 trans-03">
+                      <a href="/article/{{this._10MostViewArticles.1.id}}"
+                        class="size-w-1 wrap-pic-w hov1 trans-03 _article">
                         <img src="{{this._10MostViewArticles.1.HinhAnh}}" alt="IMG">
                       </a>
 
                       <div class="size-w-2">
                         <h5 class="p-b-5">
-                          <a href="/article/{{this._10MostViewArticles.1.id}}" class="f1-s-5 cl3 hov-cl10 trans-03">
+                          <a href="/article/{{this._10MostViewArticles.1.id}}"
+                            class="f1-s-5 cl3 hov-cl10 trans-03 _article">
                             {{this._10MostViewArticles.1.TieuDe}}
                           </a>
                         </h5>
@@ -295,13 +319,13 @@ Trang chủ
                     {{#each this._10MostViewArticles}}
                     {{#when @index 'gt' 1}}{{#when @index 'lt' 6}}
                     <div class="flex-wr-sb-s m-b-30" title="{{NoiDungTat}}" style="height: 102px;">
-                      <a href="/article/{{id}}" class="size-w-1 wrap-pic-w hov1 trans-03">
+                      <a href="/article/{{id}}" class="size-w-1 wrap-pic-w hov1 trans-03 _article">
                         <img src="{{HinhAnh}}" alt="IMG">
                       </a>
 
                       <div class="size-w-2">
                         <h5 class="p-b-5">
-                          <a href="/article/{{id}}" class="f1-s-5 cl3 hov-cl10 trans-03">
+                          <a href="/article/{{id}}" class="f1-s-5 cl3 hov-cl10 trans-03 _article">
                             {{TieuDe}}
                           </a>
                         </h5>
@@ -338,13 +362,13 @@ Trang chủ
                     {{#each this._10MostViewArticles}}
                     {{#when @index 'gt' 5}}{{#when @index 'lt' 10}}
                     <div class="flex-wr-sb-s m-b-30" title="{{NoiDungTat}}" style="height: 102px;">
-                      <a href="/article/{{id}}" class="size-w-1 wrap-pic-w hov1 trans-03">
+                      <a href="/article/{{id}}" class="size-w-1 wrap-pic-w hov1 trans-03 _article">
                         <img src="{{HinhAnh}}" alt="IMG">
                       </a>
 
                       <div class="size-w-2">
                         <h5 class="p-b-5">
-                          <a href="/article/{{id}}" class="f1-s-5 cl3 hov-cl10 trans-03">
+                          <a href="/article/{{id}}" class="f1-s-5 cl3 hov-cl10 trans-03 _article">
                             {{TieuDe}}
                           </a>
                         </h5>
@@ -393,13 +417,14 @@ Trang chủ
                 <div class="row">
                   <div class="col-md-4 p-r-25 p-r-15-sr991 h-100">
                     <div class="m-b-30">
-                      <a href="/article/{{this._10LatestArticles.0.id}}" class="wrap-pic-w hov1 trans-03">
+                      <a href="/article/{{this._10LatestArticles.0.id}}" class="wrap-pic-w hov1 trans-03 _article">
                         <img src="{{this._10LatestArticles.0.HinhAnh}}" alt="IMG">
                       </a>
 
                       <div class="p-t-20">
                         <h5 class="p-b-5">
-                          <a href="/article/{{this._10LatestArticles.0.id}}" class="f1-m-3 cl2 hov-cl10 trans-03">
+                          <a href="/article/{{this._10LatestArticles.0.id}}"
+                            class="f1-m-3 cl2 hov-cl10 trans-03 _article">
                             {{this._10LatestArticles.0.TieuDe}}
                           </a>
                           <p>
@@ -433,13 +458,15 @@ Trang chủ
                     </div>
 
                     <div class="flex-wr-sb-s m-b-30" title="{{this._10LatestArticles.1.NoiDungTat}}">
-                      <a href="/article/{{this._10LatestArticles.1.id}}" class="size-w-1 wrap-pic-w hov1 trans-03">
+                      <a href="/article/{{this._10LatestArticles.1.id}}"
+                        class="size-w-1 wrap-pic-w hov1 trans-03 _article">
                         <img src="{{this._10LatestArticles.1.HinhAnh}}" alt="IMG">
                       </a>
 
                       <div class="size-w-2">
                         <h5 class="p-b-5">
-                          <a href="/article/{{this._10LatestArticles.1.id}}" class="f1-s-5 cl3 hov-cl10 trans-03">
+                          <a href="/article/{{this._10LatestArticles.1.id}}"
+                            class="f1-s-5 cl3 hov-cl10 trans-03 _article">
                             {{this._10LatestArticles.1.TieuDe}}
                           </a>
                         </h5>
@@ -474,13 +501,13 @@ Trang chủ
                     {{#each this._10LatestArticles}}
                     {{#when @index 'gt' 1}}{{#when @index 'lt' 6}}
                     <div class="flex-wr-sb-s m-b-30" title="{{NoiDungTat}}" style="height: 102px;">
-                      <a href="/article/{{id}}" class="size-w-1 wrap-pic-w hov1 trans-03">
+                      <a href="/article/{{id}}" class="size-w-1 wrap-pic-w hov1 trans-03 _article">
                         <img src="{{HinhAnh}}" alt="IMG">
                       </a>
 
                       <div class="size-w-2">
                         <h5 class="p-b-5">
-                          <a href="/article/{{id}}" class="f1-s-5 cl3 hov-cl10 trans-03">
+                          <a href="/article/{{id}}" class="f1-s-5 cl3 hov-cl10 trans-03 _article">
                             {{TieuDe}}
                           </a>
                         </h5>
@@ -517,13 +544,13 @@ Trang chủ
                     {{#each this._10LatestArticles}}
                     {{#when @index 'gt' 5}}{{#when @index 'lt' 10}}
                     <div class="flex-wr-sb-s m-b-30" title="{{NoiDungTat}}" style="height: 102px;">
-                      <a href="/article/{{id}}" class="size-w-1 wrap-pic-w hov1 trans-03">
+                      <a href="/article/{{id}}" class="size-w-1 wrap-pic-w hov1 trans-03 _article">
                         <img src="{{HinhAnh}}" alt="IMG">
                       </a>
 
                       <div class="size-w-2">
                         <h5 class="p-b-5">
-                          <a href="/article/{{id}}" class="f1-s-5 cl3 hov-cl10 trans-03">
+                          <a href="/article/{{id}}" class="f1-s-5 cl3 hov-cl10 trans-03 _article">
                             {{TieuDe}}
                           </a>
                         </h5>
@@ -572,13 +599,14 @@ Trang chủ
                 <div class="row">
                   <div class="col-md-4 p-r-25 p-r-15-sr991 h-100">
                     <div class="m-b-30">
-                      <a href="/article/{{this._10EachCategories.0.id}}" class="wrap-pic-w hov1 trans-03">
+                      <a href="/article/{{this._10EachCategories.0.id}}" class="wrap-pic-w hov1 trans-03 _article">
                         <img src="{{this._10EachCategories.0.HinhAnh}}" alt="IMG">
                       </a>
 
                       <div class="p-t-20">
                         <h5 class="p-b-5">
-                          <a href="/article/{{this._10EachCategories.0.id}}" class="f1-m-3 cl2 hov-cl10 trans-03">
+                          <a href="/article/{{this._10EachCategories.0.id}}"
+                            class="f1-m-3 cl2 hov-cl10 trans-03 _article">
                             {{this._10EachCategories.0.TieuDe}}
                           </a>
                           <p>
@@ -612,13 +640,15 @@ Trang chủ
                     </div>
 
                     <div class="flex-wr-sb-s m-b-30" title="{{this._10EachCategories.1.NoiDungTat}}">
-                      <a href="/article/{{this._10EachCategories.1.id}}" class="size-w-1 wrap-pic-w hov1 trans-03">
+                      <a href="/article/{{this._10EachCategories.1.id}}"
+                        class="size-w-1 wrap-pic-w hov1 trans-03 _article">
                         <img src="{{this._10EachCategories.1.HinhAnh}}" alt="IMG">
                       </a>
 
                       <div class="size-w-2">
                         <h5 class="p-b-5">
-                          <a href="/article/{{this._10EachCategories.1.id}}" class="f1-s-5 cl3 hov-cl10 trans-03">
+                          <a href="/article/{{this._10EachCategories.1.id}}"
+                            class="f1-s-5 cl3 hov-cl10 trans-03 _article">
                             {{this._10EachCategories.1.TieuDe}}
                           </a>
                         </h5>
@@ -653,13 +683,13 @@ Trang chủ
                     {{#each this._10EachCategories}}
                     {{#when @index 'gt' 1}}{{#when @index 'lt' 6}}
                     <div class="flex-wr-sb-s m-b-30" title="{{NoiDungTat}}" style="height: 102px;">
-                      <a href="/article/{{id}}" class="size-w-1 wrap-pic-w hov1 trans-03">
+                      <a href="/article/{{id}}" class="size-w-1 wrap-pic-w hov1 trans-03 _article">
                         <img src="{{HinhAnh}}" alt="IMG">
                       </a>
 
                       <div class="size-w-2">
                         <h5 class="p-b-5">
-                          <a href="/article/{{id}}" class="f1-s-5 cl3 hov-cl10 trans-03">
+                          <a href="/article/{{id}}" class="f1-s-5 cl3 hov-cl10 trans-03 _article">
                             {{TieuDe}}
                           </a>
                         </h5>
@@ -696,13 +726,13 @@ Trang chủ
                     {{#each this._10EachCategories}}
                     {{#when @index 'gt' 5}}{{#when @index 'lt' 10}}
                     <div class="flex-wr-sb-s m-b-30" title="{{NoiDungTat}}" style="height: 102px;">
-                      <a href="/article/{{id}}" class="size-w-1 wrap-pic-w hov1 trans-03">
+                      <a href="/article/{{id}}" class="size-w-1 wrap-pic-w hov1 trans-03 _article">
                         <img src="{{HinhAnh}}" alt="IMG">
                       </a>
 
                       <div class="size-w-2">
                         <h5 class="p-b-5">
-                          <a href="/article/{{id}}" class="f1-s-5 cl3 hov-cl10 trans-03">
+                          <a href="/article/{{id}}" class="f1-s-5 cl3 hov-cl10 trans-03 _article">
                             {{TieuDe}}
                           </a>
                         </h5>
