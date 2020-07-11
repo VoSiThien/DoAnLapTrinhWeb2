@@ -9,42 +9,27 @@
       $.getJSON(`/category-load-more?id=${$("#categoryID").val()}&offset=${+$("#offset").val() + 1}`, (data) => {
         if (data.length !== 0) {
           data.forEach(val => {
-            var myDate = new Date(val['NgayXuatBan']);
-            var date = myDate.getDate() < 10 ? `0${myDate.getDate()}` : `${myDate.getDate()}`;
-            var month = myDate.getMonth() + 1 < 10 ? `0${myDate.getMonth() + 1}` : `${myDate.getMonth() + 1}`;
+            var fDate = formatDate(val['NgayXuatBan']);
 
             const row = `
-            <div class="flex-wr-sb-s p-t-40 p-b-15 how-bor2">
-              <a href="/article/${val['id']}" class="size-w-8 wrap-pic-w hov1 trans-03 w-full-sr575 m-b-25 _article">
-                <img src="${val['HinhAnh']}" alt="IMG">
-              </a>
-
-              <div class="size-w-9 w-full-sr575 m-b-25">
-                <h5 class="p-b-12">
-                  <a href="/article/${val['id']}" class="f1-l-1 cl2 hov-cl10 trans-03 respon2 _article">
-                    ${val['TieuDe']}
-                  </a>
-                </h5>
-
-                <div class="cl8 p-b-18">
-                  <a href="javascript:;" class="f1-s-4 cl8 hov-cl10 trans-03">
-                    ${val['ButDanh']}
-                  </a>
-
-                  <span class="f1-s-3 m-rl-3">
-                    -
-                  </span>
-
-                  <span class="f1-s-3">
-                    ${date + '/' + month}
-                  </span>
+              <div class="flex-wr-sb-s p-t-40 p-b-15 how-bor2">
+                <a href="/article/${val['id']}" class="size-w-8 wrap-pic-w hov1 trans-03 w-full-sr575 m-b-25 _article">
+                  <img src="${val['HinhAnh']}" alt="IMG">
+                </a>
+                <div class="size-w-9 w-full-sr575 m-b-25">
+                  <h5 class="p-b-12">
+                    <a href="/article/${val['id']}" class="f1-l-1 cl2 hov-cl10 trans-03 respon2 _article">
+                      ${val['TieuDe']}
+                    </a>
+                  </h5>
+                  <div class="cl8 p-b-18">
+                    <a href="javascript:;" class="f1-s-4 cl8 hov-cl10 trans-03">${val['ButDanh']}</a>
+                    <span class="f1-s-3 m-rl-3">-</span>
+                    <span class="f1-s-3">${fDate}</span>
+                  </div>
+                  <p class="f1-s-1 cl6 p-b-24">${val['NoiDungTat']}</p>
                 </div>
-
-                <p class="f1-s-1 cl6 p-b-24">
-                  ${val['NoiDungTat']}
-                </p>
-              </div>
-            </div>`;
+              </div>`;
 
             $("#articles-area").append(row);
             $("#offset").val(+$('#offset').val() + 1);
