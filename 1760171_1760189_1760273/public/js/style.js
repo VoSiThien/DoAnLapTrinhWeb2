@@ -88,7 +88,6 @@ $(document).ready(function () {
           $("#alert").css("display", "block");
         } else {
           $("#alert").css("display", "none");
-          alert("go here");
           $("#form-register").submit();
         }
       });

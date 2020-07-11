@@ -27,7 +27,7 @@ router.post("/register", async (req, res) => {
   req.session.isAuthenticated = true;
   req.session.authUser = { id: acc[0]["id"], HoTen: acc[0]["HoTen"] };
 
-  res.redirect("/");
+  res.redirect(req.headers.referer);
 });
 
 router.post("/login", async (req, res) => {
@@ -38,7 +38,7 @@ router.post("/login", async (req, res) => {
   req.session.isAuthenticated = true;
   req.session.authUser = { id: acc[0]["id"], HoTen: acc[0]["HoTen"] };
 
-  res.redirect("/");
+  res.redirect(req.headers.referer);
 });
 
 // GOOGLE LOGIN
@@ -77,7 +77,7 @@ router.get("/profile", (req, res) => res.send("You are login!"));
 router.get("/logout", mdlFunction.isLoggedIn, (req, res) => {
   req.session.destroy((e) => {
     req.logout();
-    res.redirect("/");
+    res.redirect(req.headers.referer);
   });
 });
 

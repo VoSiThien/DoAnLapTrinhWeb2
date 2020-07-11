@@ -27,6 +27,17 @@ app.use("/tag", require("./routes/tags.route"));
 // accounts
 app.use("/account", require("./routes/accounts.route"));
 
+// fake url
+app.use((req, res) => {
+  res.render('404', {layout: false});
+});
+
+// error handling
+app.use((err, req, res, next) => {
+  console.log(err.stack);
+  res.status(500).render('500', {layout: false});
+});
+
 app.listen(PORT, function () {
   console.log(`Server is running on PORT: ${PORT}`);
 });
