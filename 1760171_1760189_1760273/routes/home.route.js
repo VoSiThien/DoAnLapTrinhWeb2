@@ -5,6 +5,7 @@ const moment = require("moment");
 const articles = require("../models/articles.model");
 const categories = require("../models/categories.model");
 const accounts = require("../models/accounts.model");
+const comments = require("../models/comments.model");
 
 const router = express.Router();
 
@@ -149,6 +150,24 @@ router.get("/reader-allow-access", async (req, res) => {
   }
 
   return res.json(-1); // not log in
+});
+
+router.post("/article-post-comment", async (req, res) => {
+  const entity = {
+    NoiDung: req.body.NoiDung,
+    BaiVietID: req.body.BaiVietID,
+    NgayBinhLuan: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
+    TaiKhoanID: +req.session.authUser["id"],
+  };
+
+  await comments.addComment(entity);
+
+  const [_comments, _quantity] = await Promise.all([
+    comments.load5CommentsOffset(+req.body.BaiVietID, 0),
+    comments.getCommentsQuantity(+req.body.BaiVietID),
+  ]);
+
+  res.json({_comments, _quantity: +_quantity[0]['SoLuong']});
 });
 
 module.exports = router;

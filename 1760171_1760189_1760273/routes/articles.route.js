@@ -44,17 +44,22 @@ router.get("/:id", mdlFunction.canAccessArticles, async (req, res) => {
       _tags,
       _relatedArticles,
       _comments,
-      _pagi: rangeOfPagination(Math.ceil(+quantity[0]['SoLuong']/5), 1),
+      _pagi: rangeOfPagination(Math.ceil(+quantity[0]["SoLuong"] / 5), 1),
     });
   }
 });
 
 router.get("", async (req, res) => {
   const [id, page] = [req.query.id, req.query.page];
-  
-  const _comments = await comments.load5CommentsOffset(id, (page - 1)*5);
 
-  res.json(_comments);
+  const [_comments, quantity] = await Promise.all([
+    comments.load5CommentsOffset(id, (page - 1) * 5),
+    comments.getCommentsQuantity(id),
+  ]);
+
+  const _pagi = rangeOfPagination(Math.ceil(+quantity[0]["SoLuong"] / 5), page);
+
+  res.json({_comments, _pagi});
 });
 
 module.exports = router;

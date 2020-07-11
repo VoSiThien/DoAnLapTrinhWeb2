@@ -8,5 +8,9 @@ module.exports = {
 
   getCommentsQuantity: function (id) {
     return db.load(queries.getCommentsQuantity(id));
+  },
+
+  addComment: function (entity) {
+    return db.add('binhluan', entity);
   }
 };

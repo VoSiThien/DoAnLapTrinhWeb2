@@ -186,6 +186,7 @@ module.exports = {
       select bl.NoiDung, bl.NgayBinhLuan, tk.HoTen
       from binhluan bl join taikhoan tk on tk.id = bl.TaiKhoanID
       where bl.BaiVietID = ${id}
+      order by UNIX_TIMESTAMP(bl.NgayBinhLuan) desc
       limit 5
       offset ${offset}`;
   },

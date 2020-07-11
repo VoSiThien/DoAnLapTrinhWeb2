@@ -100,7 +100,7 @@ INSERT INTO `baiviet` (`PDF`, `HinhAnh`, `LuotXem`, `TrangThaiID`, `ChuyenMucID`
 --
 
 CREATE TABLE `binhluan` (
-  `id` int(11) UNSIGNED NOT NULL,
+  `id` int(11) auto_increment primary key,
   `NoiDung` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `TaiKhoanID` int(10) UNSIGNED NOT NULL,
   `BaiVietID` int(10) UNSIGNED NOT NULL,
@@ -340,10 +340,10 @@ INSERT INTO `taikhoan` (`MatKhau`, `HoTen`, `ButDanh`, `Email`, `NgaySinh`, `Tho
 ('1', 'Phạm Văn Đồng', NULL, 'Pham@gmail.com', '2003-05-01', '2020-12-30 00:00:00', 4, NULL),
 ('1', 'Dương Mạnh Cường', NULL, 'us1@gc', '1999-04-08', NULL, 4, NULL),
 ('1', 'Nhạc Bất Quần', NULL, 'nbq@gc', '1969-04-08', '2030-12-30 00:00:00', 4, NULL),
-('', 'Lệnh Hồ Xung', NULL, 'cuongpiger99@gmail.com', '1999-04-08', '2030-12-30 00:00:00', 4, NULL);
+('', 'Lệnh Hồ Xung', NULL, 'cuongpiger99@gmail.com', '1999-04-08', '2030-12-30 00:00:00', 4, NULL),
+('', 'Âu Dương Phong', NULL, 'cuongpigerr@gmail.com', '1999-04-08', '2020-07-10 00:00:00', 4, NULL);
 INSERT INTO `taikhoan` (`MatKhau`, `HoTen`, `Email`, `VaiTroID`) VALUES
-('1', 'Lady Gaga', 'us2@gc', 4),
-('', 'Cường Dương', 'cuongpigerr@gmail.com', 4);
+('1', 'Lady Gaga', 'us2@gc', 4);
 -- --------------------------------------------------------
 
 --
@@ -403,7 +403,6 @@ ALTER TABLE `baiviet`
 -- Chỉ mục cho bảng `binhluan`
 --
 ALTER TABLE `binhluan`
-  ADD PRIMARY KEY (`id`),
   ADD KEY `bl_bv` (`BaiVietID`),
   ADD KEY `bl_tk` (`TaiKhoanID`);
 

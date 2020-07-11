@@ -5,16 +5,30 @@
 {{#section 'js'}}
 <script>
   $(document).ready(function () {
-    $("#comments-area button").on('click', function (e) {
-      e.preventDefault();
+    $('#btn-send-msg').on('click', function () {
+      var [msgContent, id] = [$('#msg').val(), $('#article-id').val()];
+
+      $.post('/article-post-comment', { NoiDung: msgContent, BaiVietID: id }, function (data) {
+        $('#head-quantity').text(data['_quantity']);
+        $("#tail-quantity").text(`(${data['_quantity']})`);
+      });
+    });
+
+    $("#comments-area button").on('click', function () {
+      const page = +$(this).html();
 
       if (!$(this).hasClass("pagi-active")) {
-        $.getJSON(`/article?id=${$("#articleID").val()}&page=${$(this).html()}`, (data) => {
-          $("#users-comments").empty();
-          $("#comments-area button.pagi-active").removeClass("pagi-active");
-          $(this).addClass("pagi-active");
+        $.getJSON(`/article?id=${$("#articleID").val()}&page=${page}`, (data) => {
+          $('#comments-area button').each((index, el) => {
+            $(el).text(data['_pagi'][index]['value']);
+            $(el).removeClass('pagi-active');
 
-          data.forEach(val => {
+            if (+data['_pagi'][index]['value'] === page) {
+              $(el).addClass('pagi-active');
+            }
+          });
+
+          var comments = data['_comments'].map(val => {
             var myDate = new Date(val['NgayBinhLuan']);
             var date = myDate.getDate() < 10 ? `0${myDate.getDate()}` : `${myDate.getDate()}`;
             var month = myDate.getMonth() + 1 < 10 ? `0${myDate.getMonth() + 1}` : `${myDate.getMonth() + 1}`;
@@ -39,8 +53,11 @@
                         </p>
                       </div>`;
 
-            $("#users-comments").append(row);
-          });
+            return row;
+          }).join('');
+
+          $("#users-comments").empty();
+          $("#users-comments").append(comments);
         });
       }
     });
@@ -109,7 +126,7 @@
           {{this._article.LuotXem}} <i class="fa fa-eye" aria-hidden="true"></i>
         </span>
 
-        <a href="" class="f1-s-3 cl8 m-rl-7 txt-center hov-cl10 trans-03">
+        <a href="javascript:;" class="f1-s-3 cl8 m-rl-7 txt-center hov-cl10 trans-03" id="head-quantity">
           {{this._article.SoLuong}} <i class="fa fa-comment" aria-hidden="true"></i>
         </a>
       </div>
@@ -155,7 +172,7 @@
           <div class="pb-5">
             <h4 class="f1-l-4 cl3 p-b-12">
               <i class="fa fa-comments fa-lg" aria-hidden="true"></i> Thảo luận
-              <small>({{this._article.SoLuong}})</small>
+              <small id="tail-quantity">({{this._article.SoLuong}})</small>
             </h4>
           </div>
           <section class="bg0">
@@ -189,10 +206,10 @@
                     <div class="flex-wr-c-c m-rl--7 p-t-15 float-right" id="comments-area">
                       {{#when this._article.SoLuong 'noteq' 0}}
                       <input type="hidden" id="articleID" value="{{this._article.id}}">
-                      <button class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7 pagi-active">1</button>
+                      <button class="my_button flex-c-c pagi-item hov-btn1 trans-03 m-all-7 pagi-active">1</button>
                       {{#each this._pagi}}
                       {{#when value 'gt' 1}}
-                      <button class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7">{{value}}</button>
+                      <button class="my_button flex-c-c pagi-item hov-btn1 trans-03 m-all-7">{{value}}</button>
                       {{/when}}
                       {{/each}}
                       {{/when}}
@@ -208,18 +225,23 @@
               <i class="fa fa-commenting fa-lg" aria-hidden="true"></i> Để lại ý kiến của bạn
             </h4>
 
+            {{#unless lcIsAuthenticated}}
             <p class="f1-s-13 cl8 p-b-40 font-italic">
               <span class="text-danger"><strong>*</strong></span> Bạn phải đăng nhập để sử dụng tính năng này.
             </p>
+            {{/unless}}
 
-            <form>
-              <textarea class="bo-1-rad-3 bocl13 size-a-15 f1-s-13 cl5 plh6 p-rl-18 p-tb-14 m-b-20" name="msg"
+            <div>
+              <input type="hidden" id="article-id" value="{{this._article.id}}">
+              <textarea class="bo-1-rad-3 bocl13 size-a-15 f1-s-13 cl5 plh6 p-rl-18 p-tb-14 m-b-20" id="msg"
                 placeholder="Để lại ý kiến của bạn tại đây..."></textarea>
 
-              <button class="size-a-17 bg2 borad-3 f1-s-12 cl0 hov-btn1 trans-03 p-rl-15 m-t-10">
+              <button id="btn-send-msg"
+                class="size-a-17 bg2 borad-3 f1-s-12 cl0 {{#if lcIsAuthenticated}}hov-btn1{{/if}} trans-03 p-rl-15 m-t-10"
+                {{#unless lcIsAuthenticated}}disabled="disabled" {{/unless}}>
                 Gửi
               </button>
-            </form>
+            </div>
           </div>
         </div>
       </div>
