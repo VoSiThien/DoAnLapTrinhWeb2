@@ -6,6 +6,7 @@ const articles = require("../models/articles.model");
 const categories = require("../models/categories.model");
 const accounts = require("../models/accounts.model");
 const comments = require("../models/comments.model");
+const mdlFunction = require("../middlewares/middle-functions.mdw");
 
 const router = express.Router();
 
@@ -167,7 +168,14 @@ router.post("/article-post-comment", async (req, res) => {
     comments.getCommentsQuantity(+req.body.BaiVietID),
   ]);
 
-  res.json({_comments, _quantity: +_quantity[0]['SoLuong']});
+  res.json({
+    _comments,
+    _quantity: +_quantity[0]["SoLuong"],
+    _pagi: mdlFunction.rangeOfPagination(
+      Math.ceil(+_quantity[0]["SoLuong"] / 5),
+      1
+    ),
+  });
 });
 
 module.exports = router;

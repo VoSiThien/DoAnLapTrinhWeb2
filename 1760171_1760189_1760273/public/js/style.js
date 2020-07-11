@@ -9,6 +9,12 @@ function snackbarToggle(msg) {
   }, 3000);
 }
 
+function clearInputValue(inputs) {
+  inputs.forEach(el => {
+    $(el).val('');
+  })
+}
+
 $(document).ready(function () {
   $('._article').on('click', function (e) {
     e.preventDefault();
@@ -98,5 +104,15 @@ $(document).ready(function () {
         }
       }
     );
+  });
+
+  $('#anchor-signin').on('click', () => {
+    clearInputValue(['#_email', '#_password']);
+    $('#alert-login').css('display', 'none');
+  });
+
+  $('#anchor-signup').on('click', () => {
+    clearInputValue(['#email', '#password', '#name', '#repassword']);
+    $('#alert').css('display', 'none');
   });
 });

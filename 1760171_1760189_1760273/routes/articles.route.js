@@ -7,25 +7,6 @@ const mdlFunction = require("../middlewares/middle-functions.mdw");
 
 const router = express.Router();
 
-// new Array(end - start).fill().map((d, i) => i + start);
-const rangeOfPagination = (quantity, current) => {
-  if (quantity <= 5)
-    return new Array(quantity).fill().map((d, i) => Object({ value: i + 1 }));
-
-  let start = current - 3;
-  let end = current + 1;
-
-  if (start < 0) {
-    start = 0;
-    end = 4;
-  } else if (end >= quantity) {
-    end = quantity - 1;
-    start = end - 4;
-  }
-
-  return new Array(5).fill().map((d, i) => Object({ value: i + start + 1 }));
-};
-
 router.get("/:id", mdlFunction.canAccessArticles, async (req, res) => {
   const id = +req.params.id;
 
@@ -44,7 +25,7 @@ router.get("/:id", mdlFunction.canAccessArticles, async (req, res) => {
       _tags,
       _relatedArticles,
       _comments,
-      _pagi: rangeOfPagination(Math.ceil(+quantity[0]["SoLuong"] / 5), 1),
+      _pagi: mdlFunction.rangeOfPagination(Math.ceil(+quantity[0]["SoLuong"] / 5), 1),
     });
   }
 });
@@ -57,9 +38,9 @@ router.get("", async (req, res) => {
     comments.getCommentsQuantity(id),
   ]);
 
-  const _pagi = rangeOfPagination(Math.ceil(+quantity[0]["SoLuong"] / 5), page);
+  const _pagi = mdlFunction.rangeOfPagination(Math.ceil(+quantity[0]["SoLuong"] / 5), page);
 
-  res.json({_comments, _pagi});
+  res.json({ _comments, _pagi });
 });
 
 module.exports = router;

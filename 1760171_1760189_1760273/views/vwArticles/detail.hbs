@@ -7,10 +7,56 @@
   $(document).ready(function () {
     $('#btn-send-msg').on('click', function () {
       var [msgContent, id] = [$('#msg').val(), $('#article-id').val()];
+      $('#msg').val('');
 
       $.post('/article-post-comment', { NoiDung: msgContent, BaiVietID: id }, function (data) {
         $('#head-quantity').text(data['_quantity']);
         $("#tail-quantity").text(`(${data['_quantity']})`);
+        $('#comments-area button').each((index, el) => {
+            $(el).text(data['_pagi'][index]['value']);
+            $(el).removeClass('pagi-active');
+
+            if (+data['_pagi'][index]['value'] === 1) {
+              $(el).addClass('pagi-active');
+            }
+
+            if (+data['_pagi'][index]['value'] !== -1) {
+              $(el).css('display', 'block');
+            } else {
+              $(el).css('display', 'none');
+            }
+          });
+
+        var comments = data['_comments'].map(val => {
+          var myDate = new Date(val['NgayBinhLuan']);
+          var date = myDate.getDate() < 10 ? `0${myDate.getDate()}` : `${myDate.getDate()}`;
+          var month = myDate.getMonth() + 1 < 10 ? `0${myDate.getMonth() + 1}` : `${myDate.getMonth() + 1}`;
+
+          var row = `<div class="flex-wr-sb-s p-t-15 p-b-15 how-bor2">
+                        <div class="cl8 w-100">
+                          <a href="javascript:;" class="f1-s-4 cl8 hov-cl10 trans-03">
+                            <i class="fa fa-user-circle-o fa-lg" aria-hidden="true"></i> ${val['HoTen']}
+                          </a>
+
+                          <span class="f1-s-3 m-rl-3">
+                            -
+                          </span>
+
+                          <span class="f1-s-3">
+                            <i class="fa fa-calendar fa-lg" aria-hidden="true"></i> ${date + '/' + month}
+                          </span>
+                        </div>
+
+                        <p class="f1-s-1 cl6 p-t-13">
+                          ${val['NoiDung']}
+                        </p>
+                      </div>`;
+
+          return row;
+        }).join('');
+
+        $("#users-comments").empty();
+        $("#users-comments").append(comments);
       });
     });
 
@@ -25,6 +71,12 @@
 
             if (+data['_pagi'][index]['value'] === page) {
               $(el).addClass('pagi-active');
+            }
+
+            if (+data['_pagi'][index]['value'] !== -1) {
+              $(el).attr('display', 'block');
+            } else {
+              $(el).attr('display', 'none');
             }
           });
 
@@ -204,15 +256,15 @@
                       {{/each}}
                     </div>
                     <div class="flex-wr-c-c m-rl--7 p-t-15 float-right" id="comments-area">
-                      {{#when this._article.SoLuong 'noteq' 0}}
                       <input type="hidden" id="articleID" value="{{this._article.id}}">
-                      <button class="my_button flex-c-c pagi-item hov-btn1 trans-03 m-all-7 pagi-active">1</button>
+                      <button class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7 pagi-active" {{#when this._pagi.0.value 'eq' -1}}style="display: none;"{{/when}}>1</button>
                       {{#each this._pagi}}
-                      {{#when value 'gt' 1}}
-                      <button class="my_button flex-c-c pagi-item hov-btn1 trans-03 m-all-7">{{value}}</button>
-                      {{/when}}
+                      {{#when @index 'gt' 0}}{{#when value 'noteq' -1}}
+                      <button class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7">{{value}}</button>
+                      {{else}}
+                      <button class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7" style="display: none;"></button>
+                      {{/when}}{{/when}}
                       {{/each}}
-                      {{/when}}
                     </div>
                   </div>
                 </div>

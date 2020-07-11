@@ -83,11 +83,11 @@
       <div class="content-topbar container h-100">
         <div class="left-topbar">
           {{#unless lcIsAuthenticated}}
-          <a href="javascript:;" class="left-topbar-item" data-toggle="modal" data-target="#modal-register">
+          <a href="javascript:;" class="left-topbar-item" data-toggle="modal" data-target="#modal-register" id="anchor-signup">
             <i class="fa fa-user-plus" aria-hidden="true"></i> Đăng kí
           </a>
 
-          <a href="javascript:;" class="left-topbar-item" data-toggle="modal" data-target="#modal-login">
+          <a href="javascript:;" class="left-topbar-item" data-toggle="modal" data-target="#modal-login" id="anchor-signin">
             <i class="fa fa-sign-in" aria-hidden="true"></i> Đăng nhập
           </a>
           {{/unless}}
