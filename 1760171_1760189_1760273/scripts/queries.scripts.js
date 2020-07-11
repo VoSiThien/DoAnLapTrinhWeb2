@@ -142,6 +142,13 @@ module.exports = {
       where bv.id = ${id}`;
   },
 
+  updateViewUp: function (id) {
+    return `
+      update baiviet
+      set LuotXem = LuotXem + 1
+      where id = ${id}`;
+  },
+
   // TAGS
   load20Tags: function () {
     return `

@@ -60,5 +60,9 @@ module.exports = {
 
   articlePremium: function (id) {
     return db.load(queries.articlePremium(id));
+  },
+
+  updateViewUp: function(id) {
+    return db.load(queries.updateViewUp(id));
   }
 };

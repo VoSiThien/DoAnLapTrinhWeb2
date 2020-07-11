@@ -12,7 +12,7 @@ module.exports = {
   },
 
   canAccessArticles: async function (req, res, next) {
-    const articleID = req.params.id;
+    const articleID = +req.params.id;
 
     const [timeOut, isPremium] = await Promise.all([
       accounts.readerPremium(
@@ -23,6 +23,7 @@ module.exports = {
 
     if (+isPremium[0]["IsPremium"] === 0) {
       // this article is not premium
+      await articles.updateViewUp(articleID);
       return next();
     } else if (
       +isPremium[0]["IsPremium"] === 1 &&
@@ -33,7 +34,11 @@ module.exports = {
         const _timeOut = moment(new Date(timeOut[0]["ThoiHan"]));
         const now = moment();
 
-        if (_timeOut >= now) return next(); // can access
+        if (_timeOut >= now) {
+          // can access
+          await articles.updateViewUp(articleID);
+          return next();
+        }
 
         return res.redirect("/");
       } else {
