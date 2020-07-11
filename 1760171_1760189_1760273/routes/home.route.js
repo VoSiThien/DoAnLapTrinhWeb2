@@ -122,25 +122,33 @@ router.post("/login-validate", async (req, res) => {
 });
 
 router.get("/reader-allow-access", async (req, res) => {
-  if (req.session.authUser) {
-    const articleID = req.query.id;
+  const articleID = req.query.id;
 
-    const [timeOut, isPremium] = await Promise.all([
-      accounts.readerPremium(req.session.authUser["id"]),
-      articles.articlePremium(articleID),
-    ]);
+  const [timeOut, isPremium] = await Promise.all([
+    accounts.readerPremium(
+      req.session.isAuthenticated ? req.session.authUser["id"] : -1
+    ),
+    articles.articlePremium(articleID),
+  ]);
 
-    const mysqlTime = moment(new Date(timeOut[0]["ThoiHan"]));
-    const now = moment();
+  if (+isPremium[0]["IsPremium"] === 0) {
+    // this article is not premium
+    return res.json(1); // can access
+  } else if (+isPremium[0]["IsPremium"] === 1 && req.session.isAuthenticated) {
+    // this article is premium
+    if (timeOut[0]["ThoiHan"] !== null) {
+      const _timeOut = moment(new Date(timeOut[0]["ThoiHan"]));
+      const now = moment();
 
-    if ((+isPremium[0]["IsPremium"] === 1 && mysqlTime >= now) || +isPremium[0]["IsPremium"] === 0) {
-      return res.json(1); // can access
-    } else if (+isPremium[0]["IsPremium"] === 1 && mysqlTime < now) {
-      return res.json(0); // expired
+      if (_timeOut >= now) return res.json(1); // can access
+
+      return res.json(0); // can not access since ThoiHan is expired
+    } else {
+      return res.json(0); // can not access since ThoiHan is expired
     }
-  } else {
-    return res.json(-1); // not log in
   }
+
+  return res.json(-1); // not log in
 });
 
 module.exports = router;
