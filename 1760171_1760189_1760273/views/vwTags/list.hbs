@@ -15,13 +15,13 @@
 
             const row = `
             <div class="flex-wr-sb-s p-t-40 p-b-15 how-bor2">
-              <a href="/article/${val['id']}" class="size-w-8 wrap-pic-w hov1 trans-03 w-full-sr575 m-b-25">
+              <a href="/article/${val['id']}" class="size-w-8 wrap-pic-w hov1 trans-03 w-full-sr575 m-b-25 _article">
                 <img src="${val['HinhAnh']}" alt="IMG">
               </a>
 
               <div class="size-w-9 w-full-sr575 m-b-25">
                 <h5 class="p-b-12">
-                  <a href="/article/${val['id']}" class="f1-l-1 cl2 hov-cl10 trans-03 respon2">
+                  <a href="/article/${val['id']}" class="f1-l-1 cl2 hov-cl10 trans-03 respon2 _article">
                     ${val['TieuDe']}
                   </a>
                 </h5>
@@ -112,13 +112,13 @@
           <div class="m-t--40 p-b-40" id="articles-area">
             {{#each this._articles}}
             <div class="flex-wr-sb-s p-t-40 p-b-15 how-bor2">
-              <a href="/article/{{id}}" class="size-w-8 wrap-pic-w hov1 trans-03 w-full-sr575 m-b-25">
+              <a href="/article/{{id}}" class="size-w-8 wrap-pic-w hov1 trans-03 w-full-sr575 m-b-25 _article">
                 <img src="{{HinhAnh}}" alt="IMG">
               </a>
 
               <div class="size-w-9 w-full-sr575 m-b-25">
                 <h5 class="p-b-12">
-                  <a href="/article/{{id}}" class="f1-l-1 cl2 hov-cl10 trans-03 respon2">
+                  <a href="/article/{{id}}" class="f1-l-1 cl2 hov-cl10 trans-03 respon2 _article">
                     {{TieuDe}}
                   </a>
                 </h5>
@@ -174,13 +174,13 @@
             <ul class="p-t-35">
               {{#each this._rightArticles}}
               <li class="flex-wr-sb-s p-b-30" title="{{NoiDungTat}}">
-                <a href="/article/{{id}}" class="size-w-10 wrap-pic-w hov1 trans-03">
+                <a href="/article/{{id}}" class="size-w-10 wrap-pic-w hov1 trans-03 _article">
                   <img src="{{HinhAnh}}" alt="IMG">
                 </a>
 
                 <div class="size-w-11">
                   <h6 class="p-b-4">
-                    <a href="/article/{{id}}" class="f1-s-5 cl3 hov-cl10 trans-03">
+                    <a href="/article/{{id}}" class="f1-s-5 cl3 hov-cl10 trans-03 _article">
                       {{TieuDe}}
                     </a>
                   </h6>

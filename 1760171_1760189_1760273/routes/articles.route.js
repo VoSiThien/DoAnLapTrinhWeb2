@@ -3,6 +3,7 @@ const express = require("express");
 const comments = require("../models/comments.model");
 const articles = require("../models/articles.model");
 const tags = require("../models/tags.model");
+const mdlFunction = require("../middlewares/middle-functions.mdw");
 
 const router = express.Router();
 
@@ -25,7 +26,7 @@ const rangeOfPagination = (quantity, current) => {
   return new Array(5).fill().map((d, i) => Object({ value: i + start + 1 }));
 };
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", mdlFunction.canAccessArticles, async (req, res) => {
   const id = +req.params.id;
 
   const row = await articles.loadSingle(id);

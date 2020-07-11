@@ -10,6 +10,19 @@ function snackbarToggle(msg) {
 }
 
 $(document).ready(function () {
+  $('._article').on('click', function (e) {
+    e.preventDefault();
+
+    var href = $(this).attr('href');
+    var id = +$(this).attr('href').match(/\d+$/);
+
+    $.getJSON(`/reader-allow-access?id=${id}`, (data) => {
+      if (+data === -1) snackbarToggle("📢 Bài viết này dành cho độc giả Premium, vui lòng đăng nhập để có thể xem bài viết!");
+      else if (+data === 1) window.location.replace(href);
+      else snackbarToggle("📢 Vui lòng đăng kí Premium để xem bài viết!");
+    });
+  });
+
   $("#search").on("input", function () {
     $("#match-list").removeClass("show");
 
