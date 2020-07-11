@@ -1,3 +1,14 @@
+function snackbarToggle(msg) {
+  var x = document.getElementById("snackbar");
+
+  x.innerHTML = msg;
+  x.className = "_show";
+
+  setTimeout(function () {
+    x.className = x.className.replace("_show", "");
+  }, 3000);
+}
+
 $(document).ready(function () {
   $("#search").on("input", function () {
     $("#match-list").removeClass("show");
@@ -10,7 +21,8 @@ $(document).ready(function () {
         data.forEach((val, index) => {
           const row = `<li class="my-dropdown-item"><a href="/article/${val["id"]}">${val["TieuDe"]}</a></li>`;
 
-          if (index !== 0) $("#match-list").append('<hr style="padding: 0; margin: 0;">');
+          if (index !== 0)
+            $("#match-list").append('<hr style="padding: 0; margin: 0;">');
           $("#match-list").append(row);
         });
       }
@@ -21,7 +33,7 @@ $(document).ready(function () {
     $(window).scrollTop(0);
   });
 
-  $('#search').on('keypress', function (e) {
+  $("#search").on("keypress", function (e) {
     if (e.which === 13) {
       $("#search-box").submit();
     }

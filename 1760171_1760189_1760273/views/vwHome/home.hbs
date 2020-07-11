@@ -12,9 +12,9 @@ Trang chủ
       var id = +$(this).attr('href').match(/\d+$/);
 
       $.getJSON(`reader-allow-access?id=${id}`, (data) => {
-        if (+data === -1) alert("Bài viết này dành cho độc giả Premium, vui lòng đăng nhập để có thể xem bài viết!");
+        if (+data === -1) snackbarToggle("Bài viết này dành cho độc giả Premium, vui lòng đăng nhập để có thể xem bài viết!");
         else if (+data === 1) window.location.replace(href);
-        else alert("Vui lòng đăng kí Premium để xem bài viết!");
+        else snackbarToggle("Vui lòng đăng kí Premium để xem bài viết!");
       });
     });
   });
