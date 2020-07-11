@@ -20,8 +20,14 @@ router.post("/register", async (req, res) => {
   };
 
   await accounts.readerAdding(entity);
+  const acc = await accounts.accountSingle(req.body.email);
 
-  res.send("Register email success");
+  delete acc["MatKhau"];
+
+  req.session.isAuthenticated = true;
+  req.session.authUser = { id: acc[0]["id"], HoTen: acc[0]["HoTen"] };
+
+  res.redirect("/");
 });
 
 router.post("/login", async (req, res) => {

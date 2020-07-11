@@ -15,6 +15,14 @@ function clearInputValue(inputs) {
   })
 }
 
+function formatDate(date) {
+  var myDate = new Date(date);
+  var day = myDate.getDate() < 10 ? `0${myDate.getDate()}` : `${myDate.getDate()}`;
+  var month = myDate.getMonth() + 1 < 10 ? `0${myDate.getMonth() + 1}` : `${myDate.getMonth() + 1}`;
+
+  return day + '/' + month;
+}
+
 $(document).ready(function () {
   $('._article').on('click', function (e) {
     e.preventDefault();
