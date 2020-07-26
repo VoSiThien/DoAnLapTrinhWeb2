@@ -1,5 +1,9 @@
 module.exports = {
   // ARTICLES
+  updateEntireArticlesStatus: function () {
+    return `update baiviet set TrangThaiID = 3 where NgayXuatBan >= NOW()`;
+  },
+
   load4OutstandingArticles: function () {
     return `
       select bv.id, bv.TieuDe, bv.NoiDungTat, bv.NgayXuatBan, bv.HinhAnh, cm.id as ChuyenMucID, cm.TenChuyenMuc, tk.ButDanh
@@ -39,6 +43,15 @@ module.exports = {
       where bv.id not in ${exceptArticles} and bv.TrangThaiID = 3
       group by cm2.id
       limit 10`;
+  },
+
+  load4RemainingArticle: function () {
+    return `
+      select bv.id, bv.TieuDe, bv.NoiDungTat, bv.NgayXuatBan, bv.HinhAnh, cm.id as ChuyenMucID, cm.TenChuyenMuc
+      from baiviet bv join chuyenmuc cm on cm.id = bv.ChuyenMucID
+      where bv.TrangThaiID = 3
+      order by bv.id desc
+      limit 4`;
   },
 
   loadSingle: function (id) {

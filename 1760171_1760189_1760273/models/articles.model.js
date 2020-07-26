@@ -2,6 +2,10 @@ const queries = require("../scripts/queries.scripts");
 const db = require("../utils/db");
 
 module.exports = {
+  updateEntireArticlesStatus: function () {
+    return db.load(queries.updateEntireArticlesStatus());
+  },
+
   load4OutstandingPosts: function () {
     return db.load(queries.load4OutstandingArticles());
   },
@@ -16,6 +20,10 @@ module.exports = {
 
   load10EachCategories: function (exceptArticles) {
     return db.load(queries.load10EachCategories(exceptArticles));
+  },
+
+  load4RemainingArticle: function () {
+    return db.load(queries.load4RemainingArticle());
   },
 
   loadSingle: function (id) {
