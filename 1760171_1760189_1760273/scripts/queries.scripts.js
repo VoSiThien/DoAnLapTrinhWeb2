@@ -1,7 +1,7 @@
 module.exports = {
   // ARTICLES
   updateEntireArticlesStatus: function () {
-    return `update baiviet set TrangThaiID = 3 where NgayXuatBan >= NOW()`;
+    return `update baiviet set TrangThaiID = 3 where NgayXuatBan >= NOW() and TrangThaiID = 1`;
   },
 
   load4OutstandingArticles: function () {
