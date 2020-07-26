@@ -101,10 +101,12 @@
             <!-- Share -->
             <div class="flex-s-s float-right">
               <div class="flex-wr-s-s size-w-0">
-                <a {{#when this._article.PDF 'noteq' null}}href="{{this._article.PDF}}"{{/when}}
+                {{#when this._article.PDF 'noteq' null}}
+                <a href="{{this._article.PDF}}"
                   class="dis-block f1-s-13 cl0 bg-google borad-3 p-tb-4 p-rl-18 hov-btn1 m-r-3 m-b-3 trans-03" download>
                   <i class="fa fa-file-pdf-o fa-lg" aria-hidden="true"></i> Tải xuống bản PDF
                 </a>
+                {{/when}}
               </div>
             </div>
           </div>
