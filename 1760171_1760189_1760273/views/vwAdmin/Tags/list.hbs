@@ -16,14 +16,28 @@
     else if (rowDetail.style.display == "none")
       document.getElementById(detailIndex).style.display = "";
   }
+  function editTag(index) {
+    let tagName = $("#txtTagName" + index).val();
+
+    if (tagName !== '') {
+      var promise = $.post(
+        "/admin/Tags/edit",
+        { TenTag: tagName, id: index },
+        window.alert("Sửa thành công!")
+      );
+    }
+    else {
+      alert("Tên tag không được rỗng!");
+    }
+
+  }
 
   function delTag(index) {
-   let btnName = "btnDelTag" + index;
-   
-   $.getJSON(`/admin/Tags/del/${index}`, (data) => {
-      alert("Hello");
+    let btnName = "btnDelTag" + index;
+    $.getJSON(`/admin/Tags/del/${index}`, (result) => {
+      alert("Xóa thành công!");
       $('#' + btnName).closest('tr').remove();
-   });
+    });
   }
 </script>
 {{/section}}
@@ -91,12 +105,14 @@
                   {{#each this}}
                   {{#if this.id}}
                   <tr id="row{{BaiVietID}}" class="childRow">
-                    <td></td>
-                    <td class="text-center">{{TenTag}}</td>
+                    <td style="text-align: left;">{{@index}}</td>
+                    <td class="text-center"><input id="txtTagName{{id}}" value="{{TenTag}}"
+                        style="text-align: center; border:5mm"></input></td>
                     <td class="text-left">
-                      <a class="btn btn-primary btn-sm" href="/admin/tag/edit/{{id}}" role="button" title="Sửa tag">
+                      <button id="btnEditTag{{id}}" class="btn btn-primary btn-sm" role="button" title="Sửa tag"
+                        onclick="editTag({{id}})">
                         <i class="fa fa-pencil" aria-hidden="true">sửa</i>
-                      </a>
+                      </button>
                       <button id="btnDelTag{{id}}" class="btn btn-danger btn-sm" role="button" title="Xóa tag"
                         onclick="delTag({{id}})">
                         <i class="fa fa-trash" aria-hidden="true">Xóa</i>
@@ -117,5 +133,3 @@
     </div>
   </div>
 </div>
-
-
