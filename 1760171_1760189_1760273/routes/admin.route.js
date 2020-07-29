@@ -9,7 +9,7 @@ const categoriesModel = require('../models/categories.model');
 const accountModel = require('../models/account.model');
 //------------HOME------------------------------
 router.get('/', async function (req, res) {
-    const newLocal = 'vwadmin/AdminPannel';
+    const newLocal = 'vwAdmin/AdminPannel';
     res.render(newLocal);
 });
 
@@ -45,7 +45,7 @@ router.get('/Tag', async function (req, res) {
         }
     }
     const newLocal = 'vwAdmin/Tags/list';
-    res.render(newLocal, {List: list});
+    res.render(newLocal, {List: list, layout:'adminPanel'});
 });
 
 //----------------------------------------------User management------------------------------------

@@ -122,7 +122,6 @@ router.post('/accept/:id', upload.single('urlImage'), async function (req, res) 
 router.post("/deny",async function(req,res){
     await postFeedBackModel.insert(req.body);
     await postModel.updateStatus(req.body.BaiVietID, 4);
-    console.log(req.body);
     res.redirect('/editor/post');
 })
 module.exports = router;

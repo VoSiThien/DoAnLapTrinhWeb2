@@ -25,18 +25,18 @@
   <div class="card">
     <div class="card-header d-flex justify-content-between">
       <h4>Danh sách</h4>
-      <a class="btn btn-outline-success" href="/admin/Categories/add" role="button">
+      <a class="btn btn-outline-success" href="/admin/tag/add" role="button">
         <i class="fa fa-plus" aria-hidden="true"></i>
         Thêm Tag mới
       </a>
     </div>
     <div class="card-body">
       {{#each List}}
-      <button type="button" class="btn btn-secondary" style="width:100%;" onclick="viewPost({{id}})">
+      <button type="button" class="btn btn-secondary" style="width:100%;margin-bottom:10px;" onclick="viewPost({{id}})">
         <h5>(+)Phóng viên {{ButDanh}}</h5>
       </button>
 
-      <table id = "table{{id}}" class="table table-hover" style = "display:none;">
+      <table id="table{{id}}" class="table table-hover" style="display:none;">
         <thead>
           <tr>
             <th scope="col" class="text-left" style="width: 10%">#</th>
@@ -84,11 +84,11 @@
                     <td></td>
                     <td class="text-center">{{TenTag}}</td>
                     <td class="text-left">
-                      <a class="btn btn-primary btn-sm" href="/admin/Categories/edit/{{id}}" role="button"
+                      <a class="btn btn-primary btn-sm" href="/admin/tag/edit/{{id}}" role="button"
                         title="Sửa chuyên mục">
                         <i class="fa fa-pencil" aria-hidden="true">sửa</i>
                       </a>
-                      <a class="btn btn-danger btn-sm" href="/admin/Categories/del/{{id}}" role="button"
+                      <a class="btn btn-danger btn-sm" href="/admin/tag/del/{{id}}" role="button"
                         title="Xóa chuyên mục">
                         <i class="fa fa-trash" aria-hidden="true">Xóa</i>
                       </a>
