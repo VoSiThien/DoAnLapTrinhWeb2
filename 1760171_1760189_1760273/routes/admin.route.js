@@ -9,8 +9,8 @@ const categoriesModel = require('../models/categories.model');
 const accountModel = require('../models/account.model');
 //------------HOME------------------------------
 router.get('/', async function (req, res) {
-    const newLocal = 'vwAdmin/AdminPannel';
-    res.render(newLocal);
+    const newLocal = 'vwAdmin/dashboard';
+    res.render(newLocal, {layout: 'adminPanel'});
 });
 
 //----------------------------------------------Posts management------------------------------------
@@ -18,18 +18,18 @@ router.get('/', async function (req, res) {
 router.get('/Posts', async function (req, res) {
     const list = await postsModel.load();
     const newLocal = 'vwAdmin/Posts/list';
-    res.render(newLocal, {List: list});
+    res.render(newLocal, {List: list, layout:'adminPanel'});
 });
 //----------------------------------------------Categories management------------------------------------
 //--List
 router.get('/Categories', async function (req, res) {
     const list = await categoriesModel.loadAll();
     const newLocal = 'vwAdmin/Categories/list';
-    res.render(newLocal, {List: list});
+    res.render(newLocal, {List: list, layout:'adminPanel'});
 });
 //----------------------------------------------Tag management------------------------------------
 //--List
-router.get('/Tag', async function (req, res) {
+router.get('/Tags', async function (req, res) {
     
     var list = [];
     const listAuthor = await accountModel.loadReporter();
@@ -39,6 +39,7 @@ router.get('/Tag', async function (req, res) {
         for(let j = 0; j < listPost.length;j++){
             list[i][j] = listPost[j];
             var listTag = await tagModel.loadByPostID(list[i][j]["id"]);
+     
             for(let k = 0; k < listTag.length; k++){
                 list[i][j][k] = listTag[k];
             }
@@ -50,9 +51,9 @@ router.get('/Tag', async function (req, res) {
 
 //----------------------------------------------User management------------------------------------
 //--List
-router.get('/User', async function (req, res) {
+router.get('/Users', async function (req, res) {
     const list = await accountModel.load();
     const newLocal = 'vwAdmin/Users/list';
-    res.render(newLocal, {List: list});
+    res.render(newLocal, {List: list, layout:'adminPanel'});
 });
 module.exports = router;
