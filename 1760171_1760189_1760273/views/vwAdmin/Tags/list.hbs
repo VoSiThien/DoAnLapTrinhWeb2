@@ -16,6 +16,15 @@
     else if (rowDetail.style.display == "none")
       document.getElementById(detailIndex).style.display = "";
   }
+
+  function delTag(index) {
+   let btnName = "btnDelTag" + index;
+   
+   $.getJSON(`/admin/Tags/del/${index}`, (data) => {
+      alert("Hello");
+      $('#' + btnName).closest('tr').remove();
+   });
+  }
 </script>
 {{/section}}
 <div class="card">
@@ -85,12 +94,11 @@
                     <td></td>
                     <td class="text-center">{{TenTag}}</td>
                     <td class="text-left">
-                      <a class="btn btn-primary btn-sm" href="/admin/tag/edit/{{id}}" role="button"
-                        title="Sửa tag">
+                      <a class="btn btn-primary btn-sm" href="/admin/tag/edit/{{id}}" role="button" title="Sửa tag">
                         <i class="fa fa-pencil" aria-hidden="true">sửa</i>
                       </a>
-                      <button id = "delTag{{id}}" class="btn btn-danger btn-sm" role="button"
-                        title="Xóa tag">
+                      <button id="btnDelTag{{id}}" class="btn btn-danger btn-sm" role="button" title="Xóa tag"
+                        onclick="delTag({{id}})">
                         <i class="fa fa-trash" aria-hidden="true">Xóa</i>
                       </button>
                     </td>
@@ -109,3 +117,5 @@
     </div>
   </div>
 </div>
+
+

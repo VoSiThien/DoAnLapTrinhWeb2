@@ -30,7 +30,6 @@ router.get('/Categories', async function (req, res) {
 //----------------------------------------------Tag management------------------------------------
 //--List
 router.get('/Tags', async function (req, res) {
-    
     var list = [];
     const listAuthor = await accountModel.loadReporter();
     list = listAuthor;
@@ -47,6 +46,12 @@ router.get('/Tags', async function (req, res) {
     }
     const newLocal = 'vwAdmin/Tags/list';
     res.render(newLocal, {List: list, layout:'adminPanel'});
+});
+//--Delete
+router.get('/tags/del/:id', async function (req, res) {
+   const id = +req.params.id || -1;
+   await tagModel.delete(id);
+   res.json(true);
 });
 
 //----------------------------------------------User management------------------------------------
