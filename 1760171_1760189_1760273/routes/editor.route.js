@@ -71,6 +71,7 @@ router.post('/accept/:id', upload.single('urlImage'), async function (req, res) 
         NoiDung: req.body.NoiDung,
         NgayXuatBan: req.body.NgayXuatBan,
         HinhAnh: imageName,
+        PDF:'',
         LuotXem: 0,
         TrangThaiID: 1,
         ChuyenMucID: +req.body.ChuyenMucID,

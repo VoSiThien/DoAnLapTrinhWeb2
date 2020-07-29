@@ -1,32 +1,51 @@
 const LRU = require("lru-cache");
 const catModel = require("../models/categories.model");
+const tagModel = require("../models/tags.model");
+const artModel = require("../models/articles.model");
 
 const GLB_CATEGORIES = "globalCategories";
+const GLB_FOOTER_TAGS = "globalFooterTags";
+const GLB_FOOTER_CATEGORIES = "globalFooterCategories";
+const GLB_HEADER_ARTICLES = "globalHeaderArticles";
 
 const cache = new LRU({
   max: 500,
-  maxAge: 1000 * 60 * 60, // refresh after 1 hour
+  maxAge: 600000, // refresh after 10 minutes
 });
 
 module.exports = function (app) {
   app.use(async (req, res, next) => {
-    const data = cache.get(GLB_CATEGORIES);
-    let cats = undefined;
+    let cats = cache.get(GLB_CATEGORIES);
+    let fTags = cache.get(GLB_FOOTER_TAGS);
+    let fCats = cache.get(GLB_FOOTER_CATEGORIES);
+    let hArts = cache.get(GLB_HEADER_ARTICLES);
 
-    if (!data) {
-      const rows = await catModel.loadAll();
-      cats = rows;
-      cache.set(GLB_CATEGORIES, rows); // put `rows` back into `cache`
+    if (!cats || !fTags || !fCats || !hArts) {
+      await artModel.updateEntireArticlesStatus();
 
-      console.log(`-- Fetch ${GLB_CATEGORIES}`);
-    } else {
-      cats = data;
+      const [_cats, _fTags, _fCats, _hArts] = await Promise.all([
+        catModel.loadAll(),
+        tagModel.load20Tags(),
+        catModel.load5CategoriesDesc(),
+        artModel.load4RemainingArticle(),
+      ]);
 
-      console.log(`++ Cache hit for ${GLB_CATEGORIES}`);
+      cats = _cats;
+      fTags = _fTags;
+      fCats = _fCats;
+      hArts = _hArts;
+
+      // save to cache
+      cache.set(GLB_CATEGORIES, _cats);
+      cache.set(GLB_FOOTER_TAGS, _fTags);
+      cache.set(GLB_FOOTER_CATEGORIES, _fCats);
+      cache.set(GLB_HEADER_ARTICLES, _hArts);
     }
 
-    // format `res.locals.lcCats`
-    res.locals.lcCats = []
+    res.locals.lcFTags = fTags;
+    res.locals.lcHArts = hArts;
+    res.locals.lcFCats = fCats;
+    res.locals.lcCats = []; // format `res.locals.lcCats`
 
     cats.forEach((cat) => {
       if (cat["ChuyenMucCon"] === null) {
@@ -40,12 +59,18 @@ module.exports = function (app) {
         }
       }
     });
-    //local variables for authentication
-    if (req.session.isAuthenticated == null) {
+    next();
+  });
+
+  app.use((req, res, next) => {
+    if (req.session.isAuthenticated === null) {
       req.session.isAuthenticated = false;
     }
+
     res.locals.lcIsAuthenticated = req.session.isAuthenticated;
     res.locals.lcUser = req.session.user;
+    res.locals.lcAuthUser = req.session.authUser;
+
     next();
   });
 };
