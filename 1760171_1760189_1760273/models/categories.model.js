@@ -6,6 +6,9 @@ module.exports = {
   loadAll: function () {
     return db.load(`select * from ${TBL_CATEGORIES}`);
   },
+  loadByID: function(id) {
+    return db.load(`select * from ${TBL_CATEGORIES} where ${TBL_CATEGORIES}.id = ${id}`)
+  },
   insert: function (entity) {
     return db.add(TBL_CATEGORIES, entity);
   },
@@ -29,7 +32,17 @@ module.exports = {
   loadChild: function(categoryID){
     return db.load(`SELECT * FROM ${TBL_CATEGORIES} WHERE ${TBL_CATEGORIES}.chuyenmuccon = ${categoryID}`)
   },
-
+  loadParent: function(id){
+    return db.load(`SELECT * 
+    FROM ${TBL_CATEGORIES} 
+    WHERE ID = (SELECT CHUYENMUCCON FROM ${TBL_CATEGORIES} WHERE ID = ${id})`)
+  },
+  loadParentByName: function(catName){
+    return db.load(`SELECT * FROM ${TBL_CATEGORIES} WHERE ${TBL_CATEGORIES}.TenChuyenMuc = '${catName}' and ${TBL_CATEGORIES}.chuyenmuccon is null`)
+  },
+  loadChildByNameAndParentID: function(catName, parentID){
+    return db.load(`SELECT * FROM ${TBL_CATEGORIES} WHERE ${TBL_CATEGORIES}.TenChuyenMuc = '${catName}' and ${TBL_CATEGORIES}.chuyenmuccon = ${parentID}`)
+  },
   load5CategoriesDesc: function () {
     return db.load(queries.load5CategoriesDesc());
   },

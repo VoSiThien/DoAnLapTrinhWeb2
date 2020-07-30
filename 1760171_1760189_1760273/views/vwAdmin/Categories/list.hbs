@@ -9,6 +9,31 @@
       document.getElementById(detailIndex).style.display = "";
   }
 
+  function editCategory(index) {
+    let categoryName = $("#txtCategory" + index).val();
+    if (categoryName !== '') {
+      $.getJSON(`/admin/Categories/validation?categoryname=${categoryName}&id=${index}`, (data) => {
+        if (data["result"] == 0) {
+          $.post(
+            "/admin/Categories/edit",
+            { TenChuyenMuc: categoryName, id: index },
+            window.alert("Sửa thành công!")
+          );
+        }
+        if(data["result"] == 1){
+          alert("Đã tồn tại chuyên mục con này ở trong chuyên mục cha đã chọn!");
+        }
+        if(data["result"] == 2){
+          alert("Đã tồn tại chuyên mục cha!");
+        }
+      });
+    }
+    else {
+      alert("Tên category không được rỗng!");
+    }
+
+  }
+
   function delCategory(index) {
     let btnName = "btnDelCategory" + index;
     $.getJSON(`/admin/Categories/del/${index}`, (data) => {

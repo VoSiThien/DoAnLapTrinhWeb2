@@ -24,7 +24,7 @@ router.get('/Posts', async function (req, res) {
 //--List
 router.get('/Categories', async function (req, res) {
     const catRow = await categoriesModel.loadAll();
-    let list = []; 
+    let list = [];
     catRow.forEach((cat) => {
         if (cat["ChuyenMucCon"] === null) {
             list.push([cat]);
@@ -38,8 +38,40 @@ router.get('/Categories', async function (req, res) {
         }
     });
     const newLocal = 'vwAdmin/Categories/list';
-    console.log(list);
+
     res.render(newLocal, { List: list, layout: 'adminPanel' });
+});
+//--Validation
+router.get('/Categories/validation', async function (req, res) {
+    const id = req.query.id;
+    const name = req.query.categoryname;
+    var result = 0;
+    //load cat by ID if it is parent
+    const Row = await categoriesModel.loadParentByID(id);
+    //is child
+    if (Row.length == 0) {
+        let parentRow = await categoriesModel.loadParent(id);
+        let catRow = await categoriesModel.loadChildByNameAndParentID(name, parentRow[0]["id"]);
+        if (catRow.length != 0)
+            result = 1;
+    }
+    else {//is parent
+        let catRow = await categoriesModel.loadParentByName(name);
+        if (catRow.length != 0)
+            result = 2;
+    }
+    res.json({ result });
+});
+//--Edit
+router.post('/Categories/edit', async function (req, res) {
+    const cat = await categoriesModel.loadByID(req.body.id);
+    const entity = {
+        id: req.body.id,
+        TenChuyenMuc: req.body.TenChuyenMuc,
+        ChuyenMucCon: cat[0]["ChuyenMucCon"]
+    }
+    await categoriesModel.update(entity);
+    res.json({});
 });
 //--Delete
 router.get('/Categories/del/:id', async function (req, res) {
@@ -48,7 +80,6 @@ router.get('/Categories/del/:id', async function (req, res) {
     const parentRow = await categoriesModel.loadParentByID(id);
     //is child
     if (parentRow.length == 0) {
-        console.log('is parent');
         const postRow = await categoriesModel.loadPostListByCatID(id);
         if (postRow.length != 0) {
             result = 1;
