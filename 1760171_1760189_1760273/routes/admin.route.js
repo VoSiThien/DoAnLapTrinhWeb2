@@ -47,6 +47,20 @@ router.get('/Tags', async function (req, res) {
     const newLocal = 'vwAdmin/Tags/list';
     res.render(newLocal, {List: list, layout:'adminPanel'});
 });
+
+//--add
+router.get('/Tags/add', async function (req, res) {
+    //load newsest ID
+    res.json({nextID:'105'});
+});
+router.post('/Tags/add', async function (req, res) {
+    const entity = {
+        TenTag: req.body.TenTag,
+        BaiVietID: req.body.BaiVietID
+    }
+    await tagModel.insert(entity);
+});
+
 //--edit
 
 router.post('/Tags/edit', async function (req, res) {
