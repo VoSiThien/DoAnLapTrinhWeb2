@@ -47,22 +47,27 @@ router.get('/Tags', async function (req, res) {
     const newLocal = 'vwAdmin/Tags/list';
     res.render(newLocal, {List: list, layout:'adminPanel'});
 });
-
+//--validation
+router.get('/Tags/validation', async function (req, res) {
+    const taglist = await tagModel.loadByPostIDAndName(req.query.tagname,req.query.postID);
+    let result = taglist.length == 0 ? true : false;
+    res.json({res: result});
+});
 //--add
 router.get('/Tags/add', async function (req, res) {
-    //load newsest ID
-    res.json({nextID:'105'});
+    const nextID = await tagModel.getNextAutoIncrement();
+    res.json({nextID : nextID[0]["AUTO_INCREMENT"]});
 });
 router.post('/Tags/add', async function (req, res) {
     const entity = {
         TenTag: req.body.TenTag,
         BaiVietID: req.body.BaiVietID
     }
+    console.log(entity);
     await tagModel.insert(entity);
 });
 
 //--edit
-
 router.post('/Tags/edit', async function (req, res) {
     const tag = await tagModel.loadByID(req.body.id);
     
@@ -89,3 +94,17 @@ router.get('/Users', async function (req, res) {
     res.render(newLocal, {List: list, layout:'adminPanel'});
 });
 module.exports = router;
+
+
+
+
+
+
+
+
+
+
+
+
+
+

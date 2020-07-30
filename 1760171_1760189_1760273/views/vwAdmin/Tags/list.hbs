@@ -20,25 +20,17 @@
 
   }
   function delCurrentHTMLRow() {
-    //$("#btnDelRow").closest('tr').remove();
-    
+    $("#btnDelRow").closest('tr').remove();
   }
-  /*
-  <button id="btnEditTag${nextID}" class="btn btn-primary btn-sm" role="button" title="Sửa tag"
-                          onclick="editTag(${nextID})">
-                          <i class="fa fa-pencil" aria-hidden="true">sửa</i>
-                        </button>
-                        <button id="btnDelTag${nextID}" class="btn btn-danger btn-sm" role="button" title="Xóa tag"
-                          onclick="delTag(${nextID})">
-                          <i class="fa fa-trash" aria-hidden="true">Xóa</i>
-                        </button>*/
+
+
 
   function getNewInsertedTagRowHTML(nextID) {
     var tr = `<tr class="childRow">
                     <td style="text-align: left;">{{@index}}</td>
-                    <td class="text-center"><input id="txtTagName" value="{{TenTag}}"
+                    <td class="text-center"><input id="txtTagName${nextID}" value="{{TenTag}}"
                         style="text-align: center;"></input></td>
-                    <td class="text-left">
+                    <td id = "tdTag${nextID}" class="text-left">
                       <button class = "btn btn-success btn-sm" onclick = "acceptAddTag(${nextID})">
                         <i class="fa fa-check" aria-hidden="true"></i>
                       </button>
@@ -49,47 +41,63 @@
                   </tr>`;
     return tr;
   }
-  function addNewHTMLTagRow(TagName){
+  function addNewHTMLTagRowAction(nextID) {
 
   }
 
+
   function acceptAddTag(nextID) {
-    alert(postID);
     let tagName = $("#txtTagName" + index).val();
     let postID = $("#btnDelRow").closest('table').attr('id').substr(8);
     if (tagName !== '') {
-      $.post(
-        "/admin/Tags/add",
-        { TenTag: tagName, BaiVietID: postID },
-        window.alert("Sửa thành công!")
-      );
+      $.getJSON(`/admin/Tags/validation?tagname=${tagName}&postID=${postID}`, (data) => {
+        if (data["res"] == true) {
+          $.post(
+            "/admin/Tags/add",
+            { TenTag: tagName, BaiVietID: postID },
+            window.alert("Thêm thành công!")
+          );
+        }
+        else {
+          window.alert("Tên tag đã bị trùng đối với bài viết này!");
+        }
+      });
     }
     else {
       alert("Tên tag không được rỗng!");
     }
+
+
   }
 
   function addTag(postID) {
+
     //get new inserted id of tag from server
     $.getJSON(`/admin/Tags/add`, (result) => {
       let nextID = result["nextID"];
       let row = getNewInsertedTagRowHTML(nextID);
       $("#tableTag" + postID).append(row);
     });
-    alert(nextID);
+
   }
-
-
 
   function editTag(index) {
     let tagName = $("#txtTagName" + index).val();
+    let postID = $("#btnEditTag" + index).closest('table').attr('id').substr(8);
 
     if (tagName !== '') {
-      $.post(
-        "/admin/Tags/edit",
-        { TenTag: tagName, id: index },
-        window.alert("Sửa thành công!")
-      );
+      $.getJSON(`/admin/Tags/validation?tagname=${tagName}&postID=${postID}`, (data) => {
+        if (data["res"] == true) {
+          $.post(
+            "/admin/Tags/edit",
+            { TenTag: tagName, id: index },
+            window.alert("Sửa thành công!")
+          );
+        }
+        else {
+          window.alert("Tên tag đã bị trùng đối với bài viết này!");
+        }
+      });
     }
     else {
       alert("Tên tag không được rỗng!");
@@ -116,7 +124,7 @@
     <div class="card-body">
       {{#each List}}
       <button type="button" class="btn btn-secondary" style="width:100%;margin-bottom:10px;" onclick="viewPost({{id}})">
-        <h5>(+)Phóng viên {{ButDanh}}</h5>
+        <h3>(+)Phóng viên {{ButDanh}}</h3>
       </button>
 
       <table id="table{{id}}" class="table table-hover" style="display:none;">
@@ -166,11 +174,11 @@
                 <tbody>
                   {{#each this}}
                   {{#if this.id}}
-                  <tr  class="childRow">
+                  <tr class="childRow">
                     <td style="text-align: left;">{{@index}}</td>
                     <td class="text-center"><input id="txtTagName{{id}}" value="{{TenTag}}"
                         style="text-align: center; border:5mm"></input></td>
-                    <td class="text-left">
+                    <td id="tdTag{{id}}" class="text-left">
                       <button id="btnEditTag{{id}}" class="btn btn-primary btn-sm" role="button" title="Sửa tag"
                         onclick="editTag({{id}})">
                         <i class="fa fa-pencil" aria-hidden="true">sửa</i>
