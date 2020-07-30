@@ -8,6 +8,21 @@
     else if (rowDetail.style.display == "none")
       document.getElementById(detailIndex).style.display = "";
   }
+
+  function delCategory(index) {
+    let btnName = "btnDelCategory" + index;
+    $.getJSON(`/admin/Categories/del/${index}`, (data) => {
+      if (data["result"] == '0') {
+        alert("Xóa thành công!");
+        $('#' + btnName).closest('tr').remove();
+      }
+      if (data["result"] == '1')
+        alert("Chuyên mục vẫn còn chứa bài viết! Không thể xóa!");
+      if (data["result"] == '2')
+        alert("Chuyên mục vẫn còn chứa chuyên mục con! Không thể xóa!");
+
+    });
+  }
 </script>
 {{/section}}
 <div class="card">
@@ -31,7 +46,7 @@
         </tr>
       </thead>
       <tbody>
-        {{#each lcCats}}
+        {{#each List}}
         <tr>
           <th scope="row" class="text-left">
             <p>{{@index}}</p>
@@ -45,12 +60,12 @@
                 aria-hidden="true"></i></button>
           </td>
           <td class="text-center">
-            <button id="btnEditCategory{{id}}" class="btn btn-primary btn-sm" role="button" title="Sửa category"
-              onclick="editCategory({{id}})">
+            <button id="btnEditCategory{{this.0.id}}" class="btn btn-primary btn-sm" role="button" title="Sửa category"
+              onclick="editCategory({{this.0.id}})">
               <i class="fa fa-pencil" aria-hidden="true">sửa</i>
             </button>
-            <button id="btnDelCategory{{id}}" class="btn btn-danger btn-sm" role="button" title="Xóa category"
-              onclick="delCategory({{id}})">
+            <button id="btnDelCategory{{this.0.id}}" class="btn btn-danger btn-sm" role="button" title="Xóa category"
+              onclick="delCategory({{this.0.id}})">
               <i class="fa fa-trash" aria-hidden="true">Xóa</i>
             </button>
           </td>

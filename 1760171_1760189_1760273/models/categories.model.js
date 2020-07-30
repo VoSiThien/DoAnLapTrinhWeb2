@@ -1,6 +1,7 @@
 const queries = require("../scripts/queries.scripts");
 const db = require("../utils/db");
 const TBL_CATEGORIES = 'chuyenmuc';
+const TBL_POST = 'baiviet';
 module.exports = {
   loadAll: function () {
     return db.load(`select * from ${TBL_CATEGORIES}`);
@@ -19,16 +20,16 @@ module.exports = {
     const condition = { id }
     return db.del(TBL_CATEGORIES, condition);
   },
-  deleteChuyenMucCon: function (id) {
-    const condition = { ChuyenMucCon: id }
-    return db.del(TBL_CATEGORIES, condition);
+  loadPostListByCatID:function(categoryID){
+    return db.load(`SELECT * FROM ${TBL_CATEGORIES}, ${TBL_POST} WHERE ${TBL_POST}.ChuyenMucID = ${TBL_CATEGORIES}.id  and ${TBL_CATEGORIES}.id = ${categoryID}`);
   },
-  loadChuyenMucCha: function () {
-    return db.load(`select * from ${TBL_CATEGORIES} where ChuyenMucCon is null`);
+  loadParentByID: function(categoryID){
+    return db.load(`SELECT * FROM ${TBL_CATEGORIES} WHERE ${TBL_CATEGORIES}.id = ${categoryID} and ${TBL_CATEGORIES}.chuyenmuccon is null`)
   },
-  loadChuyenMucByID: function (id) {
-    return db.load(`select * from ${TBL_CATEGORIES} where id = ${id}`);
+  loadChild: function(categoryID){
+    return db.load(`SELECT * FROM ${TBL_CATEGORIES} WHERE ${TBL_CATEGORIES}.chuyenmuccon = ${categoryID}`)
   },
+
   load5CategoriesDesc: function () {
     return db.load(queries.load5CategoriesDesc());
   },
@@ -37,3 +38,5 @@ module.exports = {
     return db.load(queries.loadCategoryTitle(id))
   }
 };
+
+
