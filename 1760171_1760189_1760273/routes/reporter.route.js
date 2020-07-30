@@ -42,7 +42,7 @@ router.post('/post', upload.single('urlImage'), async function (req, res) {
         LuotXem: 0,
         TrangThaiID: 2,
         ChuyenMucID: +req.body.ChuyenMucID,
-        TaiKhoanID: 3,//sửa lại sau
+        TaiKhoanID: +req.session.authUser["id"],
         isPremium: 0
     }
     await postModel.insert(postEntity);

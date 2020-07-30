@@ -52,9 +52,7 @@ $(document).ready(function () {
           $("#head-quantity").text(data["_quantity"]);
           $("#tail-quantity").text(`(${data["_quantity"]})`);
           displayPaginationButtons("#comments-area button", 1, data);
-  
           var html = getHtmlComments(data);
-  
           $("#users-comments").empty();
           $("#users-comments").append(html);
         }

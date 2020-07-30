@@ -27,35 +27,50 @@
 
   function getNewInsertedTagRowHTML(nextID) {
     var tr = `<tr class="childRow">
-                    <td style="text-align: left;">{{@index}}</td>
-                    <td class="text-center"><input id="txtTagName${nextID}" value="{{TenTag}}"
-                        style="text-align: center;"></input></td>
-                    <td id = "tdTag${nextID}" class="text-left">
-                      <button class = "btn btn-success btn-sm" onclick = "acceptAddTag(${nextID})">
-                        <i class="fa fa-check" aria-hidden="true"></i>
-                      </button>
-                      <button id="btnDelRow" class = "btn btn-danger btn-sm" onclick = "delCurrentHTMLRow()">
-                        <i class="fa fa-crosshairs" aria-hidden="true"></i>
-                      </button>
-                    </td>
-                  </tr>`;
+      <td id = "tdIndex${nextID}" style="text-align: left;">{{@index}}</td>
+      <td class="text-center"><input id="txtTagName${nextID}" value="{{TenTag}}"
+        style="text-align: center;"></input></td>
+      <td id="tdTag${nextID}" class="text-left">
+        <button class="btn btn-success btn-sm" onclick="return acceptAddTag(${nextID})">
+          <i class="fa fa-check" aria-hidden="true"></i>
+        </button>
+        <button id="btnDelRow" class="btn btn-danger btn-sm" onclick="delCurrentHTMLRow()">
+          <i class="fa fa-crosshairs" aria-hidden="true"></i>
+        </button>
+      </td>
+    </tr>`;
     return tr;
   }
-  function addNewHTMLTagRowAction(nextID) {
-
+  function getNewInsertedTagActionHTML(nextID) {
+    var tr = `<button id="btnEditTag${nextID}" class="btn btn-primary btn-sm" role="button" title="Sửa tag"
+      onclick="editTag(${nextID})">
+      <i class="fa fa-pencil" aria-hidden="true">sửa</i>
+    </button>
+    <button id="btnDelTag${nextID}" class="btn btn-danger btn-sm" role="button" title="Xóa tag"
+      onclick="delTag(${nextID})">
+      <i class="fa fa-trash" aria-hidden="true">Xóa</i>
+    </button>`;
+    return tr;
   }
 
-
   function acceptAddTag(nextID) {
-    let tagName = $("#txtTagName" + index).val();
+    let tagName = $("#txtTagName" + nextID).val();
     let postID = $("#btnDelRow").closest('table').attr('id').substr(8);
+   
     if (tagName !== '') {
       $.getJSON(`/admin/Tags/validation?tagname=${tagName}&postID=${postID}`, (data) => {
         if (data["res"] == true) {
           $.post(
             "/admin/Tags/add",
             { TenTag: tagName, BaiVietID: postID },
-            window.alert("Thêm thành công!")
+            function(){
+              alert("Thêm thành công!");
+              $("#tdTag" + nextID).empty();
+              $("#tdTag" + nextID).append(getNewInsertedTagActionHTML(nextID));
+              $("#txtTagName"+ nextID).css('border','5mm');
+              let nextIndex = $("#tableTag"+ postID + " tbody tr").length - 1;
+              $("#tdIndex" + nextID).html(nextIndex);
+            }
           );
         }
         else {
@@ -66,12 +81,10 @@
     else {
       alert("Tên tag không được rỗng!");
     }
-
-
+    return false;
   }
 
   function addTag(postID) {
-
     //get new inserted id of tag from server
     $.getJSON(`/admin/Tags/add`, (result) => {
       let nextID = result["nextID"];
@@ -175,7 +188,7 @@
                   {{#each this}}
                   {{#if this.id}}
                   <tr class="childRow">
-                    <td style="text-align: left;">{{@index}}</td>
+                    <td id = "tdIndex{{this.id}}" style="text-align: left;">{{@index}}</td>
                     <td class="text-center"><input id="txtTagName{{id}}" value="{{TenTag}}"
                         style="text-align: center; border:5mm"></input></td>
                     <td id="tdTag{{id}}" class="text-left">

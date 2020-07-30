@@ -63,8 +63,8 @@ router.post('/Tags/add', async function (req, res) {
         TenTag: req.body.TenTag,
         BaiVietID: req.body.BaiVietID
     }
-    console.log(entity);
     await tagModel.insert(entity);
+    res.json({});
 });
 
 //--edit
@@ -77,6 +77,7 @@ router.post('/Tags/edit', async function (req, res) {
         BaiVietID: tag[0]["BaiVietID"]
     }
     await tagModel.update(entity);
+    res.json({});
 });
 
 //--Delete
