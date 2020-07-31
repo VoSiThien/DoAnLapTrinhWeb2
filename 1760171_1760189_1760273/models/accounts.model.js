@@ -10,7 +10,15 @@ module.exports = {
     return db.load(queries.readerPremium(id));
   },
 
-  readerAdding: function (entity) { 
+  readerAdding: function (entity) {
     return db.add('taikhoan', entity);
-  }
+  },
+  updateAccount: function (entity) {
+    const condition = {
+      id: entity.id
+    }
+    delete entity.id;
+    return db.patch('taikhoan', entity, condition);
+
+  },
 };

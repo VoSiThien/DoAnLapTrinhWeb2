@@ -1,6 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
+const moment = require('moment');
 
 const config = require("../config/default.json");
 const accounts = require("../models/accounts.model");
@@ -25,7 +26,7 @@ router.post("/register", async (req, res) => {
   delete acc["MatKhau"];
 
   req.session.isAuthenticated = true;
-  req.session.authUser = { id: acc[0]["id"], HoTen: acc[0]["HoTen"] };
+  req.session.authUser = { id: acc[0]["id"], HoTen: acc[0]["HoTen"], Email: acc[0]["Email"], ButDanh: acc[0]["ButDanh"], NgaySinh: acc[0]["NgaySinh"], ThoiHan: acc[0]["ThoiHan"], TenChuyenMuc: acc[0]["TenChuyenMuc"]  };
 
   res.redirect(req.headers.referer);
 });
@@ -36,7 +37,7 @@ router.post("/login", async (req, res) => {
   delete acc["MatKhau"];
 
   req.session.isAuthenticated = true;
-  req.session.authUser = { id: acc[0]["id"], HoTen: acc[0]["HoTen"] };
+  req.session.authUser = { id: acc[0]["id"], HoTen: acc[0]["HoTen"], Email: acc[0]["Email"], ButDanh: acc[0]["ButDanh"], NgaySinh: acc[0]["NgaySinh"], ThoiHan: acc[0]["ThoiHan"], TenChuyenMuc: acc[0]["TenChuyenMuc"] };
 
   res.redirect(req.headers.referer);
 });
@@ -51,7 +52,7 @@ router.get("/google/success", async (req, res) => {
   delete acc["MatKhau"];
 
   req.session.isAuthenticated = true;
-  req.session.authUser = { id: acc[0]["id"], HoTen: acc[0]["HoTen"] };
+  req.session.authUser = {  id: acc[0]["id"], HoTen: acc[0]["HoTen"], Email: acc[0]["Email"], ButDanh: acc[0]["ButDanh"], NgaySinh: acc[0]["NgaySinh"], ThoiHan: acc[0]["ThoiHan"], TenChuyenMuc: acc[0]["TenChuyenMuc"]  };
 
   res.redirect("/");
 });
@@ -72,7 +73,31 @@ router.get(
   }
 );
 
-router.get("/profile", (req, res) => res.send("You are login!"));
+router.get("/profile", (req, res) => res.render('vwAccount/profile'));
+router.get("/profile/edit", (req, res) => res.render('vwAccount/editProfile'));
+
+router.post("/profile/edit", async (req, res) => {
+  const NS = moment(req.body.NgaySinh, 'YYYY/MM/DD').format('YYYY/MM/DD');
+  var BD = null;
+    if(req.body.id == 3){
+        BD = req.body.ButDanh;
+    }
+  const entity = {
+    id: req.body.id,
+    HoTen: req.body.HoTen,
+    ButDanh: BD,
+    email: req.body.email,
+    NgaySinh: NS
+  }
+  var a = await accounts.updateAccount(entity);
+  if(a != 0){
+    req.session.authUser.HoTen = req.body.HoTen;
+    req.session.authUser.ButDanh = BD;
+    req.session.authUser.Email = req.body.email;
+    req.session.authUser.NgaySinh = NS;
+  }
+  res.redirect('/account/profile');
+});
 
 router.get("/logout", mdlFunction.isLoggedIn, (req, res) => {
   req.session.destroy((e) => {

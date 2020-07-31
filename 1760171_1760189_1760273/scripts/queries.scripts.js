@@ -221,8 +221,8 @@ module.exports = {
   // ACCOUNTS
   accountSingle: function (email) {
     return `
-      select tk.id, tk.MatKhau, tk.HoTen
-      from taikhoan tk
+      select tk.*, c.TenChuyenMuc
+      from taikhoan tk left join chuyenmuc c on tk.ChuyenMucQuanLy = c.id
       where tk.email = '${email}'`;
   },
 
