@@ -1,0 +1,20 @@
+{
+    "mysql": {
+        "host": "localhost",
+        "port": 3306,
+        "user": "root",
+        "password": "",
+        "database": "qldb",
+        "connectionLimit": 50
+    },
+
+    "authentication": {
+        "saltRounds": 8,
+        "GOOGLE_CLIENT_ID": "934415223725-t9i9hk7q2u3qjl9uggfefehkcdsu2ags.apps.googleusercontent.com",
+        "GOOGLE_CLIENT_SECRET": "lcJ6HLJ9SDvvKk6TvaGyWaeY",
+        "GOOGLE_CALLBACK_URL": "/account/google/callback",
+        "GOOGLE_USER_INFO": "https://www.googleapis.com/oauth2/v3/userinfo"
+    },
+
+    "PORT": 3000
+}

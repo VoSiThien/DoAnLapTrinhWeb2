@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{{_sections.title}}}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap Core CSS -->
+    <link href="../../public/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Menu CSS -->
+    <link href="../../public/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet">
+    <!-- toast CSS -->
+    <link href="../../public/plugins/bower_components/toast-master/css/jquery.toast.css" rel="stylesheet">
+    <!-- morris CSS -->
+    <link href="../../public/plugins/bower_components/morrisjs/morris.css" rel="stylesheet">
+    <!-- chartist CSS -->
+    <link href="../../public/plugins/bower_components/chartist-js/dist/chartist.min.css" rel="stylesheet">
+    <link href="../../public/plugins/bower_components/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css"
+        rel="stylesheet">
+    <!-- animation CSS -->
+    <link href="../../public/css/animate.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../public/css/style.css" rel="stylesheet">
+    <!-- color CSS -->
+    <link href="../../public/css/colors/default.css" id="theme" rel="stylesheet">
+
+    {{{_sections.css}}}
+
+    <style>
+        nav .dropdown:hover>.dropdown-menu {
+            display: block;
+        }
+
+        nav .dropdown>.dropdown-toggle:active {
+            /*Without this, clicking will make it sticky*/
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    {{>panel}}
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            {{{body}}}
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="../../public/plugins/bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Menu Plugin JavaScript -->
+    <script src="../../public/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
+    <!--slimscroll JavaScript -->
+    <script src="../../public/js/jquery.slimscroll.js"></script>
+    <!--Wave Effects -->
+    <script src="../../public/js/waves.js"></script>
+    <!--Counter js -->
+    <script src="../../public/plugins/bower_components/waypoints/lib/jquery.waypoints.js"></script>
+    <script src="../../public/plugins/bower_components/counterup/jquery.counterup.min.js"></script>
+    <!-- chartist chart -->
+    <script src="../../public/plugins/bower_components/chartist-js/dist/chartist.min.js"></script>
+    <script
+        src="../../public/plugins/bower_components/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js"></script>
+    <!-- Sparkline chart JavaScript -->
+    <script src="../../public/plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="../../public/js/custom.min.js"></script>
+    <script src="../../public/plugins/bower_components/toast-master/js/jquery.toast.js"></script>
+
+    {{{_sections.js}}}
+
+
+</body>
+
+</html>

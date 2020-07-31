@@ -1,0 +1,150 @@
+<div class="modal fade" id="modal-register" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><strong>Đăng kí tài khoản</strong></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+      </div>
+      <div class="pl-3 pr-3 pt-3">
+        <div class="alert alert-warning w-100 text-center" role="alert" id="alert" style="display: none;">
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <form id="form-register" method="POST" action="/account/register">
+          <input class="bo-1-rad-3 bocl13 size-a-16 f1-s-13 cl5 plh6 p-rl-18 m-b-20 mw-100" type="text" id="name"
+            name="name" placeholder="Họ tên*" required>
+
+          <input class="bo-1-rad-3 bocl13 size-a-16 f1-s-13 cl5 plh6 p-rl-18 m-b-20 mw-100" type="text" id="email"
+            name="email" placeholder="Email*" required>
+
+          <input class="bo-1-rad-3 bocl13 size-a-16 f1-s-13 cl5 plh6 p-rl-18 m-b-20 mw-100" id="password"
+            type="password" name="password" placeholder="Mật khẩu*" required>
+
+          <input class="bo-1-rad-3 bocl13 size-a-16 f1-s-13 cl5 plh6 p-rl-18 m-b-20 mw-100" type="password"
+            id="repassword" placeholder="Nhập lại*" required>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="size-a-17 bg2 borad-3 f1-s-12 cl0 hov-btn1 trans-03 p-rl-15 m-t-10" type="button"
+          id="btn-register">
+          Đăng kí
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-login" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><strong>Đăng nhập</strong></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+      </div>
+      <div class="pl-3 pr-3 pt-3">
+        <div class="alert alert-warning w-100 text-center" role="alert" id="alert-login" style="display: none;">
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <form id="form-login" method="POST" action="/account/login">
+          <input class="bo-1-rad-3 bocl13 size-a-16 f1-s-13 cl5 plh6 p-rl-18 m-b-20 mw-100" type="text" id="_email"
+            name="_email" placeholder="Email*" required>
+
+          <input class="bo-1-rad-3 bocl13 size-a-16 f1-s-13 cl5 plh6 p-rl-18 m-b-20 mw-100" id="_password"
+            type="password" name="_password" placeholder="Mật khẩu*" required>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a href="/account/google">
+          <button type="button" style="background-color: #cf4332;"
+            class="size-a-17 bg2 borad-3 f1-s-12 cl0 hov-btn1 trans-03 p-rl-15 m-t-10">
+            <i class="fa fa-google-plus" aria-hidden="true"></i> Đăng nhập với Google
+          </button></a>
+        <button class="size-a-17 bg2 borad-3 f1-s-12 cl0 hov-btn1 trans-03 p-rl-15 m-t-10" type="submit"
+          form="form-login" id="btn-login">
+          Đăng nhập
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div class="container-menu-desktop">
+    <div class="topbar">
+      <div class="content-topbar container h-100">
+        <div class="left-topbar">
+          {{#unless lcIsAuthenticated}}
+          <a href="javascript:;" class="left-topbar-item" data-toggle="modal" data-target="#modal-register"
+            id="anchor-signup">
+            <i class="fa fa-user-plus" aria-hidden="true"></i> Đăng kí
+          </a>
+
+          <a href="javascript:;" class="left-topbar-item" data-toggle="modal" data-target="#modal-login"
+            id="anchor-signin">
+            <i class="fa fa-sign-in" aria-hidden="true"></i> Đăng nhập
+          </a>
+          {{/unless}}
+        </div>
+        <div class="right-topbar">
+          {{#if lcIsAuthenticated}}
+          <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle left-topbar-item" href="#" id="navbarDropdown" role="button"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-family: Roboto-Regular;">
+              <small><i class="fa fa-user" aria-hidden="true"></i> Xin chào, {{lcAuthUser.HoTen}}!</small>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" style="z-index: 10;" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item left-topbar-item" href="/account/profile">
+                <i class="fa fa-info-circle" aria-hidden="true"></i> <small>Trang cá nhân</small>
+              </a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item left-topbar-item" href="/account/logout">
+                <i class="fa fa-sign-out" aria-hidden="true"></i> <small>Đăng xuất</small>
+              </a>
+            </div>
+          </div>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap-main-nav" style="z-index: 5;">
+      <div class="main-nav">
+        <nav class="menu-desktop">
+          <ul class="main-menu">
+            <div id="_home">
+              <a href="/" style="color: black"><i class="fa fa-home fa-2x" aria-hidden="true"></i></a>
+            </div>
+            {{#each lcCats}}
+            <li class="mega-menu-item">
+              <a href="/category/{{this.0.id}}">{{this.0.TenChuyenMuc}}</a>
+
+              <div class="sub-mega-menu">
+                <div class="nav flex-column nav-pills" role="tablist">
+                  {{#each this}}
+                  {{#if (isNull this.ChuyenMucCon)}}
+                  <a class="nav-link active" data-toggle="pill" href="/category/{{this.id}}" role="tab">Tất cả</a>
+                  {{else}}
+                  <a class="nav-link" data-toggle="pill" href="/category/{{this.id}}"
+                    role="tab">{{this.TenChuyenMuc}}</a>
+                  {{/if}}
+                  {{/each}}
+                </div>
+              </div>
+            </li>
+            {{/each}}
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+

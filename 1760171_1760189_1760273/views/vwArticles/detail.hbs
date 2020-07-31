@@ -1,0 +1,249 @@
+{{#section 'title'}}
+{{this._article.TieuDe}}
+{{/section}}
+
+{{#section 'js'}}
+<script src="/public/js/articles.js"></script>
+{{/section}}
+
+<div class="container">
+  <div class="headline bg0 flex-wr-sb-c p-rl-20 p-tb-8">
+    <div class="f2-s-1 p-r-30 m-tb-6">
+      <a href="/" class="breadcrumb-item f1-s-3 cl9">
+        Trang chủ
+      </a>
+
+      <a href="/category/{{this._article.ChuyenMucID}}" class="breadcrumb-item f1-s-3 cl9">
+        {{this._article.TenChuyenMuc}}
+      </a>
+
+      <span class="breadcrumb-item f1-s-3 cl9">
+        {{this._article.TieuDe}}
+      </span>
+    </div>
+
+    <form class="dropdown" method="post" action="/search-enter" id="search-box">
+      <div class="size-a-2 bo-1-rad-22 of-hidden bocl11 m-tb-6 ">
+        <input autocomplete="off" class="f1-s-1 cl6 plh9 s-full p-l-25 p-r-45" type="text" name="search" id="search"
+          placeholder="Tìm kiếm...">
+        <button class="flex-c-c size-a-1 ab-t-r fs-20 cl2 hov-cl10 trans-03" type="submit">
+          <i class="zmdi zmdi-search"></i>
+        </button>
+      </div>
+
+      <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton" id="match-list">
+      </ul>
+    </form>
+  </div>
+</div>
+
+<!-- Content -->
+<section class="bg0 p-b-140">
+  <div class="bg-img1 size-a-18 how-overlay1" style="background-image: url({{this._article.HinhAnh}});">
+    <div class="container h-full flex-col-e-c p-b-58">
+      <a href="/category/{{this._article.ChuyenMucID}}"
+        class="f1-s-10 cl0 hov-cl10 trans-03 text-uppercase txt-center m-b-33">
+        {{this._article.TenChuyenMuc}}
+      </a>
+
+      <h3 class="f1-l-5 cl0 p-b-16 txt-center respon2">
+        {{this._article.TieuDe}}
+      </h3>
+
+      <div class="flex-wr-c-s">
+        <span class="f1-s-3 cl8 m-rl-7 txt-center">
+          <a href="javascript:;" class="f1-s-4 cl8 hov-cl10 trans-03">
+            {{this._article.ButDanh}}
+          </a>
+
+          <span class="m-rl-3">-</span>
+
+          <span>
+            {{formatDate this._article.NgayXuatBan}}
+          </span>
+        </span>
+
+        <span class="f1-s-3 cl8 m-rl-7 txt-center">
+          {{this._article.LuotXem}} <i class="fa fa-eye" aria-hidden="true"></i>
+        </span>
+
+        <a href="javascript:;" class="f1-s-3 cl8 m-rl-7 txt-center hov-cl10 trans-03" id="head-quantity">
+          {{this._article.SoLuong}} <i class="fa fa-comment" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-10 col-lg-8 p-b-30">
+        <div class="p-r-10 p-r-0-sr991">
+          <div class="p-b-70">
+            <p class="f1-s-11 cl6 p-b-25 mt-5">
+              &emsp;<i class="fa fa-pencil fa-flip-horizontal" aria-hidden="true"></i> {{this._article.NoiDungTat}}
+            </p>
+            {{{this._article.NoiDung}}}
+
+            <!-- Tag -->
+            <div class="flex-s-s p-t-12 p-b-15">
+              <span class="f1-s-12 cl5 m-r-8">
+                <strong>Tags:</strong>
+              </span>
+
+              <div class="flex-wr-s-s size-w-0">
+                {{#each this._tags}}
+                <a href="/tag/{{TenTag}}" class="f1-s-12 cl8 hov-link1 m-r-15">
+                  #{{TenTag}}
+                </a>
+                {{/each}}
+              </div>
+            </div>
+
+            <!-- Share -->
+            <div class="flex-s-s float-right">
+              <div class="flex-wr-s-s size-w-0">
+                {{#when this._article.PDF 'noteq' null}}
+                <a href="{{this._article.PDF}}"
+                  class="dis-block f1-s-13 cl0 bg-google borad-3 p-tb-4 p-rl-18 hov-btn1 m-r-3 m-b-3 trans-03" download>
+                  <i class="fa fa-file-pdf-o fa-lg" aria-hidden="true"></i> Tải xuống bản PDF
+                </a>
+                {{/when}}
+              </div>
+            </div>
+          </div>
+
+          <!-- list of comments -->
+          <div class="pb-5">
+            <h4 class="f1-l-4 cl3 p-b-12">
+              <i class="fa fa-comments fa-lg" aria-hidden="true"></i> Thảo luận
+              <small id="tail-quantity">({{this._article.SoLuong}})</small>
+            </h4>
+          </div>
+          <section class="bg0">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="p-r-10 p-r-0-sr991">
+                    <div class="m-t--40" id="users-comments">
+                      {{#each this._comments}}
+                      <div class="flex-wr-sb-s p-t-15 p-b-15 how-bor2">
+                        <div class="cl8 w-100">
+                          <a href="javascript:;" class="f1-s-4 cl8 hov-cl10 trans-03">
+                            <i class="fa fa-user-circle-o fa-lg" aria-hidden="true"></i> {{HoTen}}
+                          </a>
+
+                          <span class="f1-s-3 m-rl-3">
+                            -
+                          </span>
+
+                          <span class="f1-s-3">
+                            <i class="fa fa-calendar fa-lg" aria-hidden="true"></i> {{formatDate NgayBinhLuan}}
+                          </span>
+                        </div>
+
+                        <p class="f1-s-1 cl6 p-t-13">
+                          {{NoiDung}}
+                        </p>
+                      </div>
+                      {{/each}}
+                    </div>
+                    <div class="flex-wr-c-c m-rl--7 p-t-15 float-right" id="comments-area">
+                      <input type="hidden" id="articleID" value="{{this._article.id}}">
+                      <button class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7 pagi-active"
+                        {{#when this._pagi.0.value 'eq' -1}}style="display: none;" {{/when}}>1</button>
+                      {{#each this._pagi}}
+                      {{#when @index 'gt' 0}}{{#when value 'noteq' -1}}
+                      <button class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7">{{value}}</button>
+                      {{else}}
+                      <button class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7" style="display: none;"></button>
+                      {{/when}}{{/when}}
+                      {{/each}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div>
+            <h4 class="f1-l-4 cl3 p-b-12">
+              <i class="fa fa-commenting fa-lg" aria-hidden="true"></i> Để lại ý kiến của bạn
+            </h4>
+
+            {{#unless lcIsAuthenticated}}
+            <p class="f1-s-13 cl8 p-b-40 font-italic">
+              <span class="text-danger"><strong>*</strong></span> Bạn phải đăng nhập để sử dụng tính năng này.
+            </p>
+            {{/unless}}
+
+            <div>
+              <input type="hidden" id="article-id" value="{{this._article.id}}">
+              <textarea class="bo-1-rad-3 bocl13 size-a-15 f1-s-13 cl5 plh6 p-rl-18 p-tb-14 m-b-20" id="msg"
+                placeholder="Để lại ý kiến của bạn tại đây..."></textarea>
+
+              <button id="btn-send-msg"
+                class="size-a-17 bg2 borad-3 f1-s-12 cl0 {{#if lcIsAuthenticated}}hov-btn1{{/if}} trans-03 p-rl-15 m-t-10"
+                {{#unless lcIsAuthenticated}}disabled="disabled" {{/unless}}>
+                Gửi
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-10 col-lg-4 p-b-30">
+        <div class="p-l-10 p-rl-0-sr991 p-t-70">
+          <div class="p-b-30">
+            <div class="how2 how2-cl4 flex-s-c">
+              <h3 class="f1-m-2 cl3 tab01-title">
+                <i class="fa fa-exchange" aria-hidden="true"></i> Các bài viết liên quan
+              </h3>
+            </div>
+
+            <ul class="p-t-35">
+              {{#each this._relatedArticles}}
+              <li class="flex-wr-sb-s p-b-30" title="{{NoiDungTat}}">
+                <a href="/article/{{id}}" class="size-w-10 wrap-pic-w hov1 trans-03 _article">
+                  <img src="{{HinhAnh}}" alt="IMG">
+                </a>
+
+                <div class="size-w-11">
+                  <h6 class="p-b-4">
+                    <a href="/article/{{id}}" class="f1-s-5 cl3 hov-cl10 trans-03 _article">
+                      {{TieuDe}}
+                    </a>
+                  </h6>
+
+                  <span class="cl8 txt-center p-b-24">
+                    <a href="/category/{{ChuyenMucID}}"
+                      class="f1-s-4 cl8 hov-cl10 trans-03 border border-dark rounded p-1">
+                      {{TenChuyenMuc}}
+                    </a>
+
+                    <span class="f1-s-3 m-rl-3">
+                      -
+                    </span>
+
+                    <a href="javascript:;" class="f1-s-6 cl8 hov-cl10 trans-03">
+                      {{ButDanh}}
+                    </a>
+
+                    <span class="f1-s-3 m-rl-3">
+                      -
+                    </span>
+
+                    <span class="f1-s-3">
+                      {{formatDate NgayXuatBan}}
+                    </span>
+                  </span>
+                </div>
+              </li>
+              {{/each}}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{> footer}}
