@@ -25,8 +25,10 @@ router.post("/register", async (req, res) => {
 
   delete acc["MatKhau"];
 
+  const NS = moment(acc[0]["NgaySinh"], 'YYYY/MM/DD').format('YYYY/MM/DD');
+  const TH = moment(acc[0]["ThoiHan"], 'YYYY/MM/DD HH:mm:SS').format('YYYY/MM/DD HH:mm:SS');
   req.session.isAuthenticated = true;
-  req.session.authUser = { id: acc[0]["id"], HoTen: acc[0]["HoTen"], Email: acc[0]["Email"], ButDanh: acc[0]["ButDanh"], NgaySinh: acc[0]["NgaySinh"], ThoiHan: acc[0]["ThoiHan"], TenChuyenMuc: acc[0]["TenChuyenMuc"]  };
+  req.session.authUser = { id: acc[0]["id"], HoTen: acc[0]["HoTen"], Email: acc[0]["Email"], ButDanh: acc[0]["ButDanh"], NgaySinh: NS, ThoiHan: TH, TenChuyenMuc: acc[0]["TenChuyenMuc"]  };
 
   res.redirect(req.headers.referer);
 });
@@ -36,8 +38,11 @@ router.post("/login", async (req, res) => {
 
   delete acc["MatKhau"];
 
+  const NS = moment(acc[0]["NgaySinh"], 'YYYY/MM/DD').format('YYYY/MM/DD');
+  const TH = moment(acc[0]["ThoiHan"], 'YYYY/MM/DD HH:mm:SS').format('YYYY/MM/DD HH:mm:SS');
+
   req.session.isAuthenticated = true;
-  req.session.authUser = { id: acc[0]["id"], HoTen: acc[0]["HoTen"], Email: acc[0]["Email"], ButDanh: acc[0]["ButDanh"], NgaySinh: acc[0]["NgaySinh"], ThoiHan: acc[0]["ThoiHan"], TenChuyenMuc: acc[0]["TenChuyenMuc"] };
+  req.session.authUser = { id: acc[0]["id"], HoTen: acc[0]["HoTen"], Email: acc[0]["Email"], ButDanh: acc[0]["ButDanh"], NgaySinh: NS, ThoiHan: TH, TenChuyenMuc: acc[0]["TenChuyenMuc"] };
 
   res.redirect(req.headers.referer);
 });
@@ -51,8 +56,11 @@ router.get("/google/success", async (req, res) => {
 
   delete acc["MatKhau"];
 
+  const NS = moment(acc[0]["NgaySinh"], 'YYYY/MM/DD').format('YYYY/MM/DD');
+  const TH = moment(acc[0]["ThoiHan"], 'YYYY/MM/DD HH:mm:SS').format('YYYY/MM/DD HH:mm:SS');
+
   req.session.isAuthenticated = true;
-  req.session.authUser = {  id: acc[0]["id"], HoTen: acc[0]["HoTen"], Email: acc[0]["Email"], ButDanh: acc[0]["ButDanh"], NgaySinh: acc[0]["NgaySinh"], ThoiHan: acc[0]["ThoiHan"], TenChuyenMuc: acc[0]["TenChuyenMuc"]  };
+  req.session.authUser = {  id: acc[0]["id"], HoTen: acc[0]["HoTen"], Email: acc[0]["Email"], ButDanh: acc[0]["ButDanh"], NgaySinh: NS, ThoiHan: TH, TenChuyenMuc: acc[0]["TenChuyenMuc"]  };
 
   res.redirect("/");
 });
@@ -106,4 +114,22 @@ router.get("/logout", mdlFunction.isLoggedIn, (req, res) => {
   });
 });
 
+router.get("/password/edit", (req, res) => res.render('vwAccount/editPassword'));
+router.post("/password/edit", async (req, res) => {
+
+  const acc = await accounts.accountSingle(req.session.authUser.Email);
+  const check = bcrypt.compareSync(req.body.password, acc[0]["MatKhau"]);
+  if(req.body.newPassword == req.body.retypePassword && check ==  true){
+    const entity = {
+      id: req.body.id,
+      MatKhau: bcrypt.hashSync(
+        req.body.newPassword,
+        config.authentication.saltRounds
+      )
+    }
+    var a = await accounts.updateAccount(entity);
+    res.redirect('/account/profile');
+  }
+  res.redirect(req.headers.referer);
+});
 module.exports = router;
