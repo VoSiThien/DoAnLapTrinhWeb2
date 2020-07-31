@@ -40,7 +40,6 @@ CREATE TABLE `baiviet` (
   `TaiKhoanID` int(10) UNSIGNED NOT NULL,
   `isPremium` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 --
 -- Đang đổ dữ liệu cho bảng `baiviet`
 --
@@ -78,7 +77,6 @@ INSERT INTO `baiviet` (`id`, `TieuDe`, `NoiDungTat`, `NoiDung`, `NgayXuatBan`, `
 --
 -- Cấu trúc bảng cho bảng `binhluan`
 --
-
 CREATE TABLE `binhluan` (
   `id` int(11) UNSIGNED NOT NULL,
   `NoiDung` varchar(100) DEFAULT NULL,
@@ -270,7 +268,7 @@ INSERT INTO `tag` (`id`, `TenTag`, `BaiVietID`) VALUES
 CREATE TABLE `taikhoan` (
   `id` int(11) UNSIGNED NOT NULL,
   `TenTaiKhoan` varchar(50) NOT NULL,
-  `MatKhau` varchar(50) NOT NULL,
+  `MatKhau` varchar(100) NOT NULL,
   `HoTen` varchar(100) DEFAULT NULL,
   `ButDanh` varchar(50) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
@@ -285,13 +283,11 @@ CREATE TABLE `taikhoan` (
 --
 
 INSERT INTO `taikhoan` (`id`, `TenTaiKhoan`, `MatKhau`, `HoTen`, `ButDanh`, `email`, `NgaySinh`, `ThoiHan`, `VaiTroID`, `ChuyenMucQuanLy`) VALUES
-(1, 'admin', '1', 'Lê Văn Chủ', NULL, 'admin@gmail.com', '1999-11-20', '2030-12-30 00:00:00', 1, NULL),
-(2, 'btvien', '1', 'Lý Thái Tổ', NULL, 'Ly@gmail.com', '1996-10-19', '2030-12-30 00:00:00', 2, 6),
-(3, 'pvien', '1', 'Lý Thường Kiệt', 'Anh Hùng Xạ Điêu', 'Kiet@gmail.com', '2000-01-25', '2030-12-30 00:00:00', 3, NULL),
-(4, 'docgia', '1', 'Phạm Văn Đồng', NULL, 'Pham@gmail.com', '2003-05-01', '2020-12-30 00:00:00', 4, NULL);
-
+(1, 'admin', '$2b$10$cgjRF2F0mCjr8pxZCN8WFuJTZmqi22u3L1qiGahfVUgv1kQIUl5Ee', 'Lê Văn Chủ', NULL, 'admin@gmail.com', '1999-11-20', '2030-12-30 00:00:00', 1, NULL),
+(2, 'btvien', '$2b$10$NwlJI4OapZAHOBvOYvmemuU/x/Px4WyealuuYBBYNGbcLCmicF2UC', 'Lý Thái Tổ', NULL, 'Ly@gmail.com', '1996-10-19', '2030-12-30 00:00:00', 2, 6),
+(3, 'pvien', '$2b$10$Nk7R2.y7Uyd2/P6YdLrdAer7/49JdPgoNjMtwaXzs5QI3Z7t5h.16', 'Lý Thường Kiệt', 'Anh Hùng Xạ Điêu', 'Kiet@gmail.com', '2000-01-25', '2030-12-30 00:00:00', 3, NULL),
+(4, 'docgia', '$2b$10$ytmib0ZkGk94gBhpEvcEye1c6c.0lCuMZJI6XG9BZtDWogQ0MPCq.', 'Phạm Văn Đồng', NULL, 'Pham@gmail.com', '2003-05-01', '2020-12-30 00:00:00', 4, NULL);
 -- --------------------------------------------------------
-
 --
 -- Cấu trúc bảng cho bảng `trangthai`
 --

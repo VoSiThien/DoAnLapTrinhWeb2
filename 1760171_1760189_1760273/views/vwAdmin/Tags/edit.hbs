@@ -1,0 +1,32 @@
+<div class="card">
+    <div class="card-header">
+        <h4>Sửa Tag</h4>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="" style="width: 50%; margin-left: 20%">
+            <div class="form-group">
+                <label for="id">#</label>
+                <input type="text" class="form-control" id="id" name="id" value="{{this.row.id}}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="TagName">Tên Tag</label>
+                <input type="text" class="form-control" id="TenTag" name="TenTag" value="{{this.row.TenTag}}" autofocus>
+            </div>
+            <div class="form-group">
+
+                <label for="txtType">Chuyên mục:</label>
+
+                <select id="cbParentType" name="BaiVietID" class="form-control">
+                    {{#each this.List}}
+                    <option value="{{id}}" selected>{{TieuDe}}</option>
+                    </optgroup>
+                    {{/each}}
+                </select>
+            </div>
+            <a class="btn btn-success" href="/admin/Tag" role="button" title="Back to List">
+                <i class="fa fa-backward" aria-hidden="true"></i>
+            </a>
+            <input type="submit" value="Submit" class="btn btn-primary">
+        </form>
+    </div>
+</div>

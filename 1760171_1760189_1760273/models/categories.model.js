@@ -15,6 +15,7 @@ module.exports = {
   update: function (entity) {
     const condition = {
       id: entity.id
+
     }
     delete entity.id;
     return db.patch(TBL_CATEGORIES, entity, condition);

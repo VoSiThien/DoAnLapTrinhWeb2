@@ -28,10 +28,12 @@ module.exports = {
         const condition = { id }
         return db.del(TBL_TAG, condition);
     },
+
     getNextAutoIncrement: () => {
         return db.load(`SELECT AUTO_INCREMENT
         FROM information_schema.TABLES
         WHERE TABLE_SCHEMA = "${databaseName}"
         AND TABLE_NAME = "${TBL_TAG}"`)
+
     }
 }

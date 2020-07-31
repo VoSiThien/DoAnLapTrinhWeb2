@@ -1,16 +1,18 @@
 const db = require('../utils/db');
 
-const TBL_ACCOUNT = 'TaiKhoan'
+const TBL_ACCOUNT = 'TaiKhoan';
+const TBL_VAITRO = 'VaiTro';
+const TBL_CATEGORIES = 'ChuyenMuc';
 
 module.exports = {
-    load: function (username) {
-        return db.load(`select * from ${TBL_ACCOUNT} where tentaikhoan = '${username}'`)
+    load: function () {
+        return db.load(`select t.*, v.TenVaiTro, c.TenChuyenMuc from (${TBL_ACCOUNT} t join ${TBL_VAITRO} v) left join ${TBL_CATEGORIES} c on t.ChuyenMucQuanLy = c.id where t.VaiTroID = v.id`)
     },
     loadByID: function (ID) {
         return db.load(`select * from ${TBL_ACCOUNT} where id = '${ID}'`)
     },
-    loadUser: function (username, password) {
-        return db.load(`select * from ${TBL_ACCOUNT} where tentaikhoan = '${username}' and matkhau = '${password}'`)
+    loadUser: function (username) {
+        return db.load(`select * from ${TBL_ACCOUNT} where tentaikhoan = '${username}'`)
     },
     loadReporter: function(){
         return db.load(`select * from ${TBL_ACCOUNT} where vaitroID  = 3`);
@@ -20,10 +22,10 @@ module.exports = {
     },
     update: function (entity) {
         const condition = {
-            username: entity.username
+            id: entity.id
         }
         delete entity.id;
-        return db.update(TBL_ACCOUNT, entity, condition);
+        return db.patch(TBL_ACCOUNT, entity, condition);
     }
 }
 
