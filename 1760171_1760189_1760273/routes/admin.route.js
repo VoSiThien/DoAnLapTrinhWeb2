@@ -16,7 +16,20 @@ router.get('/', async function (req, res) {
 //----------------------------------------------Posts management------------------------------------
 //--List
 router.get('/Posts', async function (req, res) {
-    const list = await postsModel.load();
+    var list = [];
+    const listAuthor = await accountModel.loadReporter();
+    list = listAuthor;
+    for (let i = 0; i < list.length; i++) {
+        var listPost = await postsModel.loadByAuthor(list[i]["id"]);
+        for (let j = 0; j < listPost.length; j++) {
+            list[i][j] = listPost[j];
+            var listTag = await tagModel.loadByPostID(list[i][j]["id"]);
+
+            for (let k = 0; k < listTag.length; k++) {
+                list[i][j][k] = listTag[k];
+            }
+        }
+    }
     const newLocal = 'vwAdmin/Posts/list';
     res.render(newLocal, { List: list, layout: 'adminPanel' });
 });
@@ -42,7 +55,29 @@ router.get('/Categories', async function (req, res) {
     res.render(newLocal, { List: list, layout: 'adminPanel' });
 });
 //--Validation
-router.get('/Categories/validation', async function (req, res) {
+router.get('/Categories/add/validation', async function (req, res) {
+    if(req.query.parentID)
+        var parentID = req.query.parentID;
+    const name = req.query.categoryname;
+    var result = 0;
+    //is child
+    if (req.query.parentID) {
+        let parentRow = await categoriesModel.loadParent(req.query.parentID);
+        let catRow = await categoriesModel.loadChildByNameAndParentID(name, parentRow[0]["id"]);
+        if (catRow.length != 0)
+            result = 1;
+    }
+    else {//is parent
+        let catRow = await categoriesModel.loadParentByName(name);
+        if (catRow.length != 0)
+            result = 2;
+    }
+
+
+    res.json({ result });
+});
+
+router.get('/Categories/edit/validation', async function (req, res) {
     const id = req.query.id;
     const name = req.query.categoryname;
     var result = 0;
@@ -62,6 +97,20 @@ router.get('/Categories/validation', async function (req, res) {
     }
     res.json({ result });
 });
+//--Insert
+router.post('/Categories/add', async function (req, res) {
+    const entity = {
+        TenChuyenMuc: req.body.TenChuyenMuc,
+        ChuyenMucCon: null
+    }
+    await categoriesModel.insert(entity)
+    let NextID = await categoriesModel.getNextAutoIncrement();
+    NextID = NextID[0].AUTO_INCREMENT;
+    let CountParent = await categoriesModel.countParent();
+    CountParent = CountParent[0]["COUNT(*)"];
+    res.json({nextID : NextID, countParent : CountParent});
+});
+
 //--Edit
 router.post('/Categories/edit', async function (req, res) {
     const cat = await categoriesModel.loadByID(req.body.id);
@@ -103,20 +152,7 @@ router.get('/Categories/del/:id', async function (req, res) {
 //----------------------------------------------Tag management------------------------------------
 //--List
 router.get('/Tags', async function (req, res) {
-    var list = [];
-    const listAuthor = await accountModel.loadReporter();
-    list = listAuthor;
-    for (let i = 0; i < list.length; i++) {
-        var listPost = await postsModel.loadByAuthor(list[i]["id"]);
-        for (let j = 0; j < listPost.length; j++) {
-            list[i][j] = listPost[j];
-            var listTag = await tagModel.loadByPostID(list[i][j]["id"]);
-
-            for (let k = 0; k < listTag.length; k++) {
-                list[i][j][k] = listTag[k];
-            }
-        }
-    }
+    
     const newLocal = 'vwAdmin/Tags/list';
     res.render(newLocal, { List: list, layout: 'adminPanel' });
 });

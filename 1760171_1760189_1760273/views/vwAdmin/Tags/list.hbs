@@ -28,7 +28,7 @@
   function getNewInsertedTagRowHTML(nextID) {
     var tr = `<tr class="childRow">
       <td id = "tdIndex${nextID}" style="text-align: left;">{{@index}}</td>
-      <td class="text-center"><input id="txtTagName${nextID}" value="{{TenTag}}"
+      <td class="text-center"><input id="txtTagName${nextID}"
         style="text-align: center;"></input></td>
       <td id="tdTag${nextID}" class="text-left">
         <button class="btn btn-success btn-sm" onclick="return acceptAddTag(${nextID})">
@@ -93,7 +93,7 @@
     });
 
   }
-
+  
   function editTag(index) {
     let tagName = $("#txtTagName" + index).val();
     let postID = $("#btnEditTag" + index).closest('table').attr('id').substr(8);

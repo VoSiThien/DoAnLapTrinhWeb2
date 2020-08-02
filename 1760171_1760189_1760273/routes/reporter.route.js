@@ -59,7 +59,7 @@ router.post('/post', upload.single('urlImage'), async function (req, res) {
 });
 //------------------------------------------------list Post status ------------------------------------=-======
 router.get('/listpost', async function (req, res) {
-    const list = await postModel.loadByAuthor(req.session.user[0]["id"]);
+    const list = await postModel.loadByAuthor(+req.session.authUser["id"]);
     res.render('vwReporter/listPost', { List: list });
 });
 //------------------------------------------------edit Post status ------------------------------------=-======
@@ -103,7 +103,7 @@ router.post('/edit/:id', upload.single('urlImage'), async function (req, res) {
         LuotXem: 0,
         TrangThaiID: 2,
         ChuyenMucID: +req.body.ChuyenMucID,
-        TaiKhoanID: row[0]["TaiKhoanID"],
+        TaiKhoanID: +req.session.authUser["id"],
         isPremium: 1
     }
     await postModel.update(postEntity);

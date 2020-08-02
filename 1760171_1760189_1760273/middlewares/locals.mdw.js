@@ -68,7 +68,6 @@ module.exports = function (app) {
     }
 
     res.locals.lcIsAuthenticated = req.session.isAuthenticated;
-    res.locals.lcUser = req.session.user;
     res.locals.lcAuthUser = req.session.authUser;
 
     next();

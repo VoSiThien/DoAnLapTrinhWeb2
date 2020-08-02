@@ -51,11 +51,11 @@ module.exports = {
 
   // new Array(end - start).fill().map((d, i) => i + start);
   rangeOfPagination: function (quantity, current) {
-    if (quantity <= 5)
+    if (quantity <= 5) {
       return new Array(5)
         .fill()
         .map((d, i) => Object({ value: i + 1 <= quantity ? i + 1 : -1 }));
-
+    }
     let start = current - 3;
     let end = current + 1;
 
@@ -66,7 +66,24 @@ module.exports = {
       end = quantity - 1;
       start = end - 4;
     }
-
     return new Array(5).fill().map((d, i) => Object({ value: i + start + 1 }));
   },
+  AdminrangeOfPagination: function (quantity, current) {
+    if (quantity <= 5) {
+      return new Array(5)
+        .fill()
+        .map((d, i) => Object({ value: i + 1 <= quantity ? i + 1 : -1 }));
+    }
+    let start = current - 3;
+    let end = current + 1;
+
+    if (start < 0) {
+      start = 0;
+      end = 4;
+    } else if (end >= quantity) {
+      end = quantity - 1;
+      start = end - 4;
+    }
+    return new Array(5).fill().map((d, i) => Object({ value: i + start + 1 }));
+  }
 };

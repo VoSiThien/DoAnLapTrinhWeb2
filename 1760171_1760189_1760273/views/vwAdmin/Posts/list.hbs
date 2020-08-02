@@ -1,34 +1,219 @@
+{{#section 'js'}}
+<script>
+  function viewDetail(index) {
+    var detailIndex = "row" + index;
+    var rowDetail = document.getElementById(detailIndex)
+    if (rowDetail.style.display == "")
+      document.getElementById(detailIndex).style.display = "none";
+    else if (rowDetail.style.display == "none")
+      document.getElementById(detailIndex).style.display = "";
+  }
+  function viewPost(index) {
+    var detailIndex = "table" + index;
+    var rowDetail = document.getElementById(detailIndex)
+    if (rowDetail.style.display == "")
+      document.getElementById(detailIndex).style.display = "none";
+    else if (rowDetail.style.display == "none")
+      document.getElementById(detailIndex).style.display = "";
+  }
+  function isClickAdd(postTable) {
+    
+  }
+  function delCurrentHTMLRow() {
+    $("#btnDelRow").closest('tr').remove();
+  }
+
+
+
+  function getNewInsertedTagRowHTML(nextID) {
+    var tr = `<tr class="childRow">
+      <td id = "tdIndex${nextID}" style="text-align: left;">{{@index}}</td>
+      <td class="text-center"><input id="txtTagName${nextID}" value="{{TenTag}}"
+        style="text-align: center;"></input></td>
+      <td id="tdTag${nextID}" class="text-left">
+        <button class="btn btn-success btn-sm" onclick="return acceptAddTag(${nextID})">
+          <i class="fa fa-check" aria-hidden="true"></i>
+        </button>
+        <button id="btnDelRow" class="btn btn-danger btn-sm" onclick="delCurrentHTMLRow()">
+          <i class="fa fa-crosshairs" aria-hidden="true"></i>
+        </button>
+      </td>
+    </tr>`;
+    return tr;
+  }
+  function getNewInsertedTagActionHTML(nextID) {
+    var tr = `<button id="btnEditTag${nextID}" class="btn btn-primary btn-sm" role="button" title="Sửa tag"
+      onclick="editTag(${nextID})">
+      <i class="fa fa-pencil" aria-hidden="true">sửa</i>
+    </button>
+    <button id="btnDelTag${nextID}" class="btn btn-danger btn-sm" role="button" title="Xóa tag"
+      onclick="delTag(${nextID})">
+      <i class="fa fa-trash" aria-hidden="true">Xóa</i>
+    </button>`;
+    return tr;
+  }
+
+  function acceptAddTag(nextID) {
+    let tagName = $("#txtTagName" + nextID).val();
+    let postID = $("#btnDelRow").closest('table').attr('id').substr(8);
+   
+    if (tagName !== '') {
+      $.getJSON(`/admin/Tags/validation?tagname=${tagName}&postID=${postID}`, (data) => {
+        if (data["res"] == true) {
+          $.post(
+            "/admin/Tags/add",
+            { TenTag: tagName, BaiVietID: postID },
+            function(){
+              alert("Thêm thành công!");
+              $("#tdTag" + nextID).empty();
+              $("#tdTag" + nextID).append(getNewInsertedTagActionHTML(nextID));
+              $("#txtTagName"+ nextID).css('border','5mm');
+              let nextIndex = $("#tableTag"+ postID + " tbody tr").length - 1;
+              alert(nextIndex);
+              $("#tdIndex" + nextID).html(nextIndex);
+            }
+          );
+        }
+        else {
+          window.alert("Tên tag đã bị trùng đối với bài viết này!");
+        }
+      });
+    }
+    else {
+      alert("Tên tag không được rỗng!");
+    }
+    return false;
+  }
+
+  function addTag(postID) {
+    //get new inserted id of tag from server
+    $.getJSON(`/admin/Tags/add`, (result) => {
+      let nextID = result["nextID"];
+      let row = getNewInsertedTagRowHTML(nextID);
+      $("#tableTag" + postID).append(row);
+    });
+
+  }
+  
+  function editTag(index) {
+    let tagName = $("#txtTagName" + index).val();
+    let postID = $("#btnEditTag" + index).closest('table').attr('id').substr(8);
+
+    if (tagName !== '') {
+      $.getJSON(`/admin/Tags/validation?tagname=${tagName}&postID=${postID}`, (data) => {
+        if (data["res"] == true) {
+          $.post(
+            "/admin/Tags/edit",
+            { TenTag: tagName, id: index },
+            window.alert("Sửa thành công!")
+          );
+        }
+        else {
+          window.alert("Tên tag đã bị trùng đối với bài viết này!");
+        }
+      });
+    }
+    else {
+      alert("Tên tag không được rỗng!");
+    }
+
+  }
+
+  function delTag(index) {
+    let btnName = "btnDelTag" + index;
+    $.getJSON(`/admin/Tags/del/${index}`, (result) => {
+      alert("Xóa thành công!");
+      $('#' + btnName).closest('tr').remove();
+    });
+  }
+
+
+</script>
+{{/section}}
 <div class="card">
   <div class="card-header">
-    <h4>Danh sách bài viết</h4>
+    <h4>Quản lý tag</h4>
   </div>
-<div class="card">
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th scope="col" class="text-center">#</th>
-        <th scope="col">Tiêu đề</th>
-        <th scope="col">Nội dung tắt</th>
-        <th scope="col">Người viết</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each this.List}}
-      <tr>
-        <th scope="row" class="text-center">{{id}}</th>
-        <td>{{{TieuDe}}}</td>
-        <td>{{{NoiDungTat}}}</td>
-        <td>{{TaiKhoanID}}</td>
-        <td class="text-right">
-          <a class="btn btn-primary btn-sm" href="/admin/QLBaiViet/detail/{{id}}" role="button" title="">
-            <i class="fa fa-pencil" aria-hidden="true">Chi tiết</i>
-          </a>
-          <a class="btn btn-danger btn-sm" href="/admin/QLBaiViet/XuatBan/{{id}}" role="button" title="">
-            <i class="fa fa-trash" aria-hidden="true">Xuất Bản</i>
-          </a>
-        </td>
-      </tr>
+  <div class="card">
+    <div class="card-body">
+      {{#each List}}
+      <button type="button" class="btn btn-secondary" style="width:100%;margin-bottom:10px;" onclick="viewPost({{id}})">
+        <h3>(+)Phóng viên {{ButDanh}}</h3>
+      </button>
+
+      <table id="table{{id}}" class="table table-hover" style="display:none;">
+        <thead>
+          <tr>
+            <th scope="col" class="text-left" style="width: 10%">#</th>
+            <th scope="col" style="width: 60%;" class="text-center">Tiêu đề</th>
+            <th scope="col" class="text-center">Xem danh sách tag</th>
+            <th scope="col" class="text-center">Chi tiết bài viết</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each this}}
+          {{#if this.id}}
+          <tr style="background-color:antiquewhite;">
+            <th scope="row" class="text-left">
+              <p>{{@index}}</p>
+            </th>
+            <td class="text-center">
+              <p>{{TieuDe}}</p>
+            </td>
+            <td class="text-center">
+              <button type="button" class="btn btn-primary" onclick="viewDetail({{this.id}})"><i class="fa fa-eye"
+                  aria-hidden="true"></i></button>
+            </td>
+            <td class="text-center">
+              <a class="btn btn-success btn-sm" href="" role="button" title="">
+                <i class="fa fa-pencil" aria-hidden="true">Chi tiết</i>
+              </a>
+            </td>
+          </tr>
+          {{!-- style="display:none" --}}
+          <tr id="row{{this.id}}" style="display:none">
+            <td></td>
+            <td colspan="2">
+              <button id="btnAddTag{{this.id}}" style="margin-left: 0px;" class="btn btn-success btn-sm"
+                onclick="addTag({{this.id}})">(+)</button>
+              <table id="tableTag{{id}}" class="table table-hover">
+                <thead>
+                  <tr style="background-color:lightgray">
+                    <th scope="col" class="text-left" style="width: 20%">#</th>
+                    <th scope="col" style="width: 60%;" class="text-center">Tên tag</th>
+                    <th scope="col" class="text-center">Action</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {{#each this}}
+                  {{#if this.id}}
+                  <tr class="childRow">
+                    <td id = "tdIndex{{this.id}}" style="text-align: left;">{{@index}}</td>
+                    <td class="text-center"><input id="txtTagName{{id}}" value="{{TenTag}}"
+                        style="text-align: center; border:5mm"></input></td>
+                    <td id="tdTag{{id}}" class="text-left">
+                      <button id="btnEditTag{{id}}" class="btn btn-primary btn-sm" role="button" title="Sửa tag"
+                        onclick="editTag({{id}})">
+                        <i class="fa fa-pencil" aria-hidden="true">sửa</i>
+                      </button>
+                      <button id="btnDelTag{{id}}" class="btn btn-danger btn-sm" role="button" title="Xóa tag"
+                        onclick="delTag({{id}})">
+                        <i class="fa fa-trash" aria-hidden="true">Xóa</i>
+                      </button>
+                    </td>
+                  </tr>
+                  {{/if}}
+                  {{/each}}
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          {{/if}}
+          {{/each}}
+        </tbody>
+      </table>
       {{/each}}
-    </tbody>
-  </table>
+    </div>
+  </div>
+</div>
