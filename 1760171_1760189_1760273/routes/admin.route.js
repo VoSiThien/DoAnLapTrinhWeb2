@@ -62,8 +62,7 @@ router.get('/Categories/add/validation', async function (req, res) {
     var result = 0;
     //is child
     if (req.query.parentID) {
-        let parentRow = await categoriesModel.loadParent(req.query.parentID);
-        let catRow = await categoriesModel.loadChildByNameAndParentID(name, parentRow[0]["id"]);
+        let catRow = await categoriesModel.loadChildByNameAndParentID(name, parentID);
         if (catRow.length != 0)
             result = 1;
     }
@@ -99,11 +98,15 @@ router.get('/Categories/edit/validation', async function (req, res) {
 });
 //--Insert
 router.post('/Categories/add', async function (req, res) {
+    var parentID = null;
+    if(req.body.ParentID)
+        parentID = req.body.ParentID;
     const entity = {
         TenChuyenMuc: req.body.TenChuyenMuc,
-        ChuyenMucCon: null
+        ChuyenMucCon: parentID
     }
     await categoriesModel.insert(entity)
+    
     let NextID = await categoriesModel.getNextAutoIncrement();
     NextID = NextID[0].AUTO_INCREMENT;
     let CountParent = await categoriesModel.countParent();
