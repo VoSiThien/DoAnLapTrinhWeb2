@@ -326,22 +326,22 @@ CREATE TABLE `taikhoan` (
   `NgaySinh` date DEFAULT NULL,
   `ThoiHan` datetime default NULL,
   `VaiTroID` int(11) UNSIGNED NOT NULL,
-  `ChuyenMucQuanLy` int(10) UNSIGNED DEFAULT NULL
+  `ChuyenMucQuanLy` int(10) UNSIGNED DEFAULT NULL,
+  `MaXacNhan` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Đang đổ dữ liệu cho bảng `taikhoan`
 --
-
-INSERT INTO `taikhoan` (`MatKhau`, `HoTen`, `ButDanh`, `Email`, `NgaySinh`, `ThoiHan`, `VaiTroID`, `ChuyenMucQuanLy`) VALUES
-('$2a$08$8jhqCn7l95Qeqb24qg6hHuzc.9/hYbkhXORz/K2jDfLpeOtq1FRNa', 'Lê Văn Chủ', NULL, 'admin@gmail.com', '1999-11-20', '2030-12-30 00:00:00', 1, NULL),
-('$2a$08$8jhqCn7l95Qeqb24qg6hHuzc.9/hYbkhXORz/K2jDfLpeOtq1FRNa', 'Lý Thái Tổ', NULL, 'Ly@gmail.com', '1996-10-19', '2030-12-30 00:00:00', 2, 6),
-('$2a$08$8jhqCn7l95Qeqb24qg6hHuzc.9/hYbkhXORz/K2jDfLpeOtq1FRNa', 'Lý Thường Kiệt', 'Anh Hùng Xạ Điêu', 'Kiet@gmail.com', '2000-01-25', '2030-12-30 00:00:00', 3, NULL),
-('$2a$08$8jhqCn7l95Qeqb24qg6hHuzc.9/hYbkhXORz/K2jDfLpeOtq1FRNa', 'Phạm Văn Đồng', NULL, 'Pham@gmail.com', '2003-05-01', '2020-12-30 00:00:00', 4, NULL),
-('$2a$08$8jhqCn7l95Qeqb24qg6hHuzc.9/hYbkhXORz/K2jDfLpeOtq1FRNa', 'Dương Mạnh Cường', NULL, 'us1@gc', '1999-04-08', NULL, 4, NULL),
-('$2a$08$8jhqCn7l95Qeqb24qg6hHuzc.9/hYbkhXORz/K2jDfLpeOtq1FRNa', 'Nhạc Bất Quần', NULL, 'nbq@gc', '1969-04-08', '2030-12-30 00:00:00', 4, NULL),
-('$2a$08$8jhqCn7l95Qeqb24qg6hHuzc.9/hYbkhXORz/K2jDfLpeOtq1FRNa', 'Lệnh Hồ Xung', NULL, 'cuongpiger99@gmail.com', '1999-04-08', '2030-12-30 00:00:00', 4, NULL),
-('$2a$08$8jhqCn7l95Qeqb24qg6hHuzc.9/hYbkhXORz/K2jDfLpeOtq1FRNa', 'Âu Dương Phong', NULL, 'cuongpigerr@gmail.com', '1999-04-08', '2020-07-10 00:00:00', 4, NULL);
+INSERT INTO `taikhoan` (`MatKhau`, `HoTen`, `ButDanh`, `Email`, `NgaySinh`, `ThoiHan`, `VaiTroID`, `ChuyenMucQuanLy`, `MaXacNhan`) VALUES
+('$2a$08$8jhqCn7l95Qeqb24qg6hHuzc.9/hYbkhXORz/K2jDfLpeOtq1FRNa', 'Lê Văn Chủ', NULL, 'admin@gmail.com', '1999-11-20', '2030-12-30 00:00:00', 1, NULL, NULL),
+('$2a$08$8jhqCn7l95Qeqb24qg6hHuzc.9/hYbkhXORz/K2jDfLpeOtq1FRNa', 'Lý Thái Tổ', NULL, 'Ly@gmail.com', '1996-10-19', '2030-12-30 00:00:00', 2, 6, NULL),
+('$2a$08$8jhqCn7l95Qeqb24qg6hHuzc.9/hYbkhXORz/K2jDfLpeOtq1FRNa', 'Lý Thường Kiệt', 'Anh Hùng Xạ Điêu', 'Kiet@gmail.com', '2000-01-25', '2030-12-30 00:00:00', 3, NULL, NULL),
+('$2a$08$8jhqCn7l95Qeqb24qg6hHuzc.9/hYbkhXORz/K2jDfLpeOtq1FRNa', 'Phạm Văn Đồng', NULL, 'Pham@gmail.com', '2003-05-01', '2020-12-30 00:00:00', 4, NULL, NULL),
+('$2a$08$8jhqCn7l95Qeqb24qg6hHuzc.9/hYbkhXORz/K2jDfLpeOtq1FRNa', 'Dương Mạnh Cường', NULL, 'us1@gc', '1999-04-08', NULL, 4, NULL, NULL),
+('$2a$08$8jhqCn7l95Qeqb24qg6hHuzc.9/hYbkhXORz/K2jDfLpeOtq1FRNa', 'Nhạc Bất Quần', NULL, 'nbq@gc', '1969-04-08', '2030-12-30 00:00:00', 4, NULL, NULL),
+('$2a$08$8jhqCn7l95Qeqb24qg6hHuzc.9/hYbkhXORz/K2jDfLpeOtq1FRNa', 'Lệnh Hồ Xung', NULL, 'cuongpiger99@gmail.com', '1999-04-08', '2030-12-30 00:00:00', 4, NULL, NULL),
+('$2a$08$8jhqCn7l95Qeqb24qg6hHuzc.9/hYbkhXORz/K2jDfLpeOtq1FRNa', 'Âu Dương Phong', NULL, 'cuongpigerr@gmail.com', '1999-04-08', '2020-07-10 00:00:00', 4, NULL, NULL);
 INSERT INTO `taikhoan` (`MatKhau`, `HoTen`, `Email`, `VaiTroID`) VALUES
 ('1', 'Lady Gaga', 'us2@gc', 4);
 -- --------------------------------------------------------

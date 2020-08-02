@@ -6,6 +6,8 @@ const moment = require('moment');
 const config = require("../config/default.json");
 const accounts = require("../models/accounts.model");
 const mdlFunction = require("../middlewares/middle-functions.mdw");
+const SendOtp = require('sendotp');
+const nodemailer = require('nodemailer');
 
 const router = express.Router();
 
@@ -131,5 +133,70 @@ router.post("/password/edit", async (req, res) => {
     res.redirect('/account/profile');
   }
   res.redirect(req.headers.referer);
+});
+router.get("/ConfirmEmail", async (req, res) => {
+
+  //var a = Math.random().toString(36).replace(/[^0-9]+/g, '').substr(4, 5);
+  var b = (Math.floor(Math.random() * (99999 - 10000)) + 100000).toString();
+  var transporter = nodemailer.createTransport('smtps://vsthien1212%40gmail.com:thien123456@smtp.gmail.com');
+  
+  var mailOptions = {
+    from: '<vsthien1212@gmail.com>',
+    to: 'vosithien1234@gmail.com',
+    subject: 'Xác nhận Email',
+    html:  `<h1>Chào ban đây là mã xác nhập của bạn</h1><br> <h3>${b}</h3>`
+    //text: `1234sdadsa sad ${a}`
+  };
+  
+  transporter.sendMail(mailOptions, async function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      const entity = {
+        id: req.session.authUser.id,
+        MaXacNhan : b
+      }
+      await accounts.updateAccount(entity);
+      res.render('vwAccount/ConfirmEmail')
+      //console.log('Email sent: ' + info.response);
+    }
+  });
+});
+
+router.get("/ForgotPassword", async (req, res) => {
+  res.render('vwAccount/ForgotPassword');
+});
+
+router.post("/ConfirmEmail", async (req, res) => {
+  const acc = await accounts.accountSingle(req.session.authUser.Email);
+
+  if(req.body.Confirm == acc[0]["MaXacNhan"]){
+    const entity = {
+      id: req.session.authUser.id,
+      MaXacNhan : null
+    }
+    await accounts.updateAccount(entity);
+    res.redirect('/account/ForgotPassword')
+  }
+  else{
+    res.send("that bai");
+  }
+});
+
+router.post("/ForgotPassword", async (req, res) => {
+  if(req.body.newPassword == req.body.retypePassword){
+    const entity = {
+      id: req.body.id,
+      MatKhau: bcrypt.hashSync(
+        req.body.newPassword,
+        config.authentication.saltRounds
+      )
+    }
+    var a = await accounts.updateAccount(entity);
+    res.redirect('/');
+  }
+  else{
+    res.render("Nhap lai sai");
+  }
 });
 module.exports = router;
