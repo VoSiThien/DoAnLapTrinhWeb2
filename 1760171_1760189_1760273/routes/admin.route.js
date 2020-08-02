@@ -155,7 +155,7 @@ router.get('/Categories/del/:id', async function (req, res) {
 //----------------------------------------------Tag management------------------------------------
 //--List
 router.get('/Tags', async function (req, res) {
-    
+    const list = await tagModel.load();
     const newLocal = 'vwAdmin/Tags/list';
     res.render(newLocal, { List: list, layout: 'adminPanel' });
 });
