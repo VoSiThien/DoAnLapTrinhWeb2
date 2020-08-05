@@ -1,19 +1,16 @@
 <div class="card">
     <div class="card-header">
-        <h4>Nhập mã xác nhận</h4>
+        <h4>Nhập email</h4>
     </div>
     <div class="card-body">
 
         <form method="POST" action="" style="width: 50%; margin-left: 20%">
             <div class="form-group">
-                <input type="text" class="form-control" id="id" name="id" placeholder="" value="{{lcAuthUser.id}}" hidden>
-            </div>
-            <div class="form-group">
-                <label for="Confirm">Mã xác nhận</label>
-                <input type="text" class="form-control" id="Confirm" name="Confirm" placeholder="Mã xác nhận"
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="email"
                     value="">
             </div>
-            <a class="btn btn-success" href="/account/ConfirmEmail" role="button" title="Back to List">
+            <a class="btn btn-success" href="/" role="button" title="Back to List">
                 <i class="fa fa-backward" aria-hidden="true"></i>
             </a>
             <input type="submit" value="Submit" class="btn btn-primary">

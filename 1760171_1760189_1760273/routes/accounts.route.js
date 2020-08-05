@@ -116,6 +116,7 @@ router.get("/logout", mdlFunction.isLoggedIn, (req, res) => {
   });
 });
 
+//Doi mat khau
 router.get("/password/edit", (req, res) => res.render('vwAccount/editPassword'));
 router.post("/password/edit", async (req, res) => {
 
@@ -134,7 +135,20 @@ router.post("/password/edit", async (req, res) => {
   }
   res.redirect(req.headers.referer);
 });
-router.get("/ConfirmEmail", async (req, res) => {
+//nhap email 
+router.get("/ConfirmEmail", (req, res) => {
+  res.render('vwAccount/ConfirmEmail');
+});
+router.post("/ConfirmEmail", async (req, res) => {
+  const acc = await accounts.accountSingle(req.body.email);
+
+  delete acc["MatKhau"];
+
+  req.session.authUser = { id: acc[0]["id"], HoTen: acc[0]["HoTen"], Email: acc[0]["Email"] };
+  res.redirect('/account/VerificationCode');
+});
+//nhap ma xac nhan email
+router.get("/VerificationCode", async (req, res) => {
 
   //var a = Math.random().toString(36).replace(/[^0-9]+/g, '').substr(4, 5);
   var b = (Math.floor(Math.random() * (99999 - 10000)) + 100000).toString();
@@ -142,7 +156,7 @@ router.get("/ConfirmEmail", async (req, res) => {
   
   var mailOptions = {
     from: '<vsthien1212@gmail.com>',
-    to: 'vosithien1234@gmail.com',
+    to:  `${req.session.authUser.Email}`,
     subject: 'Xác nhận Email',
     html:  `<h1>Chào ban đây là mã xác nhập của bạn</h1><br> <h3>${b}</h3>`
     //text: `1234sdadsa sad ${a}`
@@ -157,7 +171,7 @@ router.get("/ConfirmEmail", async (req, res) => {
         MaXacNhan : b
       }
       await accounts.updateAccount(entity);
-      res.render('vwAccount/ConfirmEmail')
+      res.render('vwAccount/VerificationCode')
       //console.log('Email sent: ' + info.response);
     }
   });
@@ -167,7 +181,7 @@ router.get("/ForgotPassword", async (req, res) => {
   res.render('vwAccount/ForgotPassword');
 });
 
-router.post("/ConfirmEmail", async (req, res) => {
+router.post("/VerificationCode", async (req, res) => {
   const acc = await accounts.accountSingle(req.session.authUser.Email);
 
   if(req.body.Confirm == acc[0]["MaXacNhan"]){
