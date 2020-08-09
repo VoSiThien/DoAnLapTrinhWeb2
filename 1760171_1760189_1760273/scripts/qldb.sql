@@ -332,7 +332,7 @@ CREATE TABLE `taikhoan` (
 
 --
 -- Đang đổ dữ liệu cho bảng `taikhoan`
---
+--	
 INSERT INTO `taikhoan` (`MatKhau`, `HoTen`, `ButDanh`, `Email`, `NgaySinh`, `ThoiHan`, `VaiTroID`, `ChuyenMucQuanLy`, `MaXacNhan`) VALUES
 ('$2a$08$8jhqCn7l95Qeqb24qg6hHuzc.9/hYbkhXORz/K2jDfLpeOtq1FRNa', 'Lê Văn Chủ', NULL, 'admin@gmail.com', '1999-11-20', '2030-12-30 00:00:00', 1, NULL, NULL),
 ('$2a$08$8jhqCn7l95Qeqb24qg6hHuzc.9/hYbkhXORz/K2jDfLpeOtq1FRNa', 'Lý Thái Tổ', NULL, 'Ly@gmail.com', '1996-10-19', '2030-12-30 00:00:00', 2, 6, NULL),

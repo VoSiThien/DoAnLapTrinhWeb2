@@ -231,5 +231,11 @@ module.exports = {
       select tk.ThoiHan
       from taikhoan tk
       where tk.id = ${id}`;
+  },
+  gettime: function(){//dang ky tk
+    return `select DATE_ADD(NOW(), INTERVAL 15 MINUTE) as thoigian`;
+  },
+  AddLimits:function(id){//gia han tk
+    return `update taikhoan set ThoiHan = DATE_ADD(ThoiHan, INTERVAL 15 MINUTE) where id = ${id}`;
   }
 };

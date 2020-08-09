@@ -21,4 +21,10 @@ module.exports = {
     return db.patch('taikhoan', entity, condition);
 
   },
+  gettime: function () {
+    return db.load(queries.gettime());
+  },
+  AddLimits: function(id){
+    return db.load(queries.AddLimits(id));
+  }
 };

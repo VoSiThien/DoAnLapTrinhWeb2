@@ -11,7 +11,9 @@ const nodemailer = require('nodemailer');
 
 const router = express.Router();
 
+
 router.post("/register", async (req, res) => {
+  const time = await accounts.gettime();
   const entity = {
     MatKhau: bcrypt.hashSync(
       req.body.password,
@@ -19,10 +21,12 @@ router.post("/register", async (req, res) => {
     ),
     HoTen: req.body.name,
     Email: req.body.email,
+    ThoiHan: time[0]["thoigian"],
     VaiTroID: 4,
   };
 
   await accounts.readerAdding(entity);
+
   const acc = await accounts.accountSingle(req.body.email);
 
   delete acc["MatKhau"];
@@ -135,6 +139,7 @@ router.post("/password/edit", async (req, res) => {
   }
   res.redirect(req.headers.referer);
 });
+
 //nhap email 
 router.get("/ConfirmEmail", (req, res) => {
   res.render('vwAccount/ConfirmEmail');
@@ -147,11 +152,12 @@ router.post("/ConfirmEmail", async (req, res) => {
   req.session.authUser = { id: acc[0]["id"], HoTen: acc[0]["HoTen"], Email: acc[0]["Email"] };
   res.redirect('/account/VerificationCode');
 });
+
 //nhap ma xac nhan email
 router.get("/VerificationCode", async (req, res) => {
 
-  //var a = Math.random().toString(36).replace(/[^0-9]+/g, '').substr(4, 5);
-  var b = (Math.floor(Math.random() * (99999 - 10000)) + 100000).toString();
+  //var b = Math.random().toString(36).replace(/[^0-9]+/g, '').substr(0, 5);
+  var b = (Math.floor(Math.random() * (99999 - 10000)) + 10000).toString();
   var transporter = nodemailer.createTransport('smtps://vsthien1212%40gmail.com:thien123456@smtp.gmail.com');
   
   var mailOptions = {
@@ -196,7 +202,7 @@ router.post("/VerificationCode", async (req, res) => {
     res.send("that bai");
   }
 });
-
+//nhap mat khau moi
 router.post("/ForgotPassword", async (req, res) => {
   if(req.body.newPassword == req.body.retypePassword){
     const entity = {
@@ -212,5 +218,16 @@ router.post("/ForgotPassword", async (req, res) => {
   else{
     res.render("Nhap lai sai");
   }
+});
+
+//gia han tai khoan
+router.get("/AddLimits", async (req, res) => {
+  await accounts.AddLimits(req.session.authUser.id);
+  const acc = await accounts.accountSingle(req.session.authUser.Email);
+
+  delete acc["MatKhau"];
+  const TH = moment(acc[0]["ThoiHan"], 'YYYY/MM/DD HH:mm:SS').format('YYYY/MM/DD HH:mm:SS');
+  req.session.authUser.ThoiHan = TH;
+  res.redirect(req.headers.referer);
 });
 module.exports = router;
