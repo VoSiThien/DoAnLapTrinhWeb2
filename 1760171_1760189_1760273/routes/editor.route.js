@@ -30,7 +30,7 @@ var upload = multer({
 
 //------------------------------show post------------------------------------------------------
 router.get('/post', async function (req, res) {
-    var category = res.locals.lcUser[0]["ChuyenMucQuanLy"];
+    var category = res.locals.lcAuthUser[0]["ChuyenMucQuanLy"];
     const list = await postModel.loadDraftPost(category);
     res.render('vwEditor/list', { List: list });
 });
@@ -70,7 +70,7 @@ router.post('/accept/:id', upload.single('urlImage'), async function (req, res) 
         NoiDungTat: req.body.NoiDungTat,
         NoiDung: req.body.NoiDung,
         NgayXuatBan: req.body.NgayXuatBan,
-        HinhAnh: imageName,
+        HinhAnh: '/public/reporterImage/' + imageName,
         PDF:'',
         LuotXem: 0,
         TrangThaiID: 1,

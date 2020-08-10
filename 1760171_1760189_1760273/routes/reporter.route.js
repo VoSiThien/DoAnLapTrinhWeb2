@@ -98,7 +98,7 @@ router.post('/edit/:id', upload.single('urlImage'), async function (req, res) {
         NoiDungTat: req.body.NoiDungTat,
         NoiDung: req.body.NoiDung,
         NgayXuatBan: null,
-        HinhAnh: imageName,
+        HinhAnh: '/public/reporterImage/' + imageName,
         PDF:'',
         LuotXem: 0,
         TrangThaiID: 2,

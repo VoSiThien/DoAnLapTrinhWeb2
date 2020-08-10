@@ -237,6 +237,9 @@ router.get('/Tags/del/:id', async function (req, res) {
 
 //----------------------------------------------User management------------------------------------
 //--List
+router.get('/Users/getManagedCategory', async (req,res) => {
+    res.json({CategoryList: res.locals.lcCats});
+});
 router.get('/Users', async function (req, res) {
     const list = await accountModel.load();
     const newLocal = 'vwAdmin/Users/list';
