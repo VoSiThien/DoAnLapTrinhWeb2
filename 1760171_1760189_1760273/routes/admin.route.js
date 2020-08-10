@@ -6,7 +6,7 @@ const router = express.Router();
 const postsModel = require('../models/post.model');
 const tagModel = require('../models/tag.model');
 const categoriesModel = require('../models/categories.model');
-const accountModel = require('../models/account.model');
+const accountModel = require('../models/accounts.model');
 const mdwFunction = require('../middlewares/middle-functions.mdw')
 //------------HOME------------------------------
 router.get('/', async function (req, res) {

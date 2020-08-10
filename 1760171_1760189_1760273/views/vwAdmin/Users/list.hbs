@@ -1,0 +1,57 @@
+<div class="card-header">
+    <h4>Danh sách người dùng</h4>
+</div>
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <h4>Người dùng</h4>
+    </div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col" class="text-center">#</th>
+                <th scope="col">Họ và Tên</th>
+                <th scope="col">Bút danh</th>
+                <th scope="col">email</th>
+                <th scope="col">Thời hạn</th>
+                <th scope="col">Chuyên mục quản lý</th>
+                <th scope="col">Vai trò</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each this.List}}
+            <tr>
+                <th scope="row" class="text-center">{{id}}</th>
+                <td>{{HoTen}}</td>
+                <td>{{#if (isEqual VaiTroID 3)}}{{ButDanh}}{{else}}None{{/if}}</td>
+                <td>{{Email}}</td>
+                <td>{{#if (isEqual VaiTroID 4)}}{{formatDateTime ThoiHan}}{{else}}None{{/if}}</td>
+                <td>
+                    <select id="cbParentType" name="ChuyenMucID" class="form-control">
+                        {{#each lcCats}}
+                        <optgroup label="{{this.0.TenChuyenMuc}}">
+                            {{#each this}}
+                            {{#if ChuyenMucCon}}
+                            <option value="{{id}}" selected>{{TenChuyenMuc}}</option>
+                            {{/if}}
+                            {{/each}}
+                        </optgroup>
+                        {{/each}}
+                    </select>
+                </td>
+                <td>
+                    <select id="cbRole" name="RoleID" class="form-control">
+                         <option value="1" {{#when VaiTroID 'eq' 1}}selected{{/when}}>Quản trị viên</option>    
+                         <option value="2" {{#when VaiTroID 'eq' 2}}selected{{/when}}>Biên tập viên</option>
+                         <option value="3" {{#when VaiTroID 'eq' 3}}selected{{/when}}>Phóng viên</option>
+                         <option value="4" {{#when VaiTroID 'eq' 4}}selected{{/when}}>Độc giả</option>
+                    </select>
+                </td>
+                <td class="text-right">
+                <button></button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
