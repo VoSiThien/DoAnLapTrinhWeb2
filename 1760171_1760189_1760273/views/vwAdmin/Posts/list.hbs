@@ -132,16 +132,16 @@
 {{/section}}
 <div class="card">
   <div class="card-header">
-    <h4>Quản lý tag</h4>
+    <h4>Quản lý bài viết</h4>
   </div>
   <div class="card">
     <div class="card-body">
       {{#each List}}
-      <button type="button" class="btn btn-secondary" style="width:100%;margin-bottom:10px;" onclick="viewPost({{id}})">
-        <h3>(+)Phóng viên {{ButDanh}}</h3>
+      <button type="button" class="btn" style="width:100%;margin-bottom:10px;background-color:aliceblue;" onclick="viewPost({{id}})">
+        <div style="text-align: left;">(+)Phóng viên {{ButDanh}}</div>
       </button>
 
-      <table id="table{{id}}" class="table table-hover" style="display:none;">
+      <table id="table{{id}}" class="table table-hover" style="display:none;width:90%;margin-left:5%">
         <thead>
           <tr>
             <th scope="col" class="text-left" style="width: 10%">#</th>

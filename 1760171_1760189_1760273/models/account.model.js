@@ -4,7 +4,7 @@ const TBL_ACCOUNT = 'TaiKhoan'
 
 module.exports = {
     load: function (username) {
-        return db.load(`select * from ${TBL_ACCOUNT} where tentaikhoan = '${username}'`)
+        return db.load(`select * from ${TBL_ACCOUNT}`)
     },
     loadByID: function (ID) {
         return db.load(`select * from ${TBL_ACCOUNT} where id = '${ID}'`)
