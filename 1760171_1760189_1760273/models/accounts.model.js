@@ -5,6 +5,9 @@ module.exports = {
   load: function () {
     return db.load(`select taikhoan.* from taikhoan`)
   },
+  loadbyID: function(id){
+    return db.load(`select taikhoan.* from taikhoan where id = ${id}`)
+  },
   accountSingle: function (email) {
     return db.load(queries.accountSingle(email));
   },
@@ -15,5 +18,14 @@ module.exports = {
 
   readerAdding: function (entity) {
     return db.add('taikhoan', entity);
+  },
+  loadByOffset: (offset) => {
+    return db.load(`SELECT * FROM taikhoan LIMIT 5 OFFSET ${offset}`)
+  },
+  quantity: () => {
+    return db.load(`select count(*) as quantity from taikhoan`)
+  },
+  changeManagedCategory:()=>{
+    
   }
 };

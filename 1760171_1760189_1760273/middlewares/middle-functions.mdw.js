@@ -48,7 +48,11 @@ module.exports = {
 
     return res.redirect("/"); // not log in
   },
+  formatDateTime: function (value) {
+    const sqlDate = new Date(value);
 
+    return moment(sqlDate).format("DD/MM/yyyy hh:mm:ss");
+  },
   // new Array(end - start).fill().map((d, i) => i + start);
   rangeOfPagination: function (quantity, current) {
     if (quantity <= 5) {

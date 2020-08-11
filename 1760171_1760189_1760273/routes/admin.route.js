@@ -158,7 +158,7 @@ router.get('/Categories/del/:id', async function (req, res) {
 router.get('/Tags', async function (req, res) {
     var list = [];
     var listPost = await postsModel.loadByOffset(0);
-    for (let  i = 0; i < listPost.length; i++) {
+    for (let i = 0; i < listPost.length; i++) {
         list[i] = listPost[i];
         var listTag = await tagModel.loadByPostID(list[i]["id"]);
 
@@ -170,8 +170,8 @@ router.get('/Tags', async function (req, res) {
 
     const newLocal = 'vwAdmin/Tags/list'
     res.render(newLocal, {
-        List: list, quantity: Quantity,
-        pagi: mdwFunction.rangeOfPagination(Math.ceil(Quantity / 10), 1), layout: 'adminPanel'
+        List: list, quantity: Quantity[0]["quantity"],
+        pagi: mdwFunction.rangeOfPagination(Math.ceil(Quantity[0]["quantity"] / 10), 1), layout: 'adminPanel'
     });
 });
 router.get('/Tags/list', async function (req, res) {
@@ -181,7 +181,7 @@ router.get('/Tags/list', async function (req, res) {
         p = req.query.p;
 
     var listPost = await postsModel.loadByOffset((p - 1) * 10);
-    for (let  i = 0; i < listPost.length; i++) {
+    for (let i = 0; i < listPost.length; i++) {
         list[i] = listPost[i];
         var listTag = await tagModel.loadByPostID(list[i]["id"]);
 
@@ -191,8 +191,8 @@ router.get('/Tags/list', async function (req, res) {
     }
     const Quantity = await postsModel.quantity();
     res.json({
-        List: list, quantity: Quantity[0],
-        pagi: mdwFunction.rangeOfPagination(Math.ceil(Quantity / 10), p)
+        List: list, quantity: Quantity[0]["quantity"],
+        pagi: mdwFunction.rangeOfPagination(Math.ceil(Quantity[0]["quantity"] / 10), p)
     });
 });
 //--validation
@@ -237,14 +237,69 @@ router.get('/Tags/del/:id', async function (req, res) {
 
 //----------------------------------------------User management------------------------------------
 //--List
-router.get('/Users/getManagedCategory', async (req,res) => {
-    res.json({CategoryList: res.locals.lcCats});
+router.get('/Users/getManagedCategoryList', async (req, res) => {
+    res.json({ CategoryList: res.locals.lcCats });
 });
+
+router.get('/Users/getManagedCategory', async (req, res) => {
+    var List = await accountModel.
+    res.json({ CategoryList: res.locals.lcCats });
+});
+
 router.get('/Users', async function (req, res) {
-    const list = await accountModel.load();
+    const list = await accountModel.loadByOffset(0);
+    for (let i = 0; i < list.length; i++) {
+        list[i]["ThoiHan"] = mdwFunction.formatDateTime(list[i]["ThoiHan"]);
+        var chuyenmucquanly = await categoriesModel.loadManagementCategory(list[i]["ChuyenMucQuanLy"]);
+        if (chuyenmucquanly.length != 0) {
+            list[i]["ChuyenMucQuanLy"] = chuyenmucquanly[0].TenChuyenMuc;
+        }
+        else {
+            list[i]["ChuyenMucQuanLy"] = null;
+        }
+    }
     const newLocal = 'vwAdmin/Users/list';
-    res.render(newLocal, { List: list, layout: 'adminPanel' });
+
+    const Quantity = await accountModel.quantity();
+    res.render(newLocal, {
+        List: list, quantity: Quantity[0]["quantity"],
+        pagi: mdwFunction.rangeOfPagination(Math.ceil(Quantity[0]["quantity"] / 5), 1), layout: 'adminPanel'
+    });
 });
+
+router.get('/Users/list', async function (req, res) {
+    var p = 1;
+    var list = [];
+    if (req.query.p)
+        p = req.query.p;
+
+    list = await accountModel.loadByOffset((p - 1) * 5);
+
+    for (let i = 0; i < list.length; i++) {
+        list[i]["ThoiHan"] = mdwFunction.formatDateTime(list[i]["ThoiHan"]);
+    }
+
+    for (let i = 0; i < list.length; i++) {
+        var chuyenmucquanly = await categoriesModel.loadManagementCategory(list[i]["ChuyenMucQuanLy"]);
+        if (chuyenmucquanly.length != 0) {
+            list[i]["ChuyenMucQuanLy"] = chuyenmucquanly[0].TenChuyenMuc;
+        }
+        else {
+            list[i]["ChuyenMucQuanLy"] = null;
+        }
+    }
+
+    const Quantity = await accountModel.quantity();
+    const newLocal = 'vwAdmin/Users/list';
+    res.json({
+        List: list, quantity: Quantity[0]["quantity"],
+        pagi: mdwFunction.rangeOfPagination(Math.ceil(Quantity[0]["quantity"] / 5), p)
+    });
+});
+
+router.post('/Users/updateCat', async (req,res) => {
+
+})
 module.exports = router;
 
 

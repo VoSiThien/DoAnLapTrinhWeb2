@@ -134,20 +134,20 @@
       if (+data["pagi"][index]["value"] === page) {
         $(el).addClass("pagi-active");
       }
-      /*
+
       if (+data["pagi"][index]["value"] !== -1) {
-        $(el).css("display", "block");
+        $(el).css("display", "");
       } else {
         $(el).css("display", "none");
       }
-      */
+
     });
 
   }
   function changePageContent(data) {
-    return data["List"]
-      .map((val) => {
-        var row = `
+    var row = ``;
+    data["List"].forEach((val) => {
+      row = row + `
           <tr style="background-color:antiquewhite;">
           <th scope="row" class="text-left">
             <p></p>
@@ -180,9 +180,9 @@
                 </tr>
               </thead>      
               <tbody>`;
-        let i = 0;
-        while (val[i] != null) {
-          row = row + `
+      let i = 0;
+      while (val[i] != null) {
+        row = row + `
                 <tr class="childRow">
                   <td id="tdIndex${val[i]["id"]}" style="ext-align: left;">{{@index}}</td>
                   <td class="text-center"><input id="txtTagName${val[i]["id"]}" value="${val[i]["TenTag"]}"
@@ -198,17 +198,15 @@
                     </button>
                   </td>
                 </tr>`;
-          i++;
-        }
-        row = row + `
+        i++;
+      }
+      row = row + `
               </tbody>
             </table>
           </td>
-        </tr>
-`;
-        return row;
-      })
-      .join("");
+        </tr>`;
+    });
+    return row;
   }
   $("#paging-area button").on("click", function () {
     const page = +$(this).html();

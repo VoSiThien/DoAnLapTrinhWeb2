@@ -63,6 +63,9 @@ module.exports = {
   },
   countChild: () => {
     return db.load(`SELECT COUNT(*) FROM ${TBL_CATEGORIES} WHERE CHUYENMUCCON IS NOT NULL`);
+  },
+  loadManagementCategory:(cateID)=>{
+    return db.load(`select chuyenmuc.* from ${TBL_CATEGORIES}, taikhoan where taikhoan.chuyenmucquanly = chuyenmuc.id and chuyenmuc.id = ${cateID}`)
   }
 };
 
