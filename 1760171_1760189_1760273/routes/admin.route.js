@@ -306,11 +306,23 @@ router.post('/Users/updateCat', async (req, res) => {
     var chuyenmucquanly = await categoriesModel.loadManagementCategory(List[0]["ChuyenMucQuanLy"]);
     res.json({ ManagedCat: chuyenmucquanly[0].TenChuyenMuc, id: chuyenmucquanly[0].id });
 });
+
+router.get('/Users/checkExistAthName', async (req, res) => {
+    var isNotExist = true;
+    var row = await accountModel.loadByAthName(req.query.AthName);
+    if(row.length != 0)
+        isNotExist = false;
+    res.json({NotExist:isNotExist});
+});
+
 router.post('/Users/update', async (req, res) => {
     if (req.body.roleID != null)
         await accountModel.changeRole(req.body.roleID, req.body.id);
     if (req.body.ExpireDate != null){
         await accountModel.changeDate(req.body.ExpireDate, req.body.id);
+    }
+    if (req.body.ButDanh != null){
+        await accountModel.changeAthName(req.body.ButDanh, req.body.id);
     }
     list = await accountModel.loadbyID(req.body.id);
     list[0]["ThoiHan"] = mdwFunction.formatDateTime(list[0]["ThoiHan"]);

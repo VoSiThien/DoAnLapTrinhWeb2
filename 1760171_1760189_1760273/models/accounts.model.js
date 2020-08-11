@@ -33,5 +33,11 @@ module.exports = {
   },
   changeDate:(date, userID)=> {
     return db.load(`update taikhoan set thoihan = '${date}' where id = ${userID}`);
+  },
+  changeAthName:(name, userID)=> {
+    return db.load(`update taikhoan set butdanh = '${name}' where id = ${userID}`);
+  },
+  loadByAthName:(name)=> {
+    return db.load(`select * from taikhoan where butdanh = '${name}'`);
   }
 };

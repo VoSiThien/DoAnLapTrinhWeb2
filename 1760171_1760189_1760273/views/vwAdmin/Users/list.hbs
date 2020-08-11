@@ -44,6 +44,10 @@
                     <label>Bút danh:</label>`;
             //but danh
             if (val["VaiTroID"] == 3) {
+                row = row + `<button id="btnAthName${val["id"]}" class="btn btn-primary btn-sm" role="button" title="Sửa"
+                            onclick="editAthName(${val["id"]})">
+                            <i class="fa fa-pencil" aria-hidden="true">sửa</i>
+                        </button>`;
                 row = row + `<input class="form-control" id="txtButDanh${val["id"]}"
                         value="${val["ButDanh"]}">`;
             }
@@ -203,6 +207,10 @@
                     <label>Bút danh:</label>`;
         //but danh
         if (val["VaiTroID"] == 3) {
+            row = row + `<button id="btnAthName${val["id"]}" class="btn btn-primary btn-sm" role="button" title="Sửa"
+                            onclick="editAthName(${val["id"]})">
+                            <i class="fa fa-pencil" aria-hidden="true">sửa</i>
+                        </button>`;
             row = row + `<input class="form-control" id="txtButDanh${val["id"]}"
                         value="${val["ButDanh"]}">`;
         }
@@ -304,6 +312,25 @@
             );
         }
     }
+    //author name
+    function editAthName(id){
+        if(document.getElementById("txtButDanh" + id).value == '')
+            alert('Bút danh không được rỗng!');
+        $.getJSON(`/admin/Users/checkExistAthName?AthName=${document.getElementById("txtButDanh" + id).value}`, (data) => {
+            if(data["NotExist"] == true){
+                $.post(
+                `/admin/Users/update`,
+                { id: id, ButDanh: document.getElementById("txtButDanh" + id).value },
+                function (data) {
+                    window.alert("Sửa thành công!");
+                }
+            );
+            }
+            else{
+                alert("Tên bút danh đã tồn tại!")
+            }
+        });
+    }
 </script>
 {{/section}}
 <div class="card">
@@ -338,6 +365,12 @@
                         <label for="txtHoTen{{id}}">Họ và Tên:</label>
                         <input class="form-control" id="txtHoTen{{id}}" value="{{HoTen}}"></input><br>
                         <label>Bút danh:</label>
+                        {{#when VaiTroID 'eq' 3}}
+                        <button id="btnAthName{{id}}" class="btn btn-primary btn-sm" role="button" title="Sửa"
+                            onclick="editAthName({{id}})">
+                            <i class="fa fa-pencil" aria-hidden="true">sửa</i>
+                        </button>
+                        {{/when}}
                         <input class="form-control" id="txtButDanh{{id}}"
                             value="{{#if (isEqual VaiTroID 3)}}{{ButDanh}}{{else}}None{{/if}}">
                         <label>Email:</label>
