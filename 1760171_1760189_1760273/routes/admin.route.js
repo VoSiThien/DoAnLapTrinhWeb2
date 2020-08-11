@@ -241,9 +241,11 @@ router.get('/Users/getManagedCategoryList', async (req, res) => {
     res.json({ CategoryList: res.locals.lcCats });
 });
 
-router.get('/Users/getManagedCategory', async (req, res) => {
-    var List = await accountModel.
-    res.json({ CategoryList: res.locals.lcCats });
+router.get('/Users/getManagedCategory/:id', async (req, res) => {
+    var List = await accountModel.loadbyID(req.params.id);
+    var chuyenmucquanly = await categoriesModel.loadManagementCategory(List[0]["ChuyenMucQuanLy"]);
+
+    res.json({ ManagedCat: chuyenmucquanly[0].TenChuyenMuc, id: chuyenmucquanly[0].id });
 });
 
 router.get('/Users', async function (req, res) {
@@ -261,6 +263,7 @@ router.get('/Users', async function (req, res) {
     const newLocal = 'vwAdmin/Users/list';
 
     const Quantity = await accountModel.quantity();
+
     res.render(newLocal, {
         List: list, quantity: Quantity[0]["quantity"],
         pagi: mdwFunction.rangeOfPagination(Math.ceil(Quantity[0]["quantity"] / 5), 1), layout: 'adminPanel'
@@ -297,9 +300,31 @@ router.get('/Users/list', async function (req, res) {
     });
 });
 
-router.post('/Users/updateCat', async (req,res) => {
+router.post('/Users/updateCat', async (req, res) => {
+    await accountModel.changeManagedCategory(req.body.catValue, req.body.id);
+    var List = await accountModel.loadbyID(req.body.id);
+    var chuyenmucquanly = await categoriesModel.loadManagementCategory(List[0]["ChuyenMucQuanLy"]);
+    res.json({ ManagedCat: chuyenmucquanly[0].TenChuyenMuc, id: chuyenmucquanly[0].id });
+});
+router.post('/Users/update', async (req, res) => {
+    if (req.body.roleID != null)
+        await accountModel.changeRole(req.body.roleID, req.body.id);
+    if (req.body.ExpireDate != null){
+        await accountModel.changeDate(req.body.ExpireDate, req.body.id);
+    }
+    list = await accountModel.loadbyID(req.body.id);
+    list[0]["ThoiHan"] = mdwFunction.formatDateTime(list[0]["ThoiHan"]);
+    var chuyenmucquanly = await categoriesModel.loadManagementCategory(list[0]["ChuyenMucQuanLy"]);
+    if (chuyenmucquanly.length != 0) {
+        list[0]["ChuyenMucQuanLy"] = chuyenmucquanly[0].TenChuyenMuc;
+    }
+    else {
+        list[0]["ChuyenMucQuanLy"] = null;
+    }
+    res.json({List:list[0]});
+});
 
-})
+
 module.exports = router;
 
 
