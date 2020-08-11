@@ -8,7 +8,7 @@ var path = require('path');
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'public/reporterImage')
+        cb(null, 'public/images/articles')
     },
 
     filename: function (req, file, cb) {
@@ -37,12 +37,12 @@ router.post('/post', upload.single('urlImage'), async function (req, res) {
         NoiDungTat: req.body.NoiDungTat,
         NoiDung: req.body.NoiDung,
         NgayXuatBan: '0/0/0',
-        HinhAnh: req.file.filename,
+        HinhAnh: "/public/images/articles/" + req.file.filename,
         PDF:'',
         LuotXem: 0,
         TrangThaiID: 2,
         ChuyenMucID: +req.body.ChuyenMucID,
-        TaiKhoanID: +req.session.authUser["id"],
+        TaiKhoanID: +req.session.authUser.id,
         isPremium: 0
     }
     await postModel.insert(postEntity);
@@ -55,11 +55,11 @@ router.post('/post', upload.single('urlImage'), async function (req, res) {
         }
         await tagModel.insert(tagEntity);
     }
-    res.render('vwReporter/listPost');
+    res.redirect('/reporter/listPost');
 });
 //------------------------------------------------list Post status ------------------------------------=-======
 router.get('/listpost', async function (req, res) {
-    const list = await postModel.loadByAuthor(req.session.user[0]["id"]);
+    const list = await postModel.loadByAuthor(req.session.authUser.id);
     res.render('vwReporter/listPost', { List: list });
 });
 //------------------------------------------------edit Post status ------------------------------------=-======
@@ -143,7 +143,7 @@ router.post('/edit/:id', upload.single('urlImage'), async function (req, res) {
     //destroy session
     req.body.tag = null;
     req.session.tagIndex = null;
-    const list = await postModel.loadByAuthor(req.session.user[0]["id"]);
+    const list = await postModel.loadByAuthor(req.session.authUser.id);
     res.render('vwReporter/listPost', { List: list });
 });
 

@@ -186,11 +186,11 @@ router.get("/VerificationCode", async (req, res) => {
     }
   });
 });
-
+//nhap mat khau moi
 router.get("/ForgotPassword", async (req, res) => {
   res.render('vwAccount/ForgotPassword');
 });
-
+//nhap ma xac nhan
 router.post("/VerificationCode", async (req, res) => {
   const acc = await accounts.accountSingle(req.session.authUser.Email);
 
