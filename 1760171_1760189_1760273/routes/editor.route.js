@@ -10,7 +10,7 @@ var dateFormat = require('dateformat');
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'public/reporterImage')
+        cb(null, 'public/images/articles')
     },
 
     filename: function (req, file, cb) {
@@ -151,7 +151,10 @@ router.post('/accept/:id', upload.single('urlImage'), async function (req, res) 
 });
 //------------------------------denied action---------------------------------------------------
 router.post("/deny",async function(req,res){
-    await postFeedBackModel.insert(req.body);
+    var check = await postFeedBackModel.update(req.body);
+    if(check.changedRows == 0){
+        await postFeedBackModel.insert(req.body);
+    }
     await postModel.updateStatus(req.body.BaiVietID, 4);
     res.redirect('/editor/post');
 })

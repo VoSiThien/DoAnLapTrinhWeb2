@@ -1,6 +1,7 @@
 const db = require('../utils/db');
 const TBL_BAIVIET = 'BaiViet';
-const TBL_TAIKHOAN = 'taikhoan'
+const TBL_TAIKHOAN = 'taikhoan';
+const TBL_PHANHOIBAIVIET = 'phanhoibaiviet';
 module.exports= {
     load: function(){
         return db.load(`select * from ${TBL_BAIVIET} where TrangThaiID = 2`);
@@ -14,7 +15,7 @@ module.exports= {
         where ${TBL_BAIVIET}.TrangThaiID = 2 and ${TBL_BAIVIET}.ChuyenMucID = ${TBL_TAIKHOAN}.ChuyenMucQuanLy and ${TBL_TAIKHOAN}.ChuyenMucQuanLy = ${category}`)
     },
     loadByAuthor:function (AuthorID){
-        return db.load(`select * from ${TBL_BAIVIET} where TaiKhoanID = ${AuthorID} order by NgayXuatBan desc`);
+        return db.load(`select distinct b.*, p.NoiDung as 'NoiDungPH' from ${TBL_BAIVIET} b left join ${TBL_PHANHOIBAIVIET} p on b.id = p.BaiVietID where b.TaiKhoanID = ${AuthorID} order by b.NgayXuatBan desc`);
     },
     getNewestID: function(){
         return db.load(`SELECT MAX(ID) + 1 as newest FROM ${TBL_BAIVIET}`);

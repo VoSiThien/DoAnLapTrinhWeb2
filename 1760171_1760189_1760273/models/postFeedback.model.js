@@ -11,9 +11,9 @@ module.exports = {
     },
     update: function(entity){
         const condition = {
-            id: entity.id
+            BaiVietID: entity.BaiVietID
           }
-          delete entity.id;
+          
         return db.patch(TBL_FEEDBACK, entity, condition);
     },
     delete: function(id){
