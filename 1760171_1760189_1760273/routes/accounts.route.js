@@ -8,6 +8,7 @@ const accounts = require("../models/accounts.model");
 const mdlFunction = require("../middlewares/middle-functions.mdw");
 const SendOtp = require('sendotp');
 const nodemailer = require('nodemailer');
+const path = require("path");
 
 const router = express.Router();
 
@@ -34,7 +35,8 @@ router.post("/register", async (req, res) => {
   const NS = moment(acc[0]["NgaySinh"], 'YYYY/MM/DD').format('YYYY/MM/DD');
   const TH = moment(acc[0]["ThoiHan"], 'YYYY/MM/DD HH:mm:SS').format('YYYY/MM/DD HH:mm:SS');
   req.session.isAuthenticated = true;
-  req.session.authUser = { id: acc[0]["id"], HoTen: acc[0]["HoTen"], Email: acc[0]["Email"], ButDanh: acc[0]["ButDanh"], NgaySinh: NS, ThoiHan: TH, TenChuyenMuc: acc[0]["TenChuyenMuc"]  };
+  req.session.authUser = { id: acc[0]["id"], HoTen: acc[0]["HoTen"], Email: acc[0]["Email"], ButDanh: acc[0]["ButDanh"], NgaySinh: NS, ThoiHan: TH, TenChuyenMuc: acc[0]["TenChuyenMuc"], VaiTroID: acc[0]["VaiTroID"],
+  ChuyenMucQuanLy:  acc[0]["ChuyenMucQuanLy"] };
 
   res.redirect(req.headers.referer);
 });
@@ -48,7 +50,8 @@ router.post("/login", async (req, res) => {
   const TH = moment(acc[0]["ThoiHan"], 'YYYY/MM/DD HH:mm:SS').format('YYYY/MM/DD HH:mm:SS');
 
   req.session.isAuthenticated = true;
-  req.session.authUser = { id: acc[0]["id"], HoTen: acc[0]["HoTen"], Email: acc[0]["Email"], ButDanh: acc[0]["ButDanh"], NgaySinh: NS, ThoiHan: TH, TenChuyenMuc: acc[0]["TenChuyenMuc"] };
+  req.session.authUser = { id: acc[0]["id"], HoTen: acc[0]["HoTen"], Email: acc[0]["Email"], ButDanh: acc[0]["ButDanh"], NgaySinh: NS, ThoiHan: TH, TenChuyenMuc: acc[0]["TenChuyenMuc"], VaiTroID: acc[0]["VaiTroID"], 
+  ChuyenMucQuanLy:  acc[0]["ChuyenMucQuanLy"] };
 
   res.redirect(req.headers.referer);
 });
@@ -66,7 +69,8 @@ router.get("/google/success", async (req, res) => {
   const TH = moment(acc[0]["ThoiHan"], 'YYYY/MM/DD HH:mm:SS').format('YYYY/MM/DD HH:mm:SS');
 
   req.session.isAuthenticated = true;
-  req.session.authUser = {  id: acc[0]["id"], HoTen: acc[0]["HoTen"], Email: acc[0]["Email"], ButDanh: acc[0]["ButDanh"], NgaySinh: NS, ThoiHan: TH, TenChuyenMuc: acc[0]["TenChuyenMuc"]  };
+  req.session.authUser = {  id: acc[0]["id"], HoTen: acc[0]["HoTen"], Email: acc[0]["Email"], ButDanh: acc[0]["ButDanh"], NgaySinh: NS, ThoiHan: TH, TenChuyenMuc: acc[0]["TenChuyenMuc"], VaiTroID: acc[0]["VaiTroID"],
+  ChuyenMucQuanLy:  acc[0]["ChuyenMucQuanLy"]  };
 
   res.redirect("/");
 });
@@ -230,4 +234,5 @@ router.get("/AddLimits", async (req, res) => {
   req.session.authUser.ThoiHan = TH;
   res.redirect(req.headers.referer);
 });
+
 module.exports = router;

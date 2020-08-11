@@ -29,8 +29,11 @@ var upload = multer({
 });
 
 //------------------------------show post------------------------------------------------------
+const ejs = require("ejs");
+const pdf = require("html-pdf");
+
 router.get('/post', async function (req, res) {
-    var category = res.locals.lcUser[0]["ChuyenMucQuanLy"];
+    var category = req.session.authUser.ChuyenMucQuanLy;
     const list = await postModel.loadDraftPost(category);
     res.render('vwEditor/list', { List: list });
 });
@@ -63,6 +66,33 @@ router.post('/accept/:id', upload.single('urlImage'), async function (req, res) 
         fs.unlinkSync(imagePath);
         imageName = req.file.filename;
     }
+
+    const articles = {TieuDe: req.body.TieuDe, NoiDungTat: req.body.NoiDungTat, NoiDung: req.body.NoiDung};
+    //xuat PDF
+    ejs.renderFile(path.join(__dirname, '../views/vwEditor/', "ExportPDFS.hbs"), {articles: articles}, (err, data) => {
+        if (err) {
+              res.send(err);
+        } else {
+            let options = {
+                "height": "11.25in",
+                "width": "8.5in",
+                "header": {
+                    "height": "20mm"
+                },
+                "footer": {
+                    "height": "20mm",
+                },
+            };
+            pdf.create(data, options).toFile(`public/PDFS/articles/${postID}.pdf`, function (err, data) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    //res.send("File created successfully");
+                }
+            });
+        }
+    });
+    //======
     //edit post
     var postEntity = {
         id: postID,
@@ -71,7 +101,7 @@ router.post('/accept/:id', upload.single('urlImage'), async function (req, res) 
         NoiDung: req.body.NoiDung,
         NgayXuatBan: req.body.NgayXuatBan,
         HinhAnh: imageName,
-        PDF:'',
+        PDF:`public/PDFS/articles/${postID}.pdf`,
         LuotXem: 0,
         TrangThaiID: 1,
         ChuyenMucID: +req.body.ChuyenMucID,
@@ -112,7 +142,7 @@ router.post('/accept/:id', upload.single('urlImage'), async function (req, res) 
             await tagModel.delete(idIndex[i]);
         }
     }
-    var category = res.locals.lcUser[0]["ChuyenMucQuanLy"];
+    var category = req.session.authUser.ChuyenMucQuanLy;
     const list = await postModel.loadDraftPost(category);
     //destroy session
     req.body.tag = null;
