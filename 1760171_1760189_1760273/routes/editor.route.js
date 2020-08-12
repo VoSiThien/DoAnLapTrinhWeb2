@@ -55,7 +55,7 @@ router.get('/accept/:id', async function (req, res) {
     res.render('vwEditor/accept', { ListPost: row, Tag: stringTag, selectedCategory: row[0]["ChuyenMucID"] });
 });
 
-const directory = 'public/reporterImage/';
+const directory = '/public/images/articles/';
 router.post('/accept/:id', upload.single('urlImage'), async function (req, res) {
     var postID = req.params.id;
     const row = await postModel.loadByID(postID);
@@ -101,7 +101,7 @@ router.post('/accept/:id', upload.single('urlImage'), async function (req, res) 
         NoiDung: req.body.NoiDung,
         NgayXuatBan: req.body.NgayXuatBan,
         HinhAnh: imageName,
-        PDF:`public/PDFS/articles/${postID}.pdf`,
+        PDF:`/public/PDFS/articles/${postID}.pdf`,
         LuotXem: 0,
         TrangThaiID: 1,
         ChuyenMucID: +req.body.ChuyenMucID,

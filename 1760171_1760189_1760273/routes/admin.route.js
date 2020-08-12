@@ -29,6 +29,9 @@ var upload = multer({
         fileSize: 2048 * 2048
     }
 });
+const accountModels = require('../models/accounts.model');
+const mdwFunction = require('../middlewares/middle-functions.mdw')
+
 //------------HOME------------------------------
 router.get('/', async function (req, res) {
     const newLocal = 'vwAdmin/dashboard';
@@ -38,7 +41,20 @@ router.get('/', async function (req, res) {
 //----------------------------------------------Posts management------------------------------------
 //--List
 router.get('/Posts', async function (req, res) {
-    const list = await postsModel.load();
+    var list = [];
+    const listAuthor = await accountModel.loadReporter();
+    list = listAuthor;
+    for (let i = 0; i < list.length; i++) {
+        var listPost = await postsModel.loadByAuthor(list[i]["id"]);
+        for (let j = 0; j < listPost.length; j++) {
+            list[i][j] = listPost[j];
+            var listTag = await tagModel.loadByPostID(list[i][j]["id"]);
+
+            for (let k = 0; k < listTag.length; k++) {
+                list[i][j][k] = listTag[k];
+            }
+        }
+    }
     const newLocal = 'vwAdmin/Posts/list';
     res.render(newLocal, { List: list, layout: 'adminPanel' });
 });
@@ -212,7 +228,28 @@ router.get('/Categories', async function (req, res) {
     res.render(newLocal, { List: list, layout: 'adminPanel' });
 });
 //--Validation
-router.get('/Categories/validation', async function (req, res) {
+router.get('/Categories/add/validation', async function (req, res) {
+    if (req.query.parentID)
+        var parentID = req.query.parentID;
+    const name = req.query.categoryname;
+    var result = 0;
+    //is child
+    if (req.query.parentID) {
+        let catRow = await categoriesModel.loadChildByNameAndParentID(name, parentID);
+        if (catRow.length != 0)
+            result = 1;
+    }
+    else {//is parent
+        let catRow = await categoriesModel.loadParentByName(name);
+        if (catRow.length != 0)
+            result = 2;
+    }
+
+
+    res.json({ result });
+});
+
+router.get('/Categories/edit/validation', async function (req, res) {
     const id = req.query.id;
     const name = req.query.categoryname;
     var result = 0;
@@ -232,6 +269,24 @@ router.get('/Categories/validation', async function (req, res) {
     }
     res.json({ result });
 });
+//--Insert
+router.post('/Categories/add', async function (req, res) {
+    var parentID = null;
+    if (req.body.ParentID)
+        parentID = req.body.ParentID;
+    const entity = {
+        TenChuyenMuc: req.body.TenChuyenMuc,
+        ChuyenMucCon: parentID
+    }
+    await categoriesModel.insert(entity)
+
+    let NextID = await categoriesModel.getNextAutoIncrement();
+    NextID = NextID[0].AUTO_INCREMENT;
+    let CountParent = await categoriesModel.countParent();
+    CountParent = CountParent[0]["COUNT(*)"];
+    res.json({ nextID: NextID, countParent: CountParent });
+});
+
 //--Edit
 router.post('/Categories/edit', async function (req, res) {
     const cat = await categoriesModel.loadByID(req.body.id);
@@ -274,21 +329,43 @@ router.get('/Categories/del/:id', async function (req, res) {
 //--List
 router.get('/Tags', async function (req, res) {
     var list = [];
-    const listAuthor = await accountModel.loadReporter();
-    list = listAuthor;
-    for (let i = 0; i < list.length; i++) {
-        var listPost = await postsModel.loadByAuthor(list[i]["id"]);
-        for (let j = 0; j < listPost.length; j++) {
-            list[i][j] = listPost[j];
-            var listTag = await tagModel.loadByPostID(list[i][j]["id"]);
+    var listPost = await postsModel.loadByOffset(0);
+    for (let i = 0; i < listPost.length; i++) {
+        list[i] = listPost[i];
+        var listTag = await tagModel.loadByPostID(list[i]["id"]);
 
-            for (let k = 0; k < listTag.length; k++) {
-                list[i][j][k] = listTag[k];
-            }
+        for (let j = 0; j < listTag.length; j++) {
+            list[i][j] = listTag[j];
         }
     }
-    const newLocal = 'vwAdmin/Tags/list';
-    res.render(newLocal, { List: list, layout: 'adminPanel' });
+    const Quantity = await postsModel.quantity();
+
+    const newLocal = 'vwAdmin/Tags/list'
+    res.render(newLocal, {
+        List: list, quantity: Quantity[0]["quantity"],
+        pagi: mdwFunction.rangeOfPagination(Math.ceil(Quantity[0]["quantity"] / 10), 1), layout: 'adminPanel'
+    });
+});
+router.get('/Tags/list', async function (req, res) {
+    var p = 1;
+    var list = [];
+    if (req.query.p)
+        p = req.query.p;
+
+    var listPost = await postsModel.loadByOffset((p - 1) * 10);
+    for (let i = 0; i < listPost.length; i++) {
+        list[i] = listPost[i];
+        var listTag = await tagModel.loadByPostID(list[i]["id"]);
+
+        for (let j = 0; j < listTag.length; j++) {
+            list[i][j] = listTag[j];
+        }
+    }
+    const Quantity = await postsModel.quantity();
+    res.json({
+        List: list, quantity: Quantity[0]["quantity"],
+        pagi: mdwFunction.rangeOfPagination(Math.ceil(Quantity[0]["quantity"] / 10), p)
+    });
 });
 //--validation
 router.get('/Tags/validation', async function (req, res) {
@@ -366,11 +443,69 @@ router.get('/Tag/del/:id', async function (req, res) {
 });
 //----------------------------------------------User management------------------------------------
 //--List
-router.get('/Users', async function (req, res) {
-    const list = await accountModel.load();
-    const newLocal = 'vwAdmin/Users/list';
-    res.render(newLocal, { List: list, layout: 'adminPanel' });
+router.get('/Users/getManagedCategoryList', async (req, res) => {
+    res.json({ CategoryList: res.locals.lcCats });
 });
+
+router.get('/Users/getManagedCategory', async (req, res) => {
+    var List = await accountModels.
+    res.json({ CategoryList: res.locals.lcCats });
+});
+
+router.get('/Users', async function (req, res) {
+    const list = await accountModels.loadByOffset(0);
+    for (let i = 0; i < list.length; i++) {
+        list[i]["ThoiHan"] = mdwFunction.formatDateTime(list[i]["ThoiHan"]);
+        var chuyenmucquanly = await categoriesModel.loadManagementCategory(list[i]["ChuyenMucQuanLy"]);
+        if (chuyenmucquanly.length != 0) {
+            list[i]["ChuyenMucQuanLy"] = chuyenmucquanly[0].TenChuyenMuc;
+        }
+        else {
+            list[i]["ChuyenMucQuanLy"] = null;
+        }
+    }
+    const newLocal = 'vwAdmin/Users/list';
+
+    const Quantity = await accountModels.quantity();
+    res.render(newLocal, {
+        List: list, quantity: Quantity[0]["quantity"],
+        pagi: mdwFunction.rangeOfPagination(Math.ceil(Quantity[0]["quantity"] / 5), 1), layout: 'adminPanel'
+    });
+});
+
+router.get('/Users/list', async function (req, res) {
+    var p = 1;
+    var list = [];
+    if (req.query.p)
+        p = req.query.p;
+
+    list = await accountModels.loadByOffset((p - 1) * 5);
+
+    for (let i = 0; i < list.length; i++) {
+        list[i]["ThoiHan"] = mdwFunction.formatDateTime(list[i]["ThoiHan"]);
+    }
+
+    for (let i = 0; i < list.length; i++) {
+        var chuyenmucquanly = await categoriesModel.loadManagementCategory(list[i]["ChuyenMucQuanLy"]);
+        if (chuyenmucquanly.length != 0) {
+            list[i]["ChuyenMucQuanLy"] = chuyenmucquanly[0].TenChuyenMuc;
+        }
+        else {
+            list[i]["ChuyenMucQuanLy"] = null;
+        }
+    }
+
+    const Quantity = await accountModels.quantity();
+    const newLocal = 'vwAdmin/Users/list';
+    res.json({
+        List: list, quantity: Quantity[0]["quantity"],
+        pagi: mdwFunction.rangeOfPagination(Math.ceil(Quantity[0]["quantity"] / 5), p)
+    });
+});
+
+router.post('/Users/updateCat', async (req,res) => {
+
+})
 module.exports = router;
 
 

@@ -80,7 +80,7 @@ router.get('/edit/:id', async function (req, res) {
     res.render('vwReporter/edit', { ListPost: row, Tag: stringTag, selectedCategory: row[0]["ChuyenMucID"] });
 });
 
-const directory = 'public/reporterImage/';
+const directory = '/public/images/articles/';
 router.post('/edit/:id', upload.single('urlImage'), async function (req, res) {
     var postID = req.params.id;
     const row = await postModel.loadByID(postID);
@@ -98,12 +98,12 @@ router.post('/edit/:id', upload.single('urlImage'), async function (req, res) {
         NoiDungTat: req.body.NoiDungTat,
         NoiDung: req.body.NoiDung,
         NgayXuatBan: null,
-        HinhAnh: imageName,
+        HinhAnh: '/public/images/articles/' + imageName,
         PDF:'',
         LuotXem: 0,
         TrangThaiID: 2,
         ChuyenMucID: +req.body.ChuyenMucID,
-        TaiKhoanID: row[0]["TaiKhoanID"],
+        TaiKhoanID: +req.session.authUser["id"],
         isPremium: 1
     }
     await postModel.update(postEntity);

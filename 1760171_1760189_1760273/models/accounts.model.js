@@ -2,6 +2,12 @@ const queries = require("../scripts/queries.scripts");
 const db = require("../utils/db");
 
 module.exports = {
+  load: function () {
+    return db.load(`select taikhoan.* from taikhoan`)
+  },
+  loadbyID: function(id){
+    return db.load(`select taikhoan.* from taikhoan where id = ${id}`)
+  },
   accountSingle: function (email) {
     return db.load(queries.accountSingle(email));
   },
@@ -25,6 +31,13 @@ module.exports = {
     return db.load(queries.gettime());
   },
   AddLimits: function(id){
-    return db.load(queries.AddLimits(id));
-  }
+    return db.load(queries.AddLimits(id));  
+  },
+  loadByOffset: (offset) => {
+    return db.load(`SELECT * FROM taikhoan LIMIT 5 OFFSET ${offset}`)
+  },
+  quantity: () => {
+    return db.load(`select count(*) as quantity from taikhoan`)
+  },
+  changeManagedCategory:()=>{}
 };

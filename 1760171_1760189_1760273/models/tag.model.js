@@ -34,6 +34,11 @@ module.exports = {
         FROM information_schema.TABLES
         WHERE TABLE_SCHEMA = "${databaseName}"
         AND TABLE_NAME = "${TBL_TAG}"`)
-
+    },
+    quantity: () =>{
+        return db.load(`select count(*) as quantity from ${TBL_TAG}`)
+    },
+    loadByOffset: (offset) =>{
+        return db.load(`SELECT * FROM TAG LIMIT 10 OFFSET ${offset}`)
     }
 }

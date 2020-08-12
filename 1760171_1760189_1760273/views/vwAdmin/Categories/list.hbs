@@ -8,11 +8,129 @@
     else if (rowDetail.style.display == "none")
       document.getElementById(detailIndex).style.display = "";
   }
-
+  function addParentHTML(nextID, cateName) {
+    var html = `<tr>
+          <th scope="row" class="text-left" id = "tdParentIndex${nextID}">
+            <p>{{@index}}</p>
+          </th>
+          <td class="text-center" >
+            <input id="txtCategory${nextID}" style="border:5mm;text-align:center;"
+              value="${cateName}"></input>
+          </td>
+          <td class="text-center">
+            <button type="button" class="btn btn-primary" onclick="viewDetail(${nextID})"><i class="fa fa-eye"
+                aria-hidden="true"></i></button>
+          </td>
+          <td class="text-center">
+            <button id="btnEditCategory${nextID}" class="btn btn-primary btn-sm" role="button" title="Sửa category"
+              onclick="editCategory(${nextID})">
+              <i class="fa fa-pencil" aria-hidden="true">sửa</i>
+            </button>
+            <button id="btnDelCategory${nextID}" class="btn btn-danger btn-sm" role="button" title="Xóa category"
+              onclick="delCategory(${nextID})">
+              <i class="fa fa-trash" aria-hidden="true">Xóa</i>
+            </button>
+          </td>
+        </tr>
+        <tr id="row${nextID}" style = "display:none;">
+          <td></td>
+          <td colspan="2">
+            <input id="txtAddChild${nextID}">
+            </input>
+            <button id="btnAddChild${nextID}" style="margin-left: 0px;" class="btn btn-success btn-sm"
+              onclick="addChild(${nextID})">(+)</button>
+            <table class="table table-hover">
+              <thead>
+                <tr style="background-color:lightgray">
+                  <th scope="col" class="text-left" style="width: 20%">#</th>
+                  <th scope="col" style="width: 60%;" class="text-center">Tên chuyên mục con</th>
+                  <th scope="col" class="text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyCateChild${nextID}">
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        `;
+    return html;
+  }
+  function addParent() {
+    var categoryName = $("#txtParentCategoryName").val();
+    if (categoryName == '') {
+      alert("Tên chuyên mục không được rỗng!");
+      return;
+    }
+    $.getJSON(`/admin/Categories/add/validation?categoryname=${categoryName}`, (data) => {
+      if (data["result"] == 0) {
+        $.post(
+          "/admin/Categories/add",
+          { TenChuyenMuc: categoryName },
+          function (data) {
+            let nextID = data["nextID"] - 1;
+            window.alert("Thêm thành công!")
+            var parentHTML = addParentHTML(nextID, categoryName);
+            $("#tbodyCateParent").append(parentHTML);
+            $("#tdParentIndex" + nextID).html(data["countParent"] - 1);
+          }
+        );
+      }
+      if (data["result"] == 1) {
+        alert("Đã tồn tại chuyên mục con này ở trong chuyên mục cha đã chọn!");
+      }
+      if (data["result"] == 2) {
+        alert("Đã tồn tại chuyên mục cha!");
+      }
+    })
+  }
+  function addChildHtml(id, parentID, childName){
+    var html = `<tr id="row${parentID}" class="childRow">
+                  <td></td>
+                  <td class="text-center"><input id="txtCategory${id}" style="border:5mm;text-align: center;"
+                      value="${childName}"></input></td>
+                  <td class="text-left">
+                    <button id="btnEditCategory${id}" class="btn btn-primary btn-sm" role="button" title="Sửa category"
+                      onclick="editCategory(${id})">
+                      <i class="fa fa-pencil" aria-hidden="true">sửa</i>
+                    </button>
+                    <button id="btnDelCategory${id}" class="btn btn-danger btn-sm" role="button" title="Xóa category"
+                      onclick="delCategory(${id})">
+                      <i class="fa fa-trash" aria-hidden="true">Xóa</i>
+                    </button>
+                  </td>
+                </tr>`;
+    return html;
+  }
+  function addChild(parentID) {
+    var categoryName = $("#txtAddChild" + parentID).val();
+    if (categoryName == '') {
+      alert("Tên chuyên mục con không được rỗng!");
+      return;
+    }
+    $.getJSON(`/admin/Categories/add/validation?categoryname=${categoryName}&parentID=${parentID}`, (data) => {
+      if (data["result"] == 0) {
+        $.post(
+          "/admin/Categories/add",
+          { TenChuyenMuc: categoryName, ParentID: parentID},
+          function (data) {
+            let nextID = data["nextID"] - 1;
+            window.alert("Thêm thành công!")
+            $("#tbodyCateChild" + parentID).append(addChildHtml(nextID, parentID, categoryName));
+          }
+        );
+      }
+      if (data["result"] == 1) {
+        alert("Đã tồn tại chuyên mục con này ở trong chuyên mục cha đã chọn!");
+      }
+      if (data["result"] == 2) {
+        alert("Đã tồn tại chuyên mục cha!");
+      }
+    })
+  }
   function editCategory(index) {
     let categoryName = $("#txtCategory" + index).val();
     if (categoryName !== '') {
-      $.getJSON(`/admin/Categories/validation?categoryname=${categoryName}&id=${index}`, (data) => {
+      $.getJSON(`/admin/Categories/edit/validation?categoryname=${categoryName}&id=${index}`, (data) => {
         if (data["result"] == 0) {
           $.post(
             "/admin/Categories/edit",
@@ -20,10 +138,10 @@
             window.alert("Sửa thành công!")
           );
         }
-        if(data["result"] == 1){
+        if (data["result"] == 1) {
           alert("Đã tồn tại chuyên mục con này ở trong chuyên mục cha đã chọn!");
         }
-        if(data["result"] == 2){
+        if (data["result"] == 2) {
           alert("Đã tồn tại chuyên mục cha!");
         }
       });
@@ -39,6 +157,7 @@
     $.getJSON(`/admin/Categories/del/${index}`, (data) => {
       if (data["result"] == '0') {
         alert("Xóa thành công!");
+        $("#row" + index).remove();
         $('#' + btnName).closest('tr').remove();
       }
       if (data["result"] == '1')
@@ -56,12 +175,13 @@
   </div>
   <div class="card">
     <div class="card-header d-flex justify-content-between">
-      <a class="btn btn-outline-success" href="/admin/Categories/add" role="button">
+      <input id="txtParentCategoryName"></input>
+      <button class="btn btn-outline-success" role="button" onclick="addParent()">
         <i class="fa fa-plus" aria-hidden="true"></i>
         Thêm Chuyên mục
-      </a>
+      </button>
     </div>
-    <table class="table table-hover">
+    <table class="table table-hover" id="tableCategory">
       <thead>
         <tr style="background-color:bisque">
           <th scope="col" class="text-left" style="width: 10%">#</th>
@@ -70,10 +190,10 @@
           <th scope="col" class="text-center">Action</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody id="tbodyCateParent">
         {{#each List}}
         <tr>
-          <th scope="row" class="text-left">
+          <th scope="row" class="text-left" id="tdParentIndex{{this.0.id}}">
             <p>{{@index}}</p>
           </th>
           <td class="text-center">
@@ -98,8 +218,12 @@
 
         <tr id="row{{this.0.id}}" style="display:none">
           <td></td>
-          <td class="text-center" colspan="2">
-            <table class="table table-hover">
+          <td colspan="2">
+            <input id="txtAddChild{{this.0.id}}">
+            </input>
+            <button id="btnAddChild{{this.0.id}}" style="margin-left: 0px;" class="btn btn-success btn-sm"
+              onclick="addChild({{this.0.id}})">Thêm mới</button>
+            <table id = "tableChild{{this.0.id}}" class="table table-hover">
               <thead>
                 <tr style="background-color:lightgray">
                   <th scope="col" class="text-left" style="width: 20%">#</th>
@@ -108,7 +232,7 @@
                 </tr>
               </thead>
 
-              <tbody>
+              <tbody id="tbodyCateChild{{this.0.id}}">
                 {{#each this}}
                 {{#if (isNotEqual @index 0)}}
                 <tr id="row{{ChuyenMucCon}}" class="childRow">

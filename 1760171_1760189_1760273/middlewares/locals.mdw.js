@@ -10,7 +10,7 @@ const GLB_HEADER_ARTICLES = "globalHeaderArticles";
 
 const cache = new LRU({
   max: 500,
-  maxAge: 600000, // refresh after 10 minutes
+  maxAge: 10000, // refresh after 10 minutes
 });
 
 module.exports = function (app) {

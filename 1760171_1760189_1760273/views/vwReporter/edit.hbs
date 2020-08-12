@@ -115,6 +115,21 @@
 {{/section}}
 {{#section 'js'}}
 <script>
+  $('#frmPost').on('submit', function (e) {
+    e.preventDefault();
+    validate()
+  })
+  function validate() {
+    if ($('#txtProName').val() === '' || $('#txtTinyDes').val() === '' || $('#txtFullDes').val() === '') {
+      alert('Các ô không được để trống! vui lòng nhập đày đủ');
+    }
+    else {
+      $('#frmPost').off('submit').submit();
+    }
+    return true;
+  }
+</script>
+<script>
   (function ($) {
     "use strict";
 
@@ -861,7 +876,7 @@
   </div>
   <div class="card-body">
     {{#each ListPost}}
-    <form method="POST" action="" enctype="multipart/form-data">
+    <form method="POST" id="frmPost" action="" enctype="multipart/form-data">
 
       <div class="form-group">
         <label for="txtTitle">Tiêu đề</label>

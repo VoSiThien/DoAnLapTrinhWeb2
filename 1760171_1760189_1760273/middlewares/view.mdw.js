@@ -25,6 +25,11 @@ module.exports = function (app) {
 
           return moment(sqlDate).format("DD/MM");
         },
+        formatDateTime: function (value) {
+          const sqlDate = new Date(value);
+
+          return moment(sqlDate).format("DD/MM/yyyy hh:mm:ss");
+        },
         when: function (operand_1, operator, operand_2, options) {
           let operators = {
             eq: (l, r) => l == r,

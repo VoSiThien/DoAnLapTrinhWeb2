@@ -2,11 +2,13 @@ const queries = require("../scripts/queries.scripts");
 const db = require("../utils/db");
 const TBL_CATEGORIES = 'chuyenmuc';
 const TBL_POST = 'baiviet';
+const databaseName = require('../config/default.json').mysql.database;
+
 module.exports = {
   loadAll: function () {
     return db.load(`select * from ${TBL_CATEGORIES}`);
   },
-  loadByID: function(id) {
+  loadByID: function (id) {
     return db.load(`select * from ${TBL_CATEGORIES} where ${TBL_CATEGORIES}.id = ${id}`)
   },
   insert: function (entity) {
@@ -24,24 +26,24 @@ module.exports = {
     const condition = { id }
     return db.del(TBL_CATEGORIES, condition);
   },
-  loadPostListByCatID:function(categoryID){
+  loadPostListByCatID: function (categoryID) {
     return db.load(`SELECT * FROM ${TBL_CATEGORIES}, ${TBL_POST} WHERE ${TBL_POST}.ChuyenMucID = ${TBL_CATEGORIES}.id  and ${TBL_CATEGORIES}.id = ${categoryID}`);
   },
-  loadParentByID: function(categoryID){
+  loadParentByID: function (categoryID) {
     return db.load(`SELECT * FROM ${TBL_CATEGORIES} WHERE ${TBL_CATEGORIES}.id = ${categoryID} and ${TBL_CATEGORIES}.chuyenmuccon is null`)
   },
-  loadChild: function(categoryID){
+  loadChild: function (categoryID) {
     return db.load(`SELECT * FROM ${TBL_CATEGORIES} WHERE ${TBL_CATEGORIES}.chuyenmuccon = ${categoryID}`)
   },
-  loadParent: function(id){
+  loadParent: function (id) {
     return db.load(`SELECT * 
     FROM ${TBL_CATEGORIES} 
     WHERE ID = (SELECT CHUYENMUCCON FROM ${TBL_CATEGORIES} WHERE ID = ${id})`)
   },
-  loadParentByName: function(catName){
+  loadParentByName: function (catName) {
     return db.load(`SELECT * FROM ${TBL_CATEGORIES} WHERE ${TBL_CATEGORIES}.TenChuyenMuc = '${catName}' and ${TBL_CATEGORIES}.chuyenmuccon is null`)
   },
-  loadChildByNameAndParentID: function(catName, parentID){
+  loadChildByNameAndParentID: function (catName, parentID) {
     return db.load(`SELECT * FROM ${TBL_CATEGORIES} WHERE ${TBL_CATEGORIES}.TenChuyenMuc = '${catName}' and ${TBL_CATEGORIES}.chuyenmuccon = ${parentID}`)
   },
   load5CategoriesDesc: function () {
@@ -50,6 +52,21 @@ module.exports = {
 
   loadCategoryTitle: function (id) {
     return db.load(queries.loadCategoryTitle(id))
+  },
+  getNextAutoIncrement: () => {
+    return db.load(`SELECT AUTO_INCREMENT
+    FROM information_schema.TABLES
+    WHERE TABLE_SCHEMA = "${databaseName}"
+    AND TABLE_NAME = "${TBL_CATEGORIES}"`)
+  },
+  countParent: () => {
+    return db.load(`SELECT COUNT(*) FROM ${TBL_CATEGORIES} WHERE CHUYENMUCCON IS NULL`);
+  },
+  countChild: () => {
+    return db.load(`SELECT COUNT(*) FROM ${TBL_CATEGORIES} WHERE CHUYENMUCCON IS NOT NULL`);
+  },
+  loadManagementCategory:(cateID)=>{
+    return db.load(`select chuyenmuc.* from ${TBL_CATEGORIES}, taikhoan where taikhoan.chuyenmucquanly = chuyenmuc.id and chuyenmuc.id = ${cateID}`)
   }
 };
 

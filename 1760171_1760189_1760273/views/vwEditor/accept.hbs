@@ -115,6 +115,37 @@
 {{/section}}
 {{#section 'js'}}
 <script>
+  $('#frmPost').on('submit', function (e) {
+    e.preventDefault();
+    validate()
+  })
+  function validate() {
+    var today = new Date();
+    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date + ' ' + time;
+
+    if ($('#txtProName').val() === '' || $('#txtTinyDes').val() === '' || $('#txtFullDes').val() === '') {
+      alert('Các ô không được để trống! vui lòng nhập đày đủ');
+    }
+    if ($('#txtBeginDate').val().toString() === '____-__-__ __:__:__') {
+      alert('Ngày xuẩt bản không được trống');
+    }
+    else {
+      var s = new Date($('#txtBeginDate').val().toString());
+      var c = new Date(dateTime);
+      if (s < c) {
+        alert('Ngày xuẩt bản không được nhỏ hơn thời gian hiện tại');
+      }
+      else {
+        $('#frmPost').off('submit').submit();
+      }
+    }
+
+    return true;
+  }
+</script>
+<script>
   (function ($) {
     "use strict";
 
@@ -861,7 +892,7 @@
   </div>
   <div class="card-body">
     {{#each ListPost}}
-    <form method="POST" action="" enctype="multipart/form-data">
+    <form method="POST" id="frmPost" action="" enctype="multipart/form-data">
 
       <div class="form-group">
         <label for="txtTitle">Tiêu đề</label>
