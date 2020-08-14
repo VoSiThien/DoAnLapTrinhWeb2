@@ -63,5 +63,30 @@ module.exports= {
     //hien thi bai viet thuoc chuyen muc cho bien tap vien
     LoadByCategory: function (ChuyenMucID) {
         return db.load(`select * from ${TBL_BAIVIET} where ChuyenMucID = ${ChuyenMucID} and TrangThaiID = 2`);
-    }
+    },
+    changeTitle:(Title, id) => {
+        return db.load(`update baiviet set TieuDe = '${Title}' where id = ${id}`);
+    },
+    changePhoto:(Photo, id) => {
+        return db.load(`update baiviet set HinhAnh = '${Photo}' where id = ${id}`);
+    },
+    changeShortContent:(ShortContent, id) => {
+        return db.load(`update baiviet set NoiDungTat = '${ShortContent}' where id = ${id}`);
+    },
+    changeContent:(Content, id) => {
+        return db.load(`update baiviet set NoiDung = '${Content}' where id = ${id}`);
+    },
+    changeDatePublish:(DatePublish, id) => {
+        return db.load(`update baiviet set NgayXuatBan = '${DatePublish}' where id = ${id}`);
+    },
+    changeCategoryID:(CategoryID, id) => {
+        return db.load(`update baiviet set ChuyenMucID = '${CategoryID}' where id = ${id}`);
+    },
+    changeStatusID:(StatusID, id) => {
+        return db.load(`update baiviet set TrangThaiID = '${StatusID}' where id = ${id}`);
+    },
+    changePDFs:(PDFs, id) => {
+        return db.load(`update baiviet set PDF = '${PDFs}' where id = ${id}`);
+    },
+
 }
