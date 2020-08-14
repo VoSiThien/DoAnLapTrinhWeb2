@@ -16,6 +16,7 @@ const router = express.Router();
 router.post("/register", async (req, res) => {
   const time = await accounts.gettime();
   const entity = {
+    username: req.body.username,
     MatKhau: bcrypt.hashSync(
       req.body.password,
       config.authentication.saltRounds
@@ -35,14 +36,14 @@ router.post("/register", async (req, res) => {
   const NS = moment(acc[0]["NgaySinh"], 'YYYY/MM/DD').format('YYYY/MM/DD');
   const TH = moment(acc[0]["ThoiHan"], 'YYYY/MM/DD HH:mm:SS').format('YYYY/MM/DD HH:mm:SS');
   req.session.isAuthenticated = true;
-  req.session.authUser = { id: acc[0]["id"], HoTen: acc[0]["HoTen"], Email: acc[0]["Email"], ButDanh: acc[0]["ButDanh"], NgaySinh: NS, ThoiHan: TH, TenChuyenMuc: acc[0]["TenChuyenMuc"], VaiTroID: acc[0]["VaiTroID"],
+  req.session.authUser = {username: acc[0]["username"], id: acc[0]["id"], HoTen: acc[0]["HoTen"], Email: acc[0]["Email"], ButDanh: acc[0]["ButDanh"], NgaySinh: NS, ThoiHan: TH, TenChuyenMuc: acc[0]["TenChuyenMuc"], VaiTroID: acc[0]["VaiTroID"],
   ChuyenMucQuanLy:  acc[0]["ChuyenMucQuanLy"] };
 
   res.redirect(req.headers.referer);
 });
 
 router.post("/login", async (req, res) => {
-  const acc = await accounts.accountSingle(req.body._email);
+  const acc = await accounts.accountSingleUser(req.body._username);
 
   delete acc["MatKhau"];
 
@@ -50,7 +51,7 @@ router.post("/login", async (req, res) => {
   const TH = moment(acc[0]["ThoiHan"], 'YYYY/MM/DD HH:mm:SS').format('YYYY/MM/DD HH:mm:SS');
 
   req.session.isAuthenticated = true;
-  req.session.authUser = { id: acc[0]["id"], HoTen: acc[0]["HoTen"], Email: acc[0]["Email"], ButDanh: acc[0]["ButDanh"], NgaySinh: NS, ThoiHan: TH, TenChuyenMuc: acc[0]["TenChuyenMuc"], VaiTroID: acc[0]["VaiTroID"], 
+  req.session.authUser = {username: acc[0]["username"], id: acc[0]["id"], HoTen: acc[0]["HoTen"], Email: acc[0]["Email"], ButDanh: acc[0]["ButDanh"], NgaySinh: NS, ThoiHan: TH, TenChuyenMuc: acc[0]["TenChuyenMuc"], VaiTroID: acc[0]["VaiTroID"], 
   ChuyenMucQuanLy:  acc[0]["ChuyenMucQuanLy"] };
 
   res.redirect(req.headers.referer);
@@ -69,7 +70,7 @@ router.get("/google/success", async (req, res) => {
   const TH = moment(acc[0]["ThoiHan"], 'YYYY/MM/DD HH:mm:SS').format('YYYY/MM/DD HH:mm:SS');
 
   req.session.isAuthenticated = true;
-  req.session.authUser = {  id: acc[0]["id"], HoTen: acc[0]["HoTen"], Email: acc[0]["Email"], ButDanh: acc[0]["ButDanh"], NgaySinh: NS, ThoiHan: TH, TenChuyenMuc: acc[0]["TenChuyenMuc"], VaiTroID: acc[0]["VaiTroID"],
+  req.session.authUser = {username: acc[0]["username"],  id: acc[0]["id"], HoTen: acc[0]["HoTen"], Email: acc[0]["Email"], ButDanh: acc[0]["ButDanh"], NgaySinh: NS, ThoiHan: TH, TenChuyenMuc: acc[0]["TenChuyenMuc"], VaiTroID: acc[0]["VaiTroID"],
   ChuyenMucQuanLy:  acc[0]["ChuyenMucQuanLy"]  };
 
   res.redirect("/");
@@ -95,23 +96,25 @@ router.get("/profile", (req, res) => res.render('vwAccount/profile'));
 router.get("/profile/edit", (req, res) => res.render('vwAccount/editProfile'));
 
 router.post("/profile/edit", async (req, res) => {
-  const NS = moment(req.body.NgaySinh, 'YYYY/MM/DD').format('YYYY/MM/DD');
+  const NS = moment(req.body.pNgaySinh, 'YYYY/MM/DD').format('YYYY/MM/DD');
   var BD = null;
     if(req.body.id == 3){
         BD = req.body.ButDanh;
     }
   const entity = {
     id: req.body.id,
+    username: req.body.pusername,
     HoTen: req.body.HoTen,
     ButDanh: BD,
-    email: req.body.email,
+    email: req.body.pemail,
     NgaySinh: NS
   }
   var a = await accounts.updateAccount(entity);
   if(a != 0){
+    req.session.authUser.username = req.body.pusername;
     req.session.authUser.HoTen = req.body.HoTen;
     req.session.authUser.ButDanh = BD;
-    req.session.authUser.Email = req.body.email;
+    req.session.authUser.Email = req.body.pemail;
     req.session.authUser.NgaySinh = NS;
   }
   res.redirect('/account/profile');
@@ -127,10 +130,6 @@ router.get("/logout", mdlFunction.isLoggedIn, (req, res) => {
 //Doi mat khau
 router.get("/password/edit", (req, res) => res.render('vwAccount/editPassword'));
 router.post("/password/edit", async (req, res) => {
-
-  const acc = await accounts.accountSingle(req.session.authUser.Email);
-  const check = bcrypt.compareSync(req.body.password, acc[0]["MatKhau"]);
-  if(req.body.newPassword == req.body.retypePassword && check ==  true){
     const entity = {
       id: req.body.id,
       MatKhau: bcrypt.hashSync(
@@ -138,9 +137,8 @@ router.post("/password/edit", async (req, res) => {
         config.authentication.saltRounds
       )
     }
-    var a = await accounts.updateAccount(entity);
+    await accounts.updateAccount(entity);
     res.redirect('/account/profile');
-  }
   res.redirect(req.headers.referer);
 });
 

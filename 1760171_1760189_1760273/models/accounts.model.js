@@ -11,6 +11,9 @@ module.exports = {
   accountSingle: function (email) {
     return db.load(queries.accountSingle(email));
   },
+  accountSingleUser: function (username) {
+    return db.load(queries.accountSingleUsername(username));
+  },
 
   readerPremium: function (id) {
     return db.load(queries.readerPremium(id));

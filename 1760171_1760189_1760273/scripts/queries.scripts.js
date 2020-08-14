@@ -225,6 +225,12 @@ module.exports = {
       from taikhoan tk left join chuyenmuc c on tk.ChuyenMucQuanLy = c.id
       where tk.email = '${email}'`;
   },
+  accountSingleUsername: function (username) {
+    return `
+      select tk.*, c.TenChuyenMuc
+      from taikhoan tk left join chuyenmuc c on tk.ChuyenMucQuanLy = c.id
+      where tk.username = '${username}'`;
+  },
 
   readerPremium:  function (id) {
     return `

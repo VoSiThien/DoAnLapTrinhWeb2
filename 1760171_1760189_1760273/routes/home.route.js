@@ -101,15 +101,22 @@ router.post("/load-tag-article-area", async (req, res) => {
 
 router.get("/check-user-exist", async (req, res) => {
   const email = req.query.email;
-  const data = await accounts.accountSingle(email);
-
-  res.send(data);
+  const username = req.query.username;
+  const emailCheck = await accounts.accountSingle(email);
+  const usernameCheck = await accounts.accountSingleUser(username);
+  if(emailCheck.length !== 0){
+    return res.json(1);
+  }
+  if(usernameCheck.length !== 0){
+    return res.json(2);
+  }
+  return res.json(0);
 });
 
 router.post("/login-validate", async (req, res) => {
-  const [email, password] = [req.body.email, req.body.password];
+  const [username, password] = [req.body.username, req.body.password];
   // get user info from mysql db
-  const acc = await accounts.accountSingle(email);
+  const acc = await accounts.accountSingleUser(username);
 
   // exist an account with email field equal to `email` variable
   if (acc.length !== 0) {

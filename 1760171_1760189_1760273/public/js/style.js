@@ -82,11 +82,16 @@ $(document).ready(function () {
     } else {
       e.preventDefault();
 
-      $.getJSON(`/check-user-exist?email=${$("#email").val()}`, (data) => {
-        if (data.length !== 0) {
+      $.getJSON(`/check-user-exist?email=${$("#email").val()}&username=${$("#username").val()}`, (data) => {
+        if (data === 1) {
           $("#alert").html("Email này đã được đăng kí, vui lòng kiểm tra lại!");
           $("#alert").css("display", "block");
-        } else {
+        }
+        if(data === 2){
+          $("#alert").html("Tên người dùng này đã được đăng kí, vui lòng kiểm tra lại!");
+          $("#alert").css("display", "block");
+        }
+        if(data === 0){
           $("#alert").css("display", "none");
           $("#form-register").submit();
         }
@@ -99,7 +104,7 @@ $(document).ready(function () {
 
     $.post(
       "/login-validate",
-      { email: $("#_email").val(), password: $("#_password").val() },
+      { username: $("#_username").val(), password: $("#_password").val() },
       (data) => {
         if (!data) {
           $("#alert-login").html(

@@ -62,7 +62,7 @@ router.post('/accept/:id', upload.single('urlImage'), async function (req, res) 
     imageName = row[0]["HinhAnh"];
     // if recieve new image, delete old image 
     if (req.file) {
-        const imagePath = directory + row[0]["HinhAnh"];
+        const imagePath = row[0]["HinhAnh"];
         fs.unlinkSync(imagePath);
         imageName = req.file.filename;
     }

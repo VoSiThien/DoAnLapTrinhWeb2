@@ -4,6 +4,7 @@ const postModel = require('../models/post.model');
 const tagModel = require('../models/tag.model');
 const multer = require('multer');
 var path = require('path');
+const fs = require('fs')
 
 
 var storage = multer.diskStorage({
@@ -87,7 +88,7 @@ router.post('/edit/:id', upload.single('urlImage'), async function (req, res) {
     imageName = row[0]["HinhAnh"];
     // if recieve new image, delete old image 
     if (req.file) {
-        const imagePath = directory + row[0]["HinhAnh"];
+        const imagePath = row[0]["HinhAnh"];
         fs.unlinkSync(imagePath);
         imageName = req.file.filename;
     }
@@ -98,7 +99,7 @@ router.post('/edit/:id', upload.single('urlImage'), async function (req, res) {
         NoiDungTat: req.body.NoiDungTat,
         NoiDung: req.body.NoiDung,
         NgayXuatBan: null,
-        HinhAnh: '/public/images/articles/' + imageName,
+        HinhAnh: imageName,
         PDF:'',
         LuotXem: 0,
         TrangThaiID: 2,

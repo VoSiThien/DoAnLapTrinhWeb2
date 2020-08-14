@@ -1,12 +1,62 @@
+{{#section 'js'}}
+<script>
+    $("#btn-profile").on("click", function (e) {
+    if ($("#pusername").val() === '') {
+      e.preventDefault();
+      alert("Tên tài khoản không được trống, vui lòng nhập!");
+    }
+    else if ($("#pemail").val() === '') {
+      e.preventDefault();
+      alert("email không được trống, vui lòng nhập!");
+    }
+    else if ($("#pNgaySinh").val() === '') {
+      e.preventDefault();
+      alert("Ngày sinh không được trống, vui lòng nhập!");
+    }
+    if($("#pusername").val() !== '' && $("#pemail").val() !== '' && $("#pNgaySinh").val() !== '') {
+      e.preventDefault();
+      var temp = $("#pemail").val();
+      var temp1 = $("#pusername").val();
+      if($("#pemail").val() === $("#pemail2").val()){
+          temp = $("#pemail").val() + '2';   
+      }
+      if($("#pusername").val() === $("#pusername2").val()){
+          temp1 = $("#pusername").val() + '!@#$%^&*()';   
+      }
+      $.getJSON(`/check-user-exist?email=${temp}&username=${temp1}`, (data) => {
+        if (data === 1) {
+          alert("Email này đã được đăng kí, vui lòng kiểm tra lại!");
+        }
+        if(data === 2){
+          alert("Tên người dùng này đã được đăng kí, vui lòng kiểm tra lại!");
+        }
+        if(data === 0){
+          alert("cập nhật thành công!");
+          $("#form-profile").submit();
+        }
+      });
+    }
+  });
+</script>
+{{/section}}
+  
 <div class="card">
     <div class="card-header">
         <h4>Sửa thông tin</h4>
     </div>
     <div class="card-body">
 
-        <form method="POST" action="" style="width: 50%; margin-left: 20%">
+        <form method="POST" action="" style="width: 50%; margin-left: 20%" id = "form-profile">
             <div class="form-group">
                 <input type="text" class="form-control" id="id" name="id" placeholder="" value="{{lcAuthUser.id}}" hidden>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="pusername2" name="pusername2" placeholder="Tên tài khoản" value="{{lcAuthUser.username}}" hidden>
+            </div>
+            <div class="form-group">
+                <label for="username">Tên tài khoản</label>
+                <input type="text" class="form-control" id="pusername" name="pusername" placeholder="Tên tài khoản" value="{{lcAuthUser.username}}">
+
             </div>
             <div class="form-group">
                 <label for="HoTen">Họ Tên</label>
@@ -20,19 +70,24 @@
 
             </div>
             <div class="form-group">
+                
+                <input type="email" class="form-control" id="pemail2" name="pemail2" placeholder="email"
+                    value="{{lcAuthUser.Email}}" hidden>
+            </div>
+            <div class="form-group">
                 <label for="email">email</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="email"
+                <input type="email" class="form-control" id="pemail" name="pemail" placeholder="email"
                     value="{{lcAuthUser.Email}}">
             </div>
             <div class="form-group">
                 <label for="NgaySinh">Ngày sinh</label>
-                <input type="date" name="NgaySinh" id="NgaySinh" class="form-control" value="{{lcAuthUser.NgaySinh}}">
+                <input type="date" name="pNgaySinh" id="pNgaySinh" class="form-control" value="{{lcAuthUser.NgaySinh}}">
             </div>
 
             <a class="btn btn-success" href="/account/profile" role="button" title="Back to List">
                 <i class="fa fa-backward" aria-hidden="true"></i>
             </a>
-            <input type="submit" value="Submit" class="btn btn-primary">
+            <input type="submit" value="Submit" class="btn btn-primary" id="btn-profile">
         </form>
     </div>
 </div>
