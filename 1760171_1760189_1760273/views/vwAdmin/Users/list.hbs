@@ -45,6 +45,10 @@
                     <label>Bút danh:</label>`;
             //but danh
             if (val["VaiTroID"] == 3) {
+                row = row + `<button id="btnAthName${val["id"]}" class="btn btn-primary btn-sm" role="button" title="Sửa"
+                            onclick="editAthName(${val["id"]})">
+                            <i class="fa fa-pencil" aria-hidden="true">sửa</i>
+                        </button>`;
                 row = row + `<input class="form-control" id="txtButDanh${val["id"]}"
                         value="${val["ButDanh"]}">`;
             }
@@ -56,29 +60,47 @@
             row = row + `<label>Email:</label>
             <input class="form-control" id="txtEmail${val["id"]}" value="${val["Email"]}"></input><br>
             <label>Thời hạn:</label>`;
+            if (val["VaiTroID"] == 4) {
+                row = row + `<button id="btnTime${val["id"]}" class="btn btn-primary btn-sm" role="button" title="Sửa"
+                            onclick="editTime(${val["id"]})">
+                            <i class="fa fa-pencil" aria-hidden="true">sửa</i>
+                        </button>`;
+            }
             //thoi han
             if (val["VaiTroID"] == 4) {
-                row = row + `<input id="txtThoiHan${val["id"]}" class="form-control"
+                row = row + `<input id="txtThoiHan${val["id"]}" class="form-control" type = "datetime-local"
                         value="${val["ThoiHan"]}"></input><br>`;
             }
             else {
-                row = row + `<input id="txtThoiHan${val["id"]}" class="form-control"
+                row = row + `<input id="txtThoiHan${val["id"]}" class="form-control" type = "datetime-local"
                         value="none"></input><br>`;
             }
             //vai tro
             row = row + `<label>Vai trò:</label>
-                <select id="cbRole" name="RoleID" class="form-control">`;
+                <select id="cbRole${val["id"]}"" name="RoleID" class="form-control" onchange = "cbRoleChange(${val["id"]})">`;
             if (val["VaiTroID"] == 1) {
-                row = row + `<option value="1" >Quản trị viên</option>`;
+                row = row + `<option value="1" selected>Quản trị viên</option>`;
+                row = row + `<option value="2" >Biên tập viên</option>`;
+                row = row + `<option value="3" >Phóng viên</option>`;
+                row = row + `<option value="4" >Độc giả</option>`;
             }
             if (val["VaiTroID"] == 2) {
-                row = row + `<option value="2" >Biên tập viên</option>`;
+                row = row + `<option value="2" selected>Biên tập viên</option>`;
+                row = row + `<option value="1" >Quản trị viên</option>`;
+                row = row + `<option value="3" >Phóng viên</option>`;
+                row = row + `<option value="4" >Độc giả</option>`;
             }
             if (val["VaiTroID"] == 3) {
-                row = row + `<option value="3" >Phóng viên</option>`;
+                row = row + `<option value="3" selected>Phóng viên</option>`;
+                row = row + `<option value="2" >Biên tập viên</option>`;
+                row = row + `<option value="1" >Quản trị viên</option>`;
+                row = row + `<option value="4" >Độc giả</option>`;
             }
             if (val["VaiTroID"] == 4) {
-                row = row + `<option value="4" >Độc giả</option>`;
+                row = row + `<option value="4" selected>Độc giả</option>`;
+                row = row + `<option value="2" >Biên tập viên</option>`;
+                row = row + `<option value="3" >Phóng viên</option>`;
+                row = row + `<option value="1" >Quản trị viên</option>`;
             }
             row = row + `</select>
             <label>Chuyên mục quản lý:</label>`;
@@ -100,21 +122,23 @@
             row = row + `</div>
                 </div>
                 </div>
+                </div>
                 `;
         });
         return row;
     }
 
-
-    $("#paging-area button").on("click", function () {
-        const page = +$(this).html();
-        if (!$(this).hasClass("pagi-active")) {
-            $.getJSON(`/admin/Users/list?p=${page}`, (data) => {
-                displayPaginationButtons("#paging-area button", page, data)
-                $("#infoList").empty();
-                $("#infoList").append(changePageContent(data));
-            });
-        }
+    $(document).ready(function () {
+        $("#paging-area button").on("click", function () {
+            const page = +$(this).html();
+            if (!$(this).hasClass("pagi-active")) {
+                $.getJSON(`/admin/Users/list?p=${page}`, (data) => {
+                    displayPaginationButtons("#paging-area button", page, data)
+                    $("#infoList").empty();
+                    $("#infoList").append(changePageContent(data));
+                });
+            }
+        });
     });
     //edit management category
     function getCatComboboxHTML(data, id) {
@@ -123,7 +147,7 @@
             html = html + `<optgroup label="${val[0]["TenChuyenMuc"]}">`
             val.forEach((values) => {
                 if (values["ChuyenMucCon"] != null) {
-                    html = html + `<option value="${id}" selected>${values["TenChuyenMuc"]}</option>`;
+                    html = html + `<option value="${values["id"]}" selected>${values["TenChuyenMuc"]}</option>`;
                 }
             });
             html = html + `</optgroup>`;
@@ -141,6 +165,7 @@
         html = html + `</div>`;
         return html;
     }
+
     function editCat(id) {
         $.getJSON(`/admin//Users/getManagedCategoryList`, (data) => {
             $("#catField" + id).empty();
@@ -148,23 +173,169 @@
         });
 
     }
+
+    function returnManagedCategoryHTML(id, catName) {
+        var html = `<input value="${catName}"
+                                readonly="true" style="background-color: beige;" class="form-control"></input><br>`;
+        return html;
+    }
+
     function acceptCat(id) {
-        "cbCat" + id).value;
         $.post(
-            `/admin//Users/updateCat`,
-            {id : id},
-            window.alert("Sửa thành công!")
+            `/admin/Users/updateCat`,
+            { id: id, catValue: $("#cbCat" + id).val() },
+            function (data) {
+                $("#catField" + id).empty();
+                var html = returnManagedCategoryHTML(data["id"], data["ManagedCat"]);
+                $("#catField" + id).append(html);
+                window.alert("Sửa thành công!");
+            }
         );
     }
 
-    function undoCat(id){
-
+    function undoCat(id) {
+        $.getJSON(`/admin/Users/getManagedCategory/${id}`, (data) => {
+            $("#catField" + id).empty();
+            var html = returnManagedCategoryHTML(data["id"], data["ManagedCat"]);
+            $("#catField" + id).append(html);
+        });
+    }
+    function returnHtmlRole(val) {
+        var row = `
+        <div class="form-group" style="margin: 2%;">
+                    <label for="txtHoTen${val["id"]}">Họ và Tên:</label>
+                    <input class="form-control" id="txtHoTen${val["id"]}" value="${val["HoTen"]}"></input><br>
+                    <label>Bút danh:</label>`;
+        //but danh
+        if (val["VaiTroID"] == 3) {
+            row = row + `<button id="btnAthName${val["id"]}" class="btn btn-primary btn-sm" role="button" title="Sửa"
+                            onclick="editAthName(${val["id"]})">
+                            <i class="fa fa-pencil" aria-hidden="true">sửa</i>
+                        </button>`;
+            row = row + `<input class="form-control" id="txtButDanh${val["id"]}"
+                        value="${val["ButDanh"]}">`;
+        }
+        else {
+            row = row + `<input class="form-control" id="txtButDanh${val["id"]}"
+                        value="None">`;
+        }
+        //email
+        row = row + `<label>Email:</label>
+            <input class="form-control" id="txtEmail${val["id"]}" value="${val["Email"]}"></input><br>
+            <label>Thời hạn:</label>`;
+        if (val["VaiTroID"] == 4) {
+            row = row + `<button id="btnTime${val["id"]}" class="btn btn-primary btn-sm" role="button" title="Sửa"
+                            onclick="editCat(${val["id"]})">
+                            <i class="fa fa-pencil" aria-hidden="true">sửa</i>
+                        </button>`;
+        }
+        //thoi han
+        if (val["VaiTroID"] == 4) {
+            row = row + `<input id="txtThoiHan${val["id"]}" class="form-control" type = "datetime-local"
+                        value="${val["ThoiHan"]}"></input><br>`;
+        }
+        else {
+            row = row + `<input id="txtThoiHan${val["id"]}" class="form-control" type = "datetime-local"
+                        value="none"></input><br>`;
+        }
+        //vai tro
+        row = row + `<label>Vai trò:</label>
+                <select id="cbRole${val["id"]}"" name="RoleID" class="form-control" onchange = "cbRoleChange(${val["id"]})">`;
+        if (val["VaiTroID"] == 1) {
+            row = row + `<option value="1" selected>Quản trị viên</option>`;
+            row = row + `<option value="2" >Biên tập viên</option>`;
+            row = row + `<option value="3" >Phóng viên</option>`;
+            row = row + `<option value="4" >Độc giả</option>`;
+        }
+        if (val["VaiTroID"] == 2) {
+            row = row + `<option value="2" selected>Biên tập viên</option>`;
+            row = row + `<option value="1" >Quản trị viên</option>`;
+            row = row + `<option value="3" >Phóng viên</option>`;
+            row = row + `<option value="4" >Độc giả</option>`;
+        }
+        if (val["VaiTroID"] == 3) {
+            row = row + `<option value="3" selected>Phóng viên</option>`;
+            row = row + `<option value="2" >Biên tập viên</option>`;
+            row = row + `<option value="1" >Quản trị viên</option>`;
+            row = row + `<option value="4" >Độc giả</option>`;
+        }
+        if (val["VaiTroID"] == 4) {
+            row = row + `<option value="4" selected>Độc giả</option>`;
+            row = row + `<option value="2" >Biên tập viên</option>`;
+            row = row + `<option value="3" >Phóng viên</option>`;
+            row = row + `<option value="1" >Quản trị viên</option>`;
+        }
+        row = row + `</select>
+            <label>Chuyên mục quản lý:</label>`;
+        if (val["VaiTroID"] == 2) {
+            row = row + `<button id="btnEditCat${val["id"]}" class="btn btn-primary btn-sm" role="button" title="Sửa tag"
+                            onclick="editCat(${val["id"]})">
+                            <i class="fa fa-pencil" aria-hidden="true">sửa</i>
+                        </button>`;
+        }
+        row = row + `<div id="catField${val["id"]}">`;
+        if (val["VaiTroID"] == 2) {
+            row = row + `<input value="${val["ChuyenMucQuanLy"]}"
+                            readonly="true" style="background-color: beige;" class="form-control"></input><br>`
+        }
+        else {
+            row = row + `<input value="none"
+                            readonly="true" style="background-color: beige;" class="form-control"></input><br>`
+        }
+        row = row + `</div>
+                </div>
+                `;
+        return row;
+    }
+    function cbRoleChange(id) {
+        $.post(
+            `/admin/Users/update`,
+            { id: id, roleID: document.getElementById("cbRole" + id).value },
+            function (data) {
+                $("#infoField" + id).empty();
+                var html = returnHtmlRole(data["List"]);
+                $("#infoField" + id).append(html);
+                window.alert("Sửa thành công!");
+            }
+        );
+    }
+    //time
+    function editTime(id) {
+        if (new Date(document.getElementById("txtThoiHan" + id).value) <= new Date())
+            alert("Ngày giờ hết hạn phải lớn hơn ngày hiện tại!");
+        else {
+            $.post(
+                `/admin/Users/update`,
+                { id: id, ExpireDate: document.getElementById("txtThoiHan" + id).value },
+                function (data) {
+                    window.alert("Sửa thành công!");
+                }
+            );
+        }
+    }
+    //author name
+    function editAthName(id){
+        if(document.getElementById("txtButDanh" + id).value == '')
+            alert('Bút danh không được rỗng!');
+        $.getJSON(`/admin/Users/checkExistAthName?AthName=${document.getElementById("txtButDanh" + id).value}`, (data) => {
+            if(data["NotExist"] == true){
+                $.post(
+                `/admin/Users/update`,
+                { id: id, ButDanh: document.getElementById("txtButDanh" + id).value },
+                function (data) {
+                    window.alert("Sửa thành công!");
+                }
+            );
+            }
+            else{
+                alert("Tên bút danh đã tồn tại!")
+            }
+        });
     }
 </script>
 {{/section}}
 <div class="card">
     <div class="card-header">
-
         <h4>Danh sách người dùng</h4>
         <div class="flex-wr-c-c m-rl--7 p-t-15 float-left" id="paging-area">
             <button class="flex-c-c pagi-item hov-btn1 trans-03 m-all-7 pagi-active"
@@ -195,15 +366,27 @@
                         <label for="txtHoTen{{id}}">Họ và Tên:</label>
                         <input class="form-control" id="txtHoTen{{id}}" value="{{HoTen}}"></input><br>
                         <label>Bút danh:</label>
+                        {{#when VaiTroID 'eq' 3}}
+                        <button id="btnAthName{{id}}" class="btn btn-primary btn-sm" role="button" title="Sửa"
+                            onclick="editAthName({{id}})">
+                            <i class="fa fa-pencil" aria-hidden="true">sửa</i>
+                        </button>
+                        {{/when}}
                         <input class="form-control" id="txtButDanh{{id}}"
                             value="{{#if (isEqual VaiTroID 3)}}{{ButDanh}}{{else}}None{{/if}}">
                         <label>Email:</label>
                         <input class="form-control" id="txtEmail{{id}}" value="{{Email}}"></input><br>
                         <label>Thời hạn:</label>
-                        <input id="txtEmail{{id}}" class="form-control"
+                        {{#when VaiTroID 'eq' 4}}
+                        <button id="btnTime{{id}}" class="btn btn-primary btn-sm" role="button" title="Sửa"
+                            onclick="editTime({{id}})">
+                            <i class="fa fa-pencil" aria-hidden="true">sửa</i>
+                        </button>
+                        {{/when}}
+                        <input id="txtThoiHan{{id}}" class="form-control" type="datetime-local"
                             value="{{#if (isEqual VaiTroID 4)}}{{ThoiHan}}{{else}}None{{/if}}"></input><br>
                         <label>Vai trò:</label>
-                        <select id="cbRole" name="RoleID" class="form-control">
+                        <select id="cbRole{{id}}" name="RoleID" class="form-control" onchange="cbRoleChange({{id}})">
                             <option value="1" {{#when VaiTroID 'eq' 1}}selected{{/when}}>Quản trị viên</option>
                             <option value="2" {{#when VaiTroID 'eq' 2}}selected{{/when}}>Biên tập viên</option>
                             <option value="3" {{#when VaiTroID 'eq' 3}}selected{{/when}}>Phóng viên</option>
@@ -211,7 +394,7 @@
                         </select>
                         <label>Chuyên mục quản lý:</label>
                         {{#when VaiTroID 'eq' 2}}
-                        <button id="btnEditCat{{id}}" class="btn btn-primary btn-sm" role="button" title="Sửa tag"
+                        <button id="btnEditCat{{id}}" class="btn btn-primary btn-sm" role="button" title="Sửa"
                             onclick="editCat({{id}})">
                             <i class="fa fa-pencil" aria-hidden="true">sửa</i>
                         </button>
@@ -220,11 +403,10 @@
                             <input value="{{#if (isEqual VaiTroID 2)}}{{ChuyenMucQuanLy}}{{else}}None{{/if}} "
                                 readonly="true" style="background-color: beige;" class="form-control"></input><br>
                         </div>
-                        <label>Action:</label>
                     </div>
                 </div>
-                {{/each}}
             </div>
+            {{/each}}
         </div>
     </div>
 </div>

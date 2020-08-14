@@ -51,7 +51,7 @@ module.exports = {
   formatDateTime: function (value) {
     const sqlDate = new Date(value);
 
-    return moment(sqlDate).format("DD/MM/yyyy hh:mm:ss");
+    return moment(sqlDate).format("Y-MM-DD\Thh:mm:ss.ms");
   },
   // new Array(end - start).fill().map((d, i) => i + start);
   rangeOfPagination: function (quantity, current) {

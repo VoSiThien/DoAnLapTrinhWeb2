@@ -447,9 +447,12 @@ router.get('/Users/getManagedCategoryList', async (req, res) => {
     res.json({ CategoryList: res.locals.lcCats });
 });
 
-router.get('/Users/getManagedCategory', async (req, res) => {
-    var List = await accountModels.
-    res.json({ CategoryList: res.locals.lcCats });
+
+router.get('/Users/getManagedCategory/:id', async (req, res) => {
+    var List = await accountModel.loadbyID(req.params.id);
+    var chuyenmucquanly = await categoriesModel.loadManagementCategory(List[0]["ChuyenMucQuanLy"]);
+
+    res.json({ ManagedCat: chuyenmucquanly[0].TenChuyenMuc, id: chuyenmucquanly[0].id });
 });
 
 router.get('/Users', async function (req, res) {
@@ -503,9 +506,43 @@ router.get('/Users/list', async function (req, res) {
     });
 });
 
-router.post('/Users/updateCat', async (req,res) => {
+router.post('/Users/updateCat', async (req, res) => {
+    await accountModel.changeManagedCategory(req.body.catValue, req.body.id);
+    var List = await accountModel.loadbyID(req.body.id);
+    var chuyenmucquanly = await categoriesModel.loadManagementCategory(List[0]["ChuyenMucQuanLy"]);
+    res.json({ ManagedCat: chuyenmucquanly[0].TenChuyenMuc, id: chuyenmucquanly[0].id });
+});
 
-})
+router.get('/Users/checkExistAthName', async (req, res) => {
+    var isNotExist = true;
+    var row = await accountModel.loadByAthName(req.query.AthName);
+    if(row.length != 0)
+        isNotExist = false;
+    res.json({NotExist:isNotExist});
+});
+
+router.post('/Users/update', async (req, res) => {
+    if (req.body.roleID != null)
+        await accountModel.changeRole(req.body.roleID, req.body.id);
+    if (req.body.ExpireDate != null){
+        await accountModel.changeDate(req.body.ExpireDate, req.body.id);
+    }
+    if (req.body.ButDanh != null){
+        await accountModel.changeAthName(req.body.ButDanh, req.body.id);
+    }
+    list = await accountModel.loadbyID(req.body.id);
+    list[0]["ThoiHan"] = mdwFunction.formatDateTime(list[0]["ThoiHan"]);
+    var chuyenmucquanly = await categoriesModel.loadManagementCategory(list[0]["ChuyenMucQuanLy"]);
+    if (chuyenmucquanly.length != 0) {
+        list[0]["ChuyenMucQuanLy"] = chuyenmucquanly[0].TenChuyenMuc;
+    }
+    else {
+        list[0]["ChuyenMucQuanLy"] = null;
+    }
+    res.json({List:list[0]});
+});
+
+
 module.exports = router;
 
 

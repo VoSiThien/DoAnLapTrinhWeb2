@@ -208,17 +208,18 @@
     });
     return row;
   }
-  $("#paging-area button").on("click", function () {
-    const page = +$(this).html();
-    if (!$(this).hasClass("pagi-active")) {
-      $.getJSON(`/admin/Tags/list?p=${page}`, (data) => {
-        displayPaginationButtons("#paging-area button", page, data)
-        $("#tableTagList tbody").empty();
-        $("#tableTagList tbody").append(changePageContent(data));
-      });
-    }
+  $(document).ready(function () {
+    $("#paging-area button").on("click", function () {
+      const page = +$(this).html();
+      if (!$(this).hasClass("pagi-active")) {
+        $.getJSON(`/admin/Tags/list?p=${page}`, (data) => {
+          displayPaginationButtons("#paging-area button", page, data)
+          $("#tableTagList tbody").empty();
+          $("#tableTagList tbody").append(changePageContent(data));
+        });
+      }
+    });
   });
-
 </script>
 {{/section}}
 <div class="card">
@@ -261,7 +262,7 @@
                 aria-hidden="true"></i></button>
           </td>
           <td class="text-center">
-            <a class="btn btn-success btn-sm" href="" role="button" title="">
+            <a class="btn btn-success btn-sm" href="/article/{{id}}" role="button" title="">
               <i class="fa fa-pencil" aria-hidden="true">Chi tiết</i>
             </a>
           </td>
