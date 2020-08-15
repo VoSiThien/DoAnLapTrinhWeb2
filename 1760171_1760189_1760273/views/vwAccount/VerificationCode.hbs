@@ -1,10 +1,36 @@
+
+{{#section 'js'}}
+<script>
+    $("#btn-MaXacNhan").on("click", function (e) {
+    if ($("#Confirm").val() === '') {
+      e.preventDefault();
+      alert("Mã xác nhận không được để trống, vui lòng nhập!");
+    }
+    else {
+      e.preventDefault();
+      $.post(
+      "/account/check-VerificationCode",
+      { MaXacNhan: $("#Confirm").val()},
+      (data) => {
+        if (data === false) {
+          alert("Mã xác nhận không đúng, vui lòng nhập lại!");
+        } else {
+          $("#form-MaXacNhan").submit();
+        }
+      }
+    );
+    }
+  });
+</script>
+{{/section}}
+
 <div class="card">
     <div class="card-header">
         <h4>Nhập mã xác nhận</h4>
     </div>
     <div class="card-body">
 
-        <form method="POST" action="" style="width: 50%; margin-left: 20%">
+        <form method="POST" action="" style="width: 50%; margin-left: 20%" id="form-MaXacNhan">
             <div class="form-group">
                 <input type="text" class="form-control" id="id" name="id" placeholder="" value="{{lcAuthUser.id}}" hidden>
             </div>
@@ -16,7 +42,7 @@
             <a class="btn btn-success" href="/account/ConfirmEmail" role="button" title="Back to List">
                 <i class="fa fa-backward" aria-hidden="true"></i>
             </a>
-            <input type="submit" value="Submit" class="btn btn-primary">
+            <input type="submit" value="Submit" class="btn btn-primary" id="btn-MaXacNhan">
         </form>
     </div>
 </div>

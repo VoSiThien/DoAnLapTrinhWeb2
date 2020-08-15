@@ -135,7 +135,7 @@
       var s = new Date($('#txtBeginDate').val().toString());
       var c = new Date(dateTime);
       if (s < c) {
-        alert('Ngày xuẩt bản không được nhỏ hơn thời gian hiện tại');
+        alert('Ngày xuẩt bản không được nhỏ hơn thời gian hiện tại!');
       }
       else {
         $('#frmPost').off('submit').submit();
