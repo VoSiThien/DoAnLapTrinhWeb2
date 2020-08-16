@@ -1,41 +1,163 @@
-﻿<div class="card">
-    <div class="card-header">
-        <h3>Danh sách bài viết chờ duyệt</h3>
-    </div>
-    <div class="card-body">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col" style="width: 30%">Tiêu đề</th>
-                    <th scope="col" style="width: 30%">Tóm tắt</th>
-                    <th scope="col" style="width: 20%">Tác giả</th>
-                    <th scope="col" style="width: 20%">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each this.List}}
-                <tr>
-                    <td><b>{{TieuDe}}</b></td>
-                    <td>{{{NoiDungTat}}}</td>
-                    <td>{{ButDanh}}</td>
-                    <td class="text-right">
-                        <a class="btn btn-primary btn-sm" href="/article/{{id}}" role="button" title="">
-                            <i class="fa fa-pencil" aria-hidden="true">Chi tiết</i>
-                        </a>
-                        <a class="btn btn-success btn-sm" href="/editor/accept/{{id}}" role="button" title="">
-                            <i class="fa fa-registered" aria-hidden="true">Duyệt</i>
-                        </a>
-                        <button type="button" onclick="btnClick({{id}}, {{userID}})" class="btn btn-danger"
-                            data-toggle="modal" data-target="#denyModal" value={{id}}>
-                            <i class="fa fa-hand-lizard-o" aria-hidden="true">Từ chối</i>
-                        </button>
-                    </td>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
+﻿<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title mb-4">
+                    <div class="d-flex justify-content-start">
+                        <div class="userData ml-3">
+                            <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">Quản lý bài đăng</h2>
+                        </div>
+                        <div class="ml-auto">
+                            <input type="button" class="btn btn-primary d-none" id="btnDiscard"
+                                value="Discard Changes" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="isCheckedTab" data-toggle="tab" href="#control1"
+                                    role="tab" aria-controls="control1" aria-selected="true">Bài viết chưa được
+                                    duyệt</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="unCheckedTab" data-toggle="tab" href="#control2" role="tab"
+                                    aria-controls="control2" aria-selected="false">Bài viết đã được duyệt</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="isPulishedTab" data-toggle="tab" href="#control3" role="tab"
+                                    aria-controls="control3" aria-selected="false">Bài viết đã từ chối</a>
+                            </li>
+                        </ul>
+
+
+                        <div class="tab-content ml-1" id="myTabContent">
+                            {{!-- 1 --}}
+                            <div class="tab-pane fade show active" id="control1" role="tabpanel"
+                                aria-labelledby="isCheckedTab">
+                                <div class="row">
+                                    <div class="card-body">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col" style="width: 30%; text-align: center">Tiêu đề</th>
+                                                    <th scope="col" style="width: 30%;  text-align: center">Tóm tắt</th>
+                                                    <th scope="col" style="width: 20%; text-align: center">Tác giả</th>
+                                                    <th scope="col" style="width: 20%;  text-align: center">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {{#each this.List}}
+                                                <tr>
+                                                    <td><b>{{TieuDe}}</b></td>
+                                                    <td>{{{NoiDungTat}}}</td>
+                                                    <td class="text-center">{{ButDanh}}</td>
+                                                    <td class="text-right">
+                                                        <a class="btn btn-primary btn-sm" href="/article/{{id}}"
+                                                            role="button" title="">
+                                                            <i class="fa fa-pencil" aria-hidden="true">Chi tiết</i>
+                                                        </a>
+                                                        <a class="btn btn-success btn-sm" href="/editor/accept/{{id}}"
+                                                            role="button" title="">
+                                                            <i class="fa fa-registered" aria-hidden="true">Duyệt</i>
+                                                        </a>
+                                                        <button type="button" onclick="btnClick({{id}}, {{userID}})"
+                                                            class="btn btn-danger" data-toggle="modal"
+                                                            data-target="#denyModal" value={{id}}>
+                                                            <i class="fa fa-hand-lizard-o" aria-hidden="true">Từ
+                                                                chối</i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                {{/each}}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            {{!-- 2 --}}
+                            <div class="tab-pane fade" id="control2" role="tabpanel" aria-labelledby="unCheckedTab">
+                                <div class="row">
+                                    <div class="card-body">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col" style="width: 30%; text-align: center">Tiêu đề</th>
+                                                    <th scope="col" style="width: 30%;  text-align: center">Tóm tắt</th>
+                                                    <th scope="col" style="width: 20%; text-align: center">Tác giả</th>
+                                                    <th scope="col" style="width: 20%;  text-align: center">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {{#each this.List1}}
+                                                <tr>
+                                                    {{#when NoiDungPH 'eq' '##Duyet'}}
+                                                    <td><b>{{TieuDe}}</b></td>
+                                                    <td>{{{NoiDungTat}}}</td>
+                                                    <td class="text-center">{{ButDanh}}</td>
+                                                    <td class="text-right">
+                                                        <a class="btn btn-primary btn-sm" href="/article/{{id}}"
+                                                            role="button" title="">
+                                                            <i class="fa fa-pencil" aria-hidden="true">Chi tiết</i>
+                                                        </a>
+                                                    </td>
+                                                    {{/when}}
+                                                </tr>
+                                                {{/each}}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            {{!-- 3 --}}
+                            <div class="tab-pane fade" id="control3" role="tabpanel" aria-labelledby="isPulishedTab">
+                                <div class="row">
+                                    <div class="card-body">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col" style="width: 30%; text-align: center">Tiêu đề</th>
+                                                    <th scope="col" style="width: 30%;  text-align: center">Tóm tắt</th>
+                                                    <th scope="col" style="width: 20%; text-align: center">Tác giả</th>
+                                                    <th scope="col" style="width: 20%; text-align: center">Lý do từ chối</th>
+                                                    <th scope="col" style="width: 20%;  text-align: center">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {{#each this.List1}}
+                                                <tr>
+                                                    {{#when NoiDungPH 'noteq' '##Duyet'}}
+                                                    <td><b>{{TieuDe}}</b></td>
+                                                    <td>{{{NoiDungTat}}}</td>
+                                                    <td class="text-center">{{ButDanh}}</td>
+                                                    <td>{{NoiDungPH}}</td>
+                                                    <td class="text-right">
+                                                        <a class="btn btn-primary btn-sm" href="/article/{{id}}"
+                                                            role="button" title="">
+                                                            <i class="fa fa-pencil" aria-hidden="true">Chi tiết</i>
+                                                        </a>
+                                                    </td>
+                                                    {{/when}}
+                                                </tr>
+                                                {{/each}}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+
+
+
 {{#section 'js'}}
 <script>
     function btnClick(id, userID) {
@@ -56,14 +178,16 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="deniedForm" action = "/editor/deny" method = "post">
+                <form id="deniedForm" action="/editor/deny" method="post">
                     <div class="form-group">
-                        <input type="text" class="form-control" name="TaiKhoanID" id="textUserID" aria-describedby="helpId" hidden>
-                        <input type="text" class="form-control" name="BaiVietID" id="textPostID" aria-describedby="helpId" hidden>
+                        <input type="text" class="form-control" name="TaiKhoanID" id="textUserID"
+                            aria-describedby="helpId" hidden>
+                        <input type="text" class="form-control" name="BaiVietID" id="textPostID"
+                            aria-describedby="helpId" hidden>
                     </div>
                     <div class="form-group">
                         <label for="">Lý do từ chối:</label><br>
-                        <textarea style="width: 470px;height:100px" name = "NoiDung"></textarea>
+                        <textarea style="width: 470px;height:100px" name="NoiDung"></textarea>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Submit</button>

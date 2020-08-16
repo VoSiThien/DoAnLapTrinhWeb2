@@ -34,8 +34,9 @@ const pdf = require("html-pdf");
 
 router.get('/post', async function (req, res) {
     var category = req.session.authUser.ChuyenMucQuanLy;
+    const list1 = await postModel.loadPostbyIDPhanHoi(req.session.authUser.id);
     const list = await postModel.loadDraftPost(category);
-    res.render('vwEditor/list', { List: list });
+    res.render('vwEditor/list', { List: list, List1: list1 });
 });
 //-----------------------------accept and edit post--------------------------------------------
 router.get('/accept/:id', async function (req, res) {
@@ -58,6 +59,7 @@ router.get('/accept/:id', async function (req, res) {
 const directory = '/public/images/articles/';
 router.post('/accept/:id', upload.single('urlImage'), async function (req, res) {
     var postID = req.params.id;
+
     const row = await postModel.loadByID(postID);
     imageName = row[0]["HinhAnh"];
     // if recieve new image, delete old image 
@@ -142,12 +144,26 @@ router.post('/accept/:id', upload.single('urlImage'), async function (req, res) 
             await tagModel.delete(idIndex[i]);
         }
     }
+
+    // them vao phan hoi
+    const FeedBack = {
+        NoiDung: '##Duyet',
+        BaiVietID: postID,
+        TaiKhoanID: req.session.authUser.id
+    }
+    var check = await postFeedBackModel.update(FeedBack);
+    if(check.changedRows == 0){
+        await postFeedBackModel.insert(FeedBack);
+    }
+    //
+
     var category = req.session.authUser.ChuyenMucQuanLy;
     const list = await postModel.loadDraftPost(category);
+    const list1 = await postModel.loadPostbyIDPhanHoi(req.session.authUser.id);
     //destroy session
     req.body.tag = null;
     req.session.tagIndex = null;
-    res.render('vwEditor/list', { List: list });
+    res.render('vwEditor/list', { List: list, List1: list1 });
 });
 //------------------------------denied action---------------------------------------------------
 router.post("/deny",async function(req,res){

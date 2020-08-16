@@ -24,7 +24,7 @@ router.post("/register", async (req, res) => {
     HoTen: req.body.name,
     Email: req.body.email,
     ThoiHan: time[0]["thoigian"],
-    VaiTroID: 4,
+    VaiTroID: 4
   };
 
   await accounts.readerAdding(entity);
@@ -127,10 +127,19 @@ router.post("/profile/edit", async (req, res) => {
 });
 
 router.get("/logout", mdlFunction.isLoggedIn, (req, res) => {
-  req.session.destroy((e) => {
-    req.logout();
-    res.redirect(req.headers.referer);
-  });
+  
+  if (req.session.authUser.VaiTroID !== 4) {
+    req.session.destroy((e) => {
+      req.logout();
+      res.redirect('/');
+    });
+  }
+  else {
+    req.session.destroy((e) => {
+      req.logout();
+      res.redirect(req.headers.referer);
+    });
+  }
 });
 
 //Doi mat khau
@@ -191,7 +200,11 @@ router.get("/VerificationCode", async (req, res) => {
     from: '<vsthien1212@gmail.com>',
     to: `${req.session.authUser.Email}`,
     subject: 'Xác nhận Email',
-    html: `<h1>Chào ban đây là mã xác nhập của bạn</h1><br> <h3>${b}</h3>`
+    html: `<h1>Chào ${req.session.authUser.HoTen} thân mến! </h1><br>
+           <h3>Bạn đã chọn ${req.session.authUser.Email} để xác minh thay đổi mật khẩu tại trang đọc báo của chúng tôi, và đây là mã xác minh:</h3>
+           <h3>${b}</h3><br>
+           <h3>Lưu ý: mã xác minh chỉ được sử dụng 1 lần.</h3><br>
+           <h3>Trân trọng!</h3>`
     //text: `1234sdadsa sad ${a}`
   };
 
@@ -225,15 +238,15 @@ router.get("/ForgotPassword", async (req, res) => {
 });
 //nhap mat khau moi
 router.post("/ForgotPassword", async (req, res) => {
-    const entity = {
-      id: req.body.id,
-      MatKhau: bcrypt.hashSync(
-        req.body.nPassword,
-        config.authentication.saltRounds
-      )
-    }
-    var a = await accounts.updateAccount(entity);
-    res.redirect('/');
+  const entity = {
+    id: req.body.id,
+    MatKhau: bcrypt.hashSync(
+      req.body.nPassword,
+      config.authentication.saltRounds
+    )
+  }
+  var a = await accounts.updateAccount(entity);
+  res.redirect('/');
 });
 
 //gia han tai khoan
