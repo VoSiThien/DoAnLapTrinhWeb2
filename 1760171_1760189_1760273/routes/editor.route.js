@@ -59,12 +59,12 @@ const directory = '/public/images/articles/';
 router.post('/accept/:id', upload.single('urlImage'), async function (req, res) {
     var postID = req.params.id;
     const row = await postModel.loadByID(postID);
-    imageName = row[0]["HinhAnh"];
+    imagePath = row[0]["HinhAnh"];
     // if recieve new image, delete old image 
     if (req.file) {
-        const imagePath = row[0]["HinhAnh"];
+        imagePath = row[0]["HinhAnh"].substring(1,row[0]["HinhAnh"].length);
         fs.unlinkSync(imagePath);
-        imageName = req.file.filename;
+        imagePath = '/public/images/articles/' + req.file.filename;
     }
 
     const articles = {TieuDe: req.body.TieuDe, NoiDungTat: req.body.NoiDungTat, NoiDung: req.body.NoiDung};
@@ -100,7 +100,7 @@ router.post('/accept/:id', upload.single('urlImage'), async function (req, res) 
         NoiDungTat: req.body.NoiDungTat,
         NoiDung: req.body.NoiDung,
         NgayXuatBan: req.body.NgayXuatBan,
-        HinhAnh: imageName,
+        HinhAnh: imagePath,
         PDF:`/public/PDFS/articles/${postID}.pdf`,
         LuotXem: 0,
         TrangThaiID: 1,

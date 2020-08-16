@@ -85,12 +85,12 @@ const directory = '/public/images/articles/';
 router.post('/edit/:id', upload.single('urlImage'), async function (req, res) {
     var postID = req.params.id;
     const row = await postModel.loadByID(postID);
-    imageName = row[0]["HinhAnh"];
+    imagePath = row[0]["HinhAnh"];
     // if recieve new image, delete old image 
     if (req.file) {
-        const imagePath = row[0]["HinhAnh"];
+        imagePath = row[0]["HinhAnh"].substring(1,row[0]["HinhAnh"].length);
         fs.unlinkSync(imagePath);
-        imageName = req.file.filename;
+        imagePath = '/public/images/articles/' + req.file.filename;
     }
     //edit post
     var postEntity = {
@@ -99,7 +99,7 @@ router.post('/edit/:id', upload.single('urlImage'), async function (req, res) {
         NoiDungTat: req.body.NoiDungTat,
         NoiDung: req.body.NoiDung,
         NgayXuatBan: null,
-        HinhAnh: imageName,
+        HinhAnh: imagePath,
         PDF:'',
         LuotXem: 0,
         TrangThaiID: 2,
