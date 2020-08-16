@@ -42,7 +42,7 @@
 
                         <div class="tab-content ml-1" id="myTabContent">
                             {{!-- 1 --}}
-                            <div class="tab-pane fade show active" id="basicInfo" role="tabpanel"
+                            <div class="tab-pane fade show active" id="control1" role="tabpanel"
                                 aria-labelledby="isCheckedTab">
                                 <div class="row">
                                     {{#each this.List}}
@@ -53,8 +53,9 @@
                                                 <img class="card-img-top" src="{{HinhAnh}}"
                                                     alt="Card image cap">
                                                 <h4 class="card-title">{{TieuDe}}</h4>
-                                                <p class="card-text"><b>Mô tả :</b>{{NoiDungTat}}</p>
+                                                <p class="card-text" ><b>Mô tả :</b>{{NoiDungTat}}</p>
                                                 <p class="card-text"><b>Ngày xuất bản:</b> {{NgayXuatBan}}</p>
+                                                <p class="card-text"><b>Chuyên mục:</b> {{TenChuyenMuc}}</p>
                                             </div>
                                             <div class="card-footer text-muted">
                                                 <a name="detail" id="btnDetail" class="btn btn-primary btn-sm"
@@ -80,14 +81,20 @@
                                                 <img class="card-img-top" src="{{HinhAnh}}"
                                                     alt="Card image cap">
                                                 <h4 class="card-title">{{TieuDe}}</h4>
-                                                <p class="card-text"><b>Mô tả :</b>{{NoiDungTat}}</p>
+                                                <p class="card-text" ><b>Mô tả :</b>{{NoiDungTat}}</p>
                                                 <p class="card-text"><b>Thời gian diễn ra:</b> {{NgayXuatBan}}</p>
+                                                <p class="card-text"><b>Chuyên mục:</b> {{TenChuyenMuc}}</p>
                                             </div>
                                             <div class="card-footer text-muted">
                                                 <a name="detail" id="btnDetail" class="btn btn-primary btn-sm"
                                                     href="/article/{{id}}" role="button">
                                                     <i class="fa fa-bullseye" aria-hidden="true"></i></i>
                                                     Xem chi tiết!
+                                                </a>
+                                                <a name="detail" id="btnDetail" class="btn btn-danger btn-sm"
+                                                    href="/reporter/edit/{{id}}" role="button">
+                                                    <i class="fa fa-adjust" aria-hidden="true"></i>
+                                                    Hiệu chỉnh
                                                 </a>
                                             </div>
                                         </div>
@@ -109,6 +116,7 @@
                                                 <h4 class="card-title">{{TieuDe}}</h4>
                                                 <p class="card-text"><b>Mô tả :</b>{{NoiDungTat}}</p>
                                                 <p class="card-text"><b>Thời gian diễn ra:</b> {{NgayXuatBan}}</p>
+                                                <p class="card-text"><b>Chuyên mục:</b> {{TenChuyenMuc}}</p>
                                             </div>
                                             <div class="card-footer text-muted">
                                                 <a name="detail" id="btnDetail" class="btn btn-primary btn-sm"
@@ -136,7 +144,9 @@
                                                 <h4 class="card-title">{{TieuDe}}</h4>
                                                 <p class="card-text"><b>Mô tả :</b>{{NoiDungTat}}</p>
                                                 <p class="card-text"><b>Thời gian diễn ra:</b> {{NgayXuatBan}}</p>
-                                                <p class="card-text"><b>Lý do từ chối: </b> {{NoiDungPH}}</p>
+                                                <p class="card-text"><b>Chuyên mục:</b> {{TenChuyenMuc}}</p>
+                                                <p class="card-text" style="background-color: red;"><b>Người từ chối: </b> {{HoTen}}</p>
+                                                <p class="card-text" style="background-color: red;"><b>Lý do từ chối: </b> {{NoiDungPH}}</p>
                                             </div>
                                             <div class="card-footer text-muted">
                                                 <a name="detail" id="btnDetail" class="btn btn-primary btn-sm"

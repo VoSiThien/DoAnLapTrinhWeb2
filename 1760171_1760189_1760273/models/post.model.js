@@ -2,6 +2,7 @@ const db = require('../utils/db');
 const TBL_BAIVIET = 'BaiViet';
 const TBL_TAIKHOAN = 'taikhoan';
 const TBL_PHANHOIBAIVIET = 'phanhoibaiviet';
+const TBL_ChuyenMuc = 'ChuyenMuc';
 module.exports= {
     load: function(){
         return db.load(`select * from ${TBL_BAIVIET} where TrangThaiID = 2`);
@@ -10,12 +11,17 @@ module.exports= {
         return db.load(`select c.*, t.ButDanh from ${TBL_BAIVIET} c join ${TBL_TAIKHOAN} t where c.id = ${id} and c.TaiKhoanID = t.id`);
     },
     loadDraftPost: function (category) {
-        return db.load(`SELECT distinct ${TBL_BAIVIET}.*, ${TBL_TAIKHOAN}.id as 'userID', ${TBL_TAIKHOAN}.ButDanh 
-        FROM ${TBL_BAIVIET},${TBL_TAIKHOAN}
-        where ${TBL_BAIVIET}.TrangThaiID = 2 and ${TBL_BAIVIET}.ChuyenMucID = ${TBL_TAIKHOAN}.ChuyenMucQuanLy and ${TBL_TAIKHOAN}.ChuyenMucQuanLy = ${category}`)
+        return db.load(`SELECT distinct ${TBL_BAIVIET}.*, ${TBL_TAIKHOAN}.id as 'userID', t2.ButDanh
+        FROM ${TBL_BAIVIET},${TBL_TAIKHOAN}, ${TBL_TAIKHOAN} t2
+        where ${TBL_BAIVIET}.TrangThaiID = 2 and ${TBL_BAIVIET}.ChuyenMucID = ${TBL_TAIKHOAN}.ChuyenMucQuanLy and ${TBL_TAIKHOAN}.ChuyenMucQuanLy = ${category} and t2.id = ${TBL_BAIVIET}.TaiKhoanID`)
+    },
+    loadPostbyIDPhanHoi: function (TaiKhoanID) {
+        return db.load(`SELECT distinct b.*, p.NoiDung as 'NoiDungPH', t.ButDanh from (${TBL_BAIVIET} b join ${TBL_PHANHOIBAIVIET} p on b.id = p.BaiVietID)
+        join ${TBL_TAIKHOAN} t on b.TaiKhoanID = t.id where p.TaiKhoanID = ${TaiKhoanID}`)
     },
     loadByAuthor:function (AuthorID){
-        return db.load(`select distinct b.*, p.NoiDung as 'NoiDungPH' from ${TBL_BAIVIET} b left join ${TBL_PHANHOIBAIVIET} p on b.id = p.BaiVietID where b.TaiKhoanID = ${AuthorID} order by b.NgayXuatBan desc`);
+        return db.load(`select distinct b.*, p.NoiDung as 'NoiDungPH', t.HoTen, c.TenChuyenMuc from ((${TBL_BAIVIET} b left join ${TBL_PHANHOIBAIVIET} p on b.id = p.BaiVietID)
+        left join ${TBL_TAIKHOAN} t on t.id = p.TaiKhoanID) left join ${TBL_ChuyenMuc} c on c.id = b.ChuyenMucID where b.TaiKhoanID = ${AuthorID} order by b.NgayXuatBan desc`);
     },
     getNewestID: function () {
         return db.load(`SELECT MAX(ID) + 1 as newest FROM ${TBL_BAIVIET}`);
@@ -91,5 +97,4 @@ module.exports= {
     changePremium:(isPremium,id) =>{
         return db.load(`update baiviet set isPremium = '${isPremium}' where id = ${id}`);
     }
-
 }
