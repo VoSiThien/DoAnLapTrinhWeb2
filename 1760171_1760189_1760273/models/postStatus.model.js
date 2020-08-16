@@ -1,10 +1,10 @@
 const db = require('../utils/db');
 
-const TBL_FEEDBACK = 'phanhoibaiviet'
+const TBL_STATUS = 'trangthai'
 
 module.exports = {
-    load:function(){
-        return db.load(`Select * from ${TBL_FEEDBACK}`)
+    load:function(postID){
+        return db.load(`Select trangthai.tentrangthai as TenTrangThai from trangthai, baiviet where trangthai.id = baiviet.trangthaiid and baiviet.id = ${postID}`)
     }
 }
 

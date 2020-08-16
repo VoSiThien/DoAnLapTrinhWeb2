@@ -2,12 +2,38 @@ const express = require('express');
 const moment = require('moment');
 
 const router = express.Router();
-
+const statusModel = require('../models/postStatus.model')
 const postsModel = require('../models/post.model');
 const tagModel = require('../models/tag.model');
 const categoriesModel = require('../models/categories.model');
 const accountModel = require('../models/accounts.model');
 const mdwFunction = require('../middlewares/middle-functions.mdw')
+
+const fs = require('fs')
+const multer = require('multer');
+var path = require('path');
+var dateFormat = require('dateformat');
+
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/images/articles')
+    },
+
+    filename: function (req, file, cb) {
+        var datetimestamp = Date.now();
+        cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length - 1])
+    }
+});
+
+
+var upload = multer({
+    storage: storage,
+    limits: {
+        files: 1,
+        fileSize: 2048 * 2048
+    }
+});
+
 //------------HOME------------------------------
 router.get('/', async function (req, res) {
     const newLocal = 'vwAdmin/dashboard';
@@ -25,14 +51,100 @@ router.get('/Posts', async function (req, res) {
         for (let j = 0; j < listPost.length; j++) {
             list[i][j] = listPost[j];
             var listTag = await tagModel.loadByPostID(list[i][j]["id"]);
-
-            for (let k = 0; k < listTag.length; k++) {
-                list[i][j][k] = listTag[k];
+            var stringTag = "";
+            var tagIndex = [];
+            for (let i = 0; i < listTag.length; i++) {
+                //store the id index of tag
+                tagIndex.push(listTag[i]["id"]);
+                stringTag += listTag[i]["TenTag"];
+                stringTag += ",";
             }
+            stringTag = stringTag.substring(0, stringTag.length - 1);
+            list[i][j]["Tag"] = stringTag;
+            list[i][j]["TagIndex"] = tagIndex;
         }
     }
     const newLocal = 'vwAdmin/Posts/list';
     res.render(newLocal, { List: list, layout: 'adminPanel' });
+});
+router.get('/Posts/:id', async function (req, res) {
+    var postID = req.params.id;
+    const row = await postsModel.loadByID(postID);
+    const tagsRow = await tagModel.loadByPostID(postID);
+    const status = await statusModel.load(postID);
+    row[0]["TenTrangThai"] = status[0]["TenTrangThai"];
+    var stringTag = "";
+    var tagIndex = [];
+    for (let i = 0; i < tagsRow.length; i++) {
+        //store the id index of tag
+        tagIndex.push(tagsRow[i]["id"]);
+        stringTag += tagsRow[i]["TenTag"];
+        stringTag += ",";
+    }
+    req.session.tagIndex = tagIndex;
+    stringTag = stringTag.substring(0, stringTag.length - 1);
+    const newLocal = 'vwAdmin/Posts/edit';
+    res.render(newLocal, { ListPost: row, Tag: stringTag, selectedCategory: row[0]["ChuyenMucID"], layout: 'adminPanel'});
+});
+
+router.post('/Posts/:id', upload.single('urlImage'), async function (req, res) {
+    var postID = req.params.id;
+    const row = await postsModel.loadByID(postID);
+    var imagePath = '';
+    // if recieve new image, delete old image 
+    if (req.file) {
+        //imagePath = row[0]["HinhAnh"].substring(1,row[0]["HinhAnh"].length);
+        //fs.unlinkSync(imagePath);
+        imagePath = '/public/images/articles/' + req.file.filename;
+    }
+    //edit post
+    await postsModel.changeTitle(req.body.TieuDe, postID);
+    await postsModel.changeShortContent(req.body.NoiDungTat, postID);
+    await postsModel.changeContent(req.body.NoiDung, postID);
+    if(req.body.NgayXuatBan){
+        await postsModel.changeDatePublish(req.body.NgayXuatBan, postID);
+        await postsModel.changeStatusID(1, postID);
+    }
+    await postsModel.changePhoto(imagePath, postID);
+    await postsModel.changePremium(+req.body.Premium, postID);
+    await postsModel.changeCategoryID(+req.body.ChuyenMucID, postID);
+    //edit tag
+    var words = req.body.tag.split
+    const newTags = req.body.tag.split(',');
+    console.log(newTags);
+    const idIndex = req.session.tagIndex;
+
+    const idIndexLength = req.session.tagIndex.length;
+    const newTagsLength = newTags.length;
+
+    for (let i = 0; i < Math.min(idIndexLength, newTagsLength); i++) {
+        var tagEntity = {
+            id: idIndex[i],
+            TenTag: newTags[i],
+            BaiVietID: postID
+        }
+        await tagModel.update(tagEntity);
+    }
+    //insert the new index for new tag
+    if (idIndexLength < newTagsLength) {
+        for (let i = idIndexLength; i < newTagsLength; i++) {
+            var tagEntity = {
+                TenTag: newTags[i],
+                BaiVietID: postID
+            }
+            await tagModel.insert(tagEntity);
+        }
+    }
+    //delete the old tag if the number of edited tag < quantity of old tags
+    if (idIndexLength > newTagsLength) {
+        for (let i = newTagsLength; i < idIndexLength; i++) {
+            await tagModel.delete(idIndex[i]);
+        }
+    }
+    //destroy session
+    req.body.tag = null;
+    req.session.tagIndex = null;
+    res.redirect('/admin/Posts');
 });
 //----------------------------------------------Categories management------------------------------------
 //--List
@@ -310,18 +422,18 @@ router.post('/Users/updateCat', async (req, res) => {
 router.get('/Users/checkExistAthName', async (req, res) => {
     var isNotExist = true;
     var row = await accountModel.loadByAthName(req.query.AthName);
-    if(row.length != 0)
+    if (row.length != 0)
         isNotExist = false;
-    res.json({NotExist:isNotExist});
+    res.json({ NotExist: isNotExist });
 });
 
 router.post('/Users/update', async (req, res) => {
     if (req.body.roleID != null)
         await accountModel.changeRole(req.body.roleID, req.body.id);
-    if (req.body.ExpireDate != null){
+    if (req.body.ExpireDate != null) {
         await accountModel.changeDate(req.body.ExpireDate, req.body.id);
     }
-    if (req.body.ButDanh != null){
+    if (req.body.ButDanh != null) {
         await accountModel.changeAthName(req.body.ButDanh, req.body.id);
     }
     list = await accountModel.loadbyID(req.body.id);
@@ -333,7 +445,7 @@ router.post('/Users/update', async (req, res) => {
     else {
         list[0]["ChuyenMucQuanLy"] = null;
     }
-    res.json({List:list[0]});
+    res.json({ List: list[0] });
 });
 
 
