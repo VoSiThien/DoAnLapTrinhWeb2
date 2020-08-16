@@ -1,14 +1,18 @@
-const express = require('express');
+﻿const express = require('express');
 const moment = require('moment');
-const postModel = require('../models/post.model');
 
 const router = express.Router();
-
+const statusModel = require('../models/postStatus.model')
 const postsModel = require('../models/post.model');
 const tagModel = require('../models/tag.model');
 const categoriesModel = require('../models/categories.model');
-const accountModel = require('../models/account.model');
+const accountModel = require('../models/accounts.model');
+const mdwFunction = require('../middlewares/middle-functions.mdw')
+
+const fs = require('fs')
 const multer = require('multer');
+var path = require('path');
+var dateFormat = require('dateformat');
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -29,8 +33,6 @@ var upload = multer({
         fileSize: 2048 * 2048
     }
 });
-const accountModels = require('../models/accounts.model');
-const mdwFunction = require('../middlewares/middle-functions.mdw')
 
 //------------HOME------------------------------
 router.get('/', async function (req, res) {
@@ -49,55 +51,28 @@ router.get('/Posts', async function (req, res) {
         for (let j = 0; j < listPost.length; j++) {
             list[i][j] = listPost[j];
             var listTag = await tagModel.loadByPostID(list[i][j]["id"]);
-
-            for (let k = 0; k < listTag.length; k++) {
-                list[i][j][k] = listTag[k];
+            var stringTag = "";
+            var tagIndex = [];
+            for (let i = 0; i < listTag.length; i++) {
+                //store the id index of tag
+                tagIndex.push(listTag[i]["id"]);
+                stringTag += listTag[i]["TenTag"];
+                stringTag += ",";
             }
+            stringTag = stringTag.substring(0, stringTag.length - 1);
+            list[i][j]["Tag"] = stringTag;
+            list[i][j]["TagIndex"] = tagIndex;
         }
     }
     const newLocal = 'vwAdmin/Posts/list';
     res.render(newLocal, { List: list, layout: 'adminPanel' });
 });
-router.get('/Posts/:id&:key', async function (req, res) {
-    const id = +req.params.id || -1;
-    const key = +req.params.key || -1;
-    if(key == 1){//xaut ban
-        await postsModel.updatePulishedDate(id);
-        const newLocal = '/admin/Posts';
-        res.redirect(newLocal);
-    }
-    if(key == 2){//detail
-        const list = await postsModel.loadByID(id);
-        const row = list[0];
-        const newLocal = 'vwAdmin/Posts/Detail';
-        res.render(newLocal, {row});
-    }
-    if(key == 3){//them tag
-        const row = id;
-        const newLocal = 'vwAdmin/Posts/addTag';
-        res.render(newLocal, {row});
-    }
-    if(key == 4){//xoa bai
-        const BaiVietID = id;
-        await tagModel.deleteAllPostID(BaiVietID);
-        await postsModel.delete(id);
-        res.redirect('/admin/Posts');
-    }
-});
-//--them tag
-router.post('/Posts/addTag', async function (req, res) {
-    const entity = {
-        TenTag: req.body.TenTag,
-        BaiVietID: req.body.BaiVietID
-    }
-    await tagModel.insert(entity);
-    req.headers.referer;//ko bik dung
-});
-//-- duyet bai/edit bai
-router.get('/Posts/accept/:id', async function (req, res) {
+router.get('/Posts/:id', async function (req, res) {
     var postID = req.params.id;
-    const row = await postModel.loadByID(postID);
+    const row = await postsModel.loadByID(postID);
     const tagsRow = await tagModel.loadByPostID(postID);
+    const status = await statusModel.load(postID);
+    row[0]["TenTrangThai"] = status[0]["TenTrangThai"];
     var stringTag = "";
     var tagIndex = [];
     for (let i = 0; i < tagsRow.length; i++) {
@@ -108,35 +83,31 @@ router.get('/Posts/accept/:id', async function (req, res) {
     }
     req.session.tagIndex = tagIndex;
     stringTag = stringTag.substring(0, stringTag.length - 1);
-    res.render('vwAdmin/Posts/edit', { ListPost: row, Tag: stringTag, selectedCategory: row[0]["ChuyenMucID"] });
+    const newLocal = 'vwAdmin/Posts/edit';
+    res.render(newLocal, { ListPost: row, Tag: stringTag, selectedCategory: row[0]["ChuyenMucID"], layout: 'adminPanel'});
 });
 
-const directory = 'public/reporterImage/';
-router.post('/Posts/accept/:id', upload.single('urlImage'), async function (req, res) {
+router.post('/Posts/:id', upload.single('urlImage'), async function (req, res) {
     var postID = req.params.id;
-    const row = await postModel.loadByID(postID);
-    imageName = row[0]["HinhAnh"];
+    const row = await postsModel.loadByID(postID);
+    var imagePath = '';
     // if recieve new image, delete old image 
     if (req.file) {
-        const imagePath = directory + row[0]["HinhAnh"];
-        fs.unlinkSync(imagePath);
-        imageName = req.file.filename;
+        //imagePath = row[0]["HinhAnh"].substring(1,row[0]["HinhAnh"].length);
+        //fs.unlinkSync(imagePath);
+        imagePath = '/public/images/articles/' + req.file.filename;
     }
     //edit post
-    var postEntity = {
-        id: postID,
-        TieuDe: req.body.TieuDe,
-        NoiDungTat: req.body.NoiDungTat,
-        NoiDung: req.body.NoiDung,
-        NgayXuatBan: req.body.NgayXuatBan,
-        HinhAnh: imageName,
-        LuotXem: 0,
-        TrangThaiID: 1,
-        ChuyenMucID: +req.body.ChuyenMucID,
-        TaiKhoanID: row[0]["TaiKhoanID"],
-        isPremium: 1
+    await postsModel.changeTitle(req.body.TieuDe, postID);
+    await postsModel.changeShortContent(req.body.NoiDungTat, postID);
+    await postsModel.changeContent(req.body.NoiDung, postID);
+    if(req.body.NgayXuatBan){
+        await postsModel.changeDatePublish(req.body.NgayXuatBan, postID);
+        await postsModel.changeStatusID(1, postID);
     }
-    await postModel.update(postEntity);
+    await postsModel.changePhoto(imagePath, postID);
+    await postsModel.changePremium(+req.body.Premium, postID);
+    await postsModel.changeCategoryID(+req.body.ChuyenMucID, postID);
     //edit tag
     var words = req.body.tag.split
     const newTags = req.body.tag.split(',');
@@ -174,37 +145,6 @@ router.post('/Posts/accept/:id', upload.single('urlImage'), async function (req,
     req.body.tag = null;
     req.session.tagIndex = null;
     res.redirect('/admin/Posts');
-});
-//--add
-router.get('/Posts/add', async function(req,res){
-    res.render('vwAdmin/Posts/add');
-})
-router.post('/Posts/add', upload.single('urlImage'), async function (req, res) {
-    //insert post
-    var newestPostID = await postModel.getNewestID();
-    var postEntity = {
-        TieuDe: req.body.TieuDe,
-        NoiDungTat: req.body.NoiDungTat,
-        NoiDung: req.body.NoiDung,
-        NgayXuatBan: '0/0/0',
-        HinhAnh: req.file.filename,
-        LuotXem: 0,
-        TrangThaiID: 2,
-        ChuyenMucID: +req.body.ChuyenMucID,
-        TaiKhoanID: 1,//sửa lại sau
-        isPremium: 0
-    }
-    await postModel.insert(postEntity);
-    //insert tag
-    const tags = req.body.tag.split(',');
-    for (let i = 0; i < tags.length; i++) {
-        var tagEntity = {
-            TenTag: tags[i],
-            BaiVietID: +newestPostID[0]["newest"]
-        }
-        await tagModel.insert(tagEntity);
-    }
-    res.redirect('/admin/Posts/add');
 });
 //----------------------------------------------Categories management------------------------------------
 //--List
@@ -406,47 +346,12 @@ router.get('/Tags/del/:id', async function (req, res) {
     await tagModel.delete(id);
     res.json(true);
 });
-//--add
-router.get('/Tag/add', async function (req, res) {
-    const list = await postsModel.load();
-    res.render('vwAdmin/Tags/add', {List : list});
-});
-router.post('/Tag/add', async function (req, res) {
-    const entity = {
-        TenTag: req.body.TenTag,
-        BaiVietID: req.body.BaiVietID
-    }
-    await tagModel.insert(entity);
-    res.redirect('/admin/Tag/add');
-});
-//--edit
-router.get('/Tag/edit/:id', async function (req, res) {
-    const id = +req.params.id || -1;
-    const list = await postsModel.load();
-    const list1 = await tagModel.loadByID(id);
-    res.render('vwAdmin/Tags/edit', {List : list, row: list1[0]});
-});
-router.post('/Tag/edit/:id', async function (req, res) {
-    const entity = {
-        id: req.body.id,
-        TenTag: req.body.TenTag,
-        BaiVietID: req.body.BaiVietID
-    }
-    await tagModel.update(entity);
-    res.redirect('/admin/Tag');
-});
-//--delete
-router.get('/Tag/del/:id', async function (req, res) {
-    const id = +req.params.id || -1;
-   await tagModel.delete(id);
-   res.redirect('/admin/Tag');
-});
+
 //----------------------------------------------User management------------------------------------
 //--List
 router.get('/Users/getManagedCategoryList', async (req, res) => {
     res.json({ CategoryList: res.locals.lcCats });
 });
-
 
 router.get('/Users/getManagedCategory/:id', async (req, res) => {
     var List = await accountModel.loadbyID(req.params.id);
@@ -456,7 +361,7 @@ router.get('/Users/getManagedCategory/:id', async (req, res) => {
 });
 
 router.get('/Users', async function (req, res) {
-    const list = await accountModels.loadByOffset(0);
+    const list = await accountModel.loadByOffset(0);
     for (let i = 0; i < list.length; i++) {
         list[i]["ThoiHan"] = mdwFunction.formatDateTime(list[i]["ThoiHan"]);
         var chuyenmucquanly = await categoriesModel.loadManagementCategory(list[i]["ChuyenMucQuanLy"]);
@@ -469,7 +374,8 @@ router.get('/Users', async function (req, res) {
     }
     const newLocal = 'vwAdmin/Users/list';
 
-    const Quantity = await accountModels.quantity();
+    const Quantity = await accountModel.quantity();
+
     res.render(newLocal, {
         List: list, quantity: Quantity[0]["quantity"],
         pagi: mdwFunction.rangeOfPagination(Math.ceil(Quantity[0]["quantity"] / 5), 1), layout: 'adminPanel'
@@ -482,7 +388,7 @@ router.get('/Users/list', async function (req, res) {
     if (req.query.p)
         p = req.query.p;
 
-    list = await accountModels.loadByOffset((p - 1) * 5);
+    list = await accountModel.loadByOffset((p - 1) * 5);
 
     for (let i = 0; i < list.length; i++) {
         list[i]["ThoiHan"] = mdwFunction.formatDateTime(list[i]["ThoiHan"]);
@@ -498,7 +404,7 @@ router.get('/Users/list', async function (req, res) {
         }
     }
 
-    const Quantity = await accountModels.quantity();
+    const Quantity = await accountModel.quantity();
     const newLocal = 'vwAdmin/Users/list';
     res.json({
         List: list, quantity: Quantity[0]["quantity"],
@@ -516,18 +422,18 @@ router.post('/Users/updateCat', async (req, res) => {
 router.get('/Users/checkExistAthName', async (req, res) => {
     var isNotExist = true;
     var row = await accountModel.loadByAthName(req.query.AthName);
-    if(row.length != 0)
+    if (row.length != 0)
         isNotExist = false;
-    res.json({NotExist:isNotExist});
+    res.json({ NotExist: isNotExist });
 });
 
 router.post('/Users/update', async (req, res) => {
     if (req.body.roleID != null)
         await accountModel.changeRole(req.body.roleID, req.body.id);
-    if (req.body.ExpireDate != null){
+    if (req.body.ExpireDate != null) {
         await accountModel.changeDate(req.body.ExpireDate, req.body.id);
     }
-    if (req.body.ButDanh != null){
+    if (req.body.ButDanh != null) {
         await accountModel.changeAthName(req.body.ButDanh, req.body.id);
     }
     list = await accountModel.loadbyID(req.body.id);
@@ -539,22 +445,8 @@ router.post('/Users/update', async (req, res) => {
     else {
         list[0]["ChuyenMucQuanLy"] = null;
     }
-    res.json({List:list[0]});
+    res.json({ List: list[0] });
 });
 
 
 module.exports = router;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
