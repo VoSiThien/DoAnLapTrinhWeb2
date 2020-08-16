@@ -88,5 +88,8 @@ module.exports= {
     changePDFs:(PDFs, id) => {
         return db.load(`update baiviet set PDF = '${PDFs}' where id = ${id}`);
     },
+    changePremium:(isPremium,id) =>{
+        return db.load(`update baiviet set isPremium = '${isPremium}' where id = ${id}`);
+    }
 
 }

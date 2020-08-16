@@ -93,8 +93,8 @@ router.post('/Posts/:id', upload.single('urlImage'), async function (req, res) {
     var imagePath = '';
     // if recieve new image, delete old image 
     if (req.file) {
-        //imagePath = row[0]["HinhAnh"].substring(1,row[0]["HinhAnh"].length);
-        //fs.unlinkSync(imagePath);
+        imagePath = row[0]["HinhAnh"].substring(1,row[0]["HinhAnh"].length);
+        fs.unlinkSync(imagePath);
         imagePath = '/public/images/articles/' + req.file.filename;
     }
     //edit post

@@ -1,5 +1,4 @@
-
-{{#section 'js'}}
+﻿{{#section 'js'}}
 <script>
     function viewDetail(index) {
         var detailIndex = "infoField" + index;
@@ -14,17 +13,14 @@
         $(sel).each((index, el) => {
             $(el).text(data["pagi"][index]["value"]);
             $(el).removeClass("pagi-active");
-
             if (+data["pagi"][index]["value"] === page) {
                 $(el).addClass("pagi-active");
             }
-
             if (+data["pagi"][index]["value"] !== -1) {
                 $(el).css("display", "");
             } else {
                 $(el).css("display", "none");
             }
-
         });
     }
     function changePageContent(data) {
@@ -127,7 +123,6 @@
         });
         return row;
     }
-
     $(document).ready(function () {
         $("#paging-area button").on("click", function () {
             const page = +$(this).html();
@@ -165,21 +160,17 @@
         html = html + `</div>`;
         return html;
     }
-
     function editCat(id) {
         $.getJSON(`/admin//Users/getManagedCategoryList`, (data) => {
             $("#catField" + id).empty();
             $("#catField" + id).append(getCatComboboxHTML(data, id));
         });
-
     }
-
     function returnManagedCategoryHTML(id, catName) {
         var html = `<input value="${catName}"
                                 readonly="true" style="background-color: beige;" class="form-control"></input><br>`;
         return html;
     }
-
     function acceptCat(id) {
         $.post(
             `/admin/Users/updateCat`,
@@ -192,7 +183,6 @@
             }
         );
     }
-
     function undoCat(id) {
         $.getJSON(`/admin/Users/getManagedCategory/${id}`, (data) => {
             $("#catField" + id).empty();
@@ -410,4 +400,3 @@
         </div>
     </div>
 </div>
-

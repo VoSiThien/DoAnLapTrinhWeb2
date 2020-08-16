@@ -1,4 +1,4 @@
-{{#section 'js'}}
+﻿{{#section 'js'}}
 <script>
   function viewDetail(index) {
     var detailIndex = "row" + index;
@@ -17,14 +17,10 @@
       document.getElementById(detailIndex).style.display = "";
   }
   function isClickAdd(postTable) {
-
   }
   function delCurrentHTMLRow() {
     $("#btnDelRow").closest('tr').remove();
   }
-
-
-
   function getNewInsertedTagRowHTML(nextID) {
     var tr = `<tr class="childRow">
       <td id = "tdIndex${nextID}" style="text-align: left;">{{@index}}</td>
@@ -52,11 +48,9 @@
     </button>`;
     return tr;
   }
-
   function acceptAddTag(nextID) {
     let tagName = $("#txtTagName" + nextID).val();
     let postID = $("#btnDelRow").closest('table').attr('id').substr(8);
-
     if (tagName !== '') {
       $.getJSON(`/admin/Tags/validation?tagname=${tagName}&postID=${postID}`, (data) => {
         if (data["res"] == true) {
@@ -83,7 +77,6 @@
     }
     return false;
   }
-
   function addTag(postID) {
     //get new inserted id of tag from server
     $.getJSON(`/admin/Tags/add`, (result) => {
@@ -91,13 +84,10 @@
       let row = getNewInsertedTagRowHTML(nextID);
       $("#tableTag" + postID).append(row);
     });
-
   }
-
   function editTag(index) {
     let tagName = $("#txtTagName" + index).val();
     let postID = $("#btnEditTag" + index).closest('table').attr('id').substr(8);
-
     if (tagName !== '') {
       $.getJSON(`/admin/Tags/validation?tagname=${tagName}&postID=${postID}`, (data) => {
         if (data["res"] == true) {
@@ -115,9 +105,7 @@
     else {
       alert("Tên tag không được rỗng!");
     }
-
   }
-
   function delTag(index) {
     let btnName = "btnDelTag" + index;
     $.getJSON(`/admin/Tags/del/${index}`, (result) => {
@@ -125,24 +113,19 @@
       $('#' + btnName).closest('tr').remove();
     });
   }
-
   function displayPaginationButtons(sel, page, data) {
     $(sel).each((index, el) => {
       $(el).text(data["pagi"][index]["value"]);
       $(el).removeClass("pagi-active");
-
       if (+data["pagi"][index]["value"] === page) {
         $(el).addClass("pagi-active");
       }
-
       if (+data["pagi"][index]["value"] !== -1) {
         $(el).css("display", "");
       } else {
         $(el).css("display", "none");
       }
-
     });
-
   }
   function changePageContent(data) {
     var row = ``;
@@ -160,7 +143,7 @@
                 aria-hidden="true"></i></button>
           </td>
           <td class="text-center">
-            <a class="btn btn-success btn-sm" href="/article/${val["id"]}" role="button" title="">
+            <a class="btn btn-success btn-sm" href="" role="button" title="">
               <i class="fa fa-pencil" aria-hidden="true">Chi tiết</i>
             </a>
           </td>
@@ -262,7 +245,7 @@
                 aria-hidden="true"></i></button>
           </td>
           <td class="text-center">
-            <a class="btn btn-success btn-sm" href="/article/{{id}}" role="button" title="">
+            <a class="btn btn-success btn-sm" href="" role="button" title="">
               <i class="fa fa-pencil" aria-hidden="true">Chi tiết</i>
             </a>
           </td>

@@ -56,5 +56,9 @@ module.exports = {
   },
   loadByAthName:(name)=> {
     return db.load(`select * from taikhoan where butdanh = '${name}'`);
-  }
+  },
+  loadReporter: function () {
+    return db.load(`select * from taikhoan where vaitroID  = 3`);
+  },
+  
 };
