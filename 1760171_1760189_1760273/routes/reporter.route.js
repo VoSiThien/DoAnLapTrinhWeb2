@@ -5,7 +5,7 @@ const tagModel = require('../models/tag.model');
 const multer = require('multer');
 var path = require('path');
 const fs = require('fs')
-
+const restrict = require('../middlewares/isReporter.mdw')
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -27,7 +27,7 @@ var upload = multer({
     }
 });
 //------------------------------------------POST action----------------------------------------------------
-router.get('/post', async function(req,res){
+router.get('/post', restrict, async function(req,res){
     res.render('vwReporter/post');
 })
 router.post('/post', upload.single('urlImage'), async function (req, res) {
@@ -59,12 +59,12 @@ router.post('/post', upload.single('urlImage'), async function (req, res) {
     res.redirect('/reporter/listPost');
 });
 //------------------------------------------------list Post status ------------------------------------=-======
-router.get('/listpost', async function (req, res) {
+router.get('/listpost', restrict, async function (req, res) {
     const list = await postModel.loadByAuthor(req.session.authUser.id);
     res.render('vwReporter/listPost', { List: list });
 });
 //------------------------------------------------edit Post status ------------------------------------=-======
-router.get('/edit/:id', async function (req, res) {
+router.get('/edit/:id', restrict, async function (req, res) {
     var postID = req.params.id;
     const row = await postModel.loadByID(postID);
     const tagsRow = await tagModel.loadByPostID(postID);

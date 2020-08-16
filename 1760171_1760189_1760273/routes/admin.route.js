@@ -8,7 +8,7 @@ const tagModel = require('../models/tag.model');
 const categoriesModel = require('../models/categories.model');
 const accountModel = require('../models/accounts.model');
 const mdwFunction = require('../middlewares/middle-functions.mdw')
-
+const restrict = require('../middlewares/isAdmin.mdw')
 const fs = require('fs')
 const multer = require('multer');
 var path = require('path');
@@ -35,14 +35,14 @@ var upload = multer({
 });
 
 //------------HOME------------------------------
-router.get('/', async function (req, res) {
+router.get('/', restrict, async function (req, res) {
     const newLocal = 'vwAdmin/dashboard';
     res.render(newLocal, { layout: 'adminPanel' });
 });
 
 //----------------------------------------------Posts management------------------------------------
 //--List
-router.get('/Posts', async function (req, res) {
+router.get('/Posts', restrict, async function (req, res) {
     var list = [];
     const listAuthor = await accountModel.loadReporter();
     list = listAuthor;
@@ -67,7 +67,7 @@ router.get('/Posts', async function (req, res) {
     const newLocal = 'vwAdmin/Posts/list';
     res.render(newLocal, { List: list, layout: 'adminPanel' });
 });
-router.get('/Posts/:id', async function (req, res) {
+router.get('/Posts/:id', restrict, async function (req, res) {
     var postID = req.params.id;
     const row = await postsModel.loadByID(postID);
     const tagsRow = await tagModel.loadByPostID(postID);
@@ -148,7 +148,7 @@ router.post('/Posts/:id', upload.single('urlImage'), async function (req, res) {
 });
 //----------------------------------------------Categories management------------------------------------
 //--List
-router.get('/Categories', async function (req, res) {
+router.get('/Categories', restrict, async function (req, res) {
     const catRow = await categoriesModel.loadAll();
     let list = [];
     catRow.forEach((cat) => {
@@ -168,7 +168,7 @@ router.get('/Categories', async function (req, res) {
     res.render(newLocal, { List: list, layout: 'adminPanel' });
 });
 //--Validation
-router.get('/Categories/add/validation', async function (req, res) {
+router.get('/Categories/add/validation', restrict, async function (req, res) {
     if (req.query.parentID)
         var parentID = req.query.parentID;
     const name = req.query.categoryname;
@@ -189,7 +189,7 @@ router.get('/Categories/add/validation', async function (req, res) {
     res.json({ result });
 });
 
-router.get('/Categories/edit/validation', async function (req, res) {
+router.get('/Categories/edit/validation', restrict, async function (req, res) {
     const id = req.query.id;
     const name = req.query.categoryname;
     var result = 0;
@@ -210,7 +210,7 @@ router.get('/Categories/edit/validation', async function (req, res) {
     res.json({ result });
 });
 //--Insert
-router.post('/Categories/add', async function (req, res) {
+router.post('/Categories/add', restrict, async function (req, res) {
     var parentID = null;
     if (req.body.ParentID)
         parentID = req.body.ParentID;
@@ -228,7 +228,7 @@ router.post('/Categories/add', async function (req, res) {
 });
 
 //--Edit
-router.post('/Categories/edit', async function (req, res) {
+router.post('/Categories/edit', restrict, async function (req, res) {
     const cat = await categoriesModel.loadByID(req.body.id);
     const entity = {
         id: req.body.id,
@@ -239,7 +239,7 @@ router.post('/Categories/edit', async function (req, res) {
     res.json({});
 });
 //--Delete
-router.get('/Categories/del/:id', async function (req, res) {
+router.get('/Categories/del/:id', restrict, async function (req, res) {
     const id = +req.params.id || -1;
     var result = 0;
     const parentRow = await categoriesModel.loadParentByID(id);
@@ -267,7 +267,7 @@ router.get('/Categories/del/:id', async function (req, res) {
 });
 //----------------------------------------------Tag management------------------------------------
 //--List
-router.get('/Tags', async function (req, res) {
+router.get('/Tags', restrict, async function (req, res) {
     var list = [];
     var listPost = await postsModel.loadByOffset(0);
     for (let i = 0; i < listPost.length; i++) {
@@ -286,7 +286,7 @@ router.get('/Tags', async function (req, res) {
         pagi: mdwFunction.rangeOfPagination(Math.ceil(Quantity[0]["quantity"] / 10), 1), layout: 'adminPanel'
     });
 });
-router.get('/Tags/list', async function (req, res) {
+router.get('/Tags/list', restrict, async function (req, res) {
     var p = 1;
     var list = [];
     if (req.query.p)
@@ -308,17 +308,17 @@ router.get('/Tags/list', async function (req, res) {
     });
 });
 //--validation
-router.get('/Tags/validation', async function (req, res) {
+router.get('/Tags/validation', restrict, async function (req, res) {
     const taglist = await tagModel.loadByPostIDAndName(req.query.tagname, req.query.postID);
     let result = taglist.length == 0 ? true : false;
     res.json({ res: result });
 });
 //--add
-router.get('/Tags/add', async function (req, res) {
+router.get('/Tags/add', restrict, async function (req, res) {
     const nextID = await tagModel.getNextAutoIncrement();
     res.json({ nextID: nextID[0]["AUTO_INCREMENT"] });
 });
-router.post('/Tags/add', async function (req, res) {
+router.post('/Tags/add', restrict, async function (req, res) {
     const entity = {
         TenTag: req.body.TenTag,
         BaiVietID: req.body.BaiVietID
@@ -328,7 +328,7 @@ router.post('/Tags/add', async function (req, res) {
 });
 
 //--edit
-router.post('/Tags/edit', async function (req, res) {
+router.post('/Tags/edit', restrict, async function (req, res) {
     const tag = await tagModel.loadByID(req.body.id);
 
     const entity = {
@@ -341,7 +341,7 @@ router.post('/Tags/edit', async function (req, res) {
 });
 
 //--Delete
-router.get('/Tags/del/:id', async function (req, res) {
+router.get('/Tags/del/:id', restrict, async function (req, res) {
     const id = +req.params.id || -1;
     await tagModel.delete(id);
     res.json(true);
@@ -349,18 +349,18 @@ router.get('/Tags/del/:id', async function (req, res) {
 
 //----------------------------------------------User management------------------------------------
 //--List
-router.get('/Users/getManagedCategoryList', async (req, res) => {
+router.get('/Users/getManagedCategoryList', restrict, async (req, res) => {
     res.json({ CategoryList: res.locals.lcCats });
 });
 
-router.get('/Users/getManagedCategory/:id', async (req, res) => {
+router.get('/Users/getManagedCategory/:id', restrict, async (req, res) => {
     var List = await accountModel.loadbyID(req.params.id);
     var chuyenmucquanly = await categoriesModel.loadManagementCategory(List[0]["ChuyenMucQuanLy"]);
 
     res.json({ ManagedCat: chuyenmucquanly[0].TenChuyenMuc, id: chuyenmucquanly[0].id });
 });
 
-router.get('/Users', async function (req, res) {
+router.get('/Users', restrict, async function (req, res) {
     const list = await accountModel.loadByOffset(0);
     for (let i = 0; i < list.length; i++) {
         list[i]["ThoiHan"] = mdwFunction.formatDateTime(list[i]["ThoiHan"]);
@@ -382,7 +382,7 @@ router.get('/Users', async function (req, res) {
     });
 });
 
-router.get('/Users/list', async function (req, res) {
+router.get('/Users/list', restrict, async function (req, res) {
     var p = 1;
     var list = [];
     if (req.query.p)
@@ -427,7 +427,7 @@ router.get('/Users/checkExistAthName', async (req, res) => {
     res.json({ NotExist: isNotExist });
 });
 
-router.post('/Users/update', async (req, res) => {
+router.post('/Users/update', restrict, async (req, res) => {
     if (req.body.roleID != null)
         await accountModel.changeRole(req.body.roleID, req.body.id);
     if (req.body.ExpireDate != null) {

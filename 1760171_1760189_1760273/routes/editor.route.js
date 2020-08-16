@@ -7,7 +7,7 @@ const fs = require('fs')
 const multer = require('multer');
 var path = require('path');
 var dateFormat = require('dateformat');
-
+const restrict = require('../middlewares/isEditor.mdw')
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'public/images/articles')
@@ -32,13 +32,13 @@ var upload = multer({
 const ejs = require("ejs");
 const pdf = require("html-pdf");
 
-router.get('/post', async function (req, res) {
+router.get('/post', restrict, async function (req, res) {
     var category = req.session.authUser.ChuyenMucQuanLy;
     const list = await postModel.loadDraftPost(category);
     res.render('vwEditor/list', { List: list });
 });
 //-----------------------------accept and edit post--------------------------------------------
-router.get('/accept/:id', async function (req, res) {
+router.get('/accept/:id', restrict, async function (req, res) {
     var postID = req.params.id;
     const row = await postModel.loadByID(postID);
     const tagsRow = await tagModel.loadByPostID(postID);
@@ -151,7 +151,7 @@ router.post('/accept/:id', upload.single('urlImage'), async function (req, res) 
     res.render('vwEditor/list', { List: list });
 });
 //------------------------------denied action---------------------------------------------------
-router.post("/deny",async function(req,res){
+router.post("/deny", restrict, async function(req,res){
     var check = await postFeedBackModel.update(req.body);
     if(check.changedRows == 0){
         await postFeedBackModel.insert(req.body);
