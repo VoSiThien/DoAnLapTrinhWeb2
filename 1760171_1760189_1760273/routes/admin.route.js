@@ -90,7 +90,7 @@ router.get('/Posts/:id', async function (req, res) {
 router.post('/Posts/:id', upload.single('urlImage'), async function (req, res) {
     var postID = req.params.id;
     const row = await postsModel.loadByID(postID);
-    var imagePath = '';
+    var imagePath = row[0]["HinhAnh"];
     // if recieve new image, delete old image 
     if (req.file) {
         imagePath = row[0]["HinhAnh"].substring(1,row[0]["HinhAnh"].length);

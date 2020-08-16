@@ -921,9 +921,8 @@
       {{/each}}
       <div class="form-group">
 
-        <label for="txtType">Chuyên mục:</label>
 
-        <select id="cbParentType" name="ChuyenMucID" class="form-control">
+        <select id="cbParentType" name="ChuyenMucID" class="form-control" hidden>
           {{#each lcCats}}
           <optgroup label="{{this.0.TenChuyenMuc}}">
             {{#each this}}

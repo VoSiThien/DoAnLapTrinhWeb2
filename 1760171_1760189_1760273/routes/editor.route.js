@@ -59,7 +59,7 @@ const directory = '/public/images/articles/';
 router.post('/accept/:id', upload.single('urlImage'), async function (req, res) {
     var postID = req.params.id;
     const row = await postModel.loadByID(postID);
-    imagePath = row[0]["HinhAnh"];
+    var imagePath = row[0]["HinhAnh"];
     // if recieve new image, delete old image 
     if (req.file) {
         imagePath = row[0]["HinhAnh"].substring(1,row[0]["HinhAnh"].length);
@@ -143,6 +143,7 @@ router.post('/accept/:id', upload.single('urlImage'), async function (req, res) 
         }
     }
     var category = req.session.authUser.ChuyenMucQuanLy;
+    
     const list = await postModel.loadDraftPost(category);
     //destroy session
     req.body.tag = null;
