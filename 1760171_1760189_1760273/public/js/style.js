@@ -24,7 +24,7 @@ function formatDate(date) {
 }
 
 $(document).ready(function () {
-  $('._article').on('click', function (e) {
+  $(document).on('click', '._article', function (e) {
     e.preventDefault();
 
     var href = $(this).attr('href');
