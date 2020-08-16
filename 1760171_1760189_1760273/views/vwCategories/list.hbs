@@ -1,260 +1,187 @@
-﻿{{#section 'js'}}
+﻿{{#section 'title'}}
+{{this._categoryName.TenChuyenMuc}}
+{{/section}}
+
+{{#section 'js'}}
 <script>
-  function viewDetail(index) {
-    var detailIndex = "row" + index;
-    var rowDetail = document.getElementById(detailIndex)
-    if (rowDetail.style.display == "")
-      document.getElementById(detailIndex).style.display = "none";
-    else if (rowDetail.style.display == "none")
-      document.getElementById(detailIndex).style.display = "";
-  }
-  function addParentHTML(nextID, cateName) {
-    var html = `<tr>
-          <th scope="row" class="text-left" id = "tdParentIndex${nextID}">
-            <p>{{@index}}</p>
-          </th>
-          <td class="text-center" >
-            <input id="txtCategory${nextID}" style="border:5mm;text-align:center;"
-              value="${cateName}"></input>
-          </td>
-          <td class="text-center">
-            <button type="button" class="btn btn-primary" onclick="viewDetail(${nextID})"><i class="fa fa-eye"
-                aria-hidden="true"></i></button>
-          </td>
-          <td class="text-center">
-            <button id="btnEditCategory${nextID}" class="btn btn-primary btn-sm" role="button" title="Sửa category"
-              onclick="editCategory(${nextID})">
-              <i class="fa fa-pencil" aria-hidden="true">sửa</i>
-            </button>
-            <button id="btnDelCategory${nextID}" class="btn btn-danger btn-sm" role="button" title="Xóa category"
-              onclick="delCategory(${nextID})">
-              <i class="fa fa-trash" aria-hidden="true">Xóa</i>
-            </button>
-          </td>
-        </tr>
-        <tr id="row${nextID}" style = "display:none;">
-          <td></td>
-          <td colspan="2">
-            <input id="txtAddChild${nextID}">
-            </input>
-            <button id="btnAddChild${nextID}" style="margin-left: 0px;" class="btn btn-success btn-sm"
-              onclick="addChild(${nextID})">(+)</button>
-            <table class="table table-hover">
-              <thead>
-                <tr style="background-color:lightgray">
-                  <th scope="col" class="text-left" style="width: 20%">#</th>
-                  <th scope="col" style="width: 60%;" class="text-center">Tên chuyên mục con</th>
-                  <th scope="col" class="text-center">Action</th>
-                </tr>
-              </thead>
-              <tbody id="tbodyCateChild${nextID}">
-              </tbody>
-            </table>
-          </td>
-        </tr>
-        `;
-    return html;
-  }
-  function addParent() {
-    var categoryName = $("#txtParentCategoryName").val();
-    if (categoryName == '') {
-      alert("Tên chuyên mục không được rỗng!");
-      return;
-    }
-    $.getJSON(`/admin/Categories/add/validation?categoryname=${categoryName}`, (data) => {
-      if (data["result"] == 0) {
-        $.post(
-          "/admin/Categories/add",
-          { TenChuyenMuc: categoryName },
-          function (data) {
-            let nextID = data["nextID"] - 1;
-            window.alert("Thêm thành công!")
-            var parentHTML = addParentHTML(nextID, categoryName);
-            $("#tbodyCateParent").append(parentHTML);
-            $("#tdParentIndex" + nextID).html(data["countParent"] - 1);
-          }
-        );
-      }
-      if (data["result"] == 1) {
-        alert("Đã tồn tại chuyên mục con này ở trong chuyên mục cha đã chọn!");
-      }
-      if (data["result"] == 2) {
-        alert("Đã tồn tại chuyên mục cha!");
-      }
-    })
-  }
-  function addChildHtml(id, parentID, childName){
-    var html = `<tr id="row${parentID}" class="childRow">
-                  <td></td>
-                  <td class="text-center"><input id="txtCategory${id}" style="border:5mm;text-align: center;"
-                      value="${childName}"></input></td>
-                  <td class="text-left">
-                    <button id="btnEditCategory${id}" class="btn btn-primary btn-sm" role="button" title="Sửa category"
-                      onclick="editCategory(${id})">
-                      <i class="fa fa-pencil" aria-hidden="true">sửa</i>
-                    </button>
-                    <button id="btnDelCategory${id}" class="btn btn-danger btn-sm" role="button" title="Xóa category"
-                      onclick="delCategory(${id})">
-                      <i class="fa fa-trash" aria-hidden="true">Xóa</i>
-                    </button>
-                  </td>
-                </tr>`;
-    return html;
-  }
-  function addChild(parentID) {
-    var categoryName = $("#txtAddChild" + parentID).val();
-    if (categoryName == '') {
-      alert("Tên chuyên mục con không được rỗng!");
-      return;
-    }
-    $.getJSON(`/admin/Categories/add/validation?categoryname=${categoryName}&parentID=${parentID}`, (data) => {
-      if (data["result"] == 0) {
-        $.post(
-          "/admin/Categories/add",
-          { TenChuyenMuc: categoryName, ParentID: parentID},
-          function (data) {
-            let nextID = data["nextID"] - 1;
-            window.alert("Thêm thành công!")
-            $("#tbodyCateChild" + parentID).append(addChildHtml(nextID, parentID, categoryName));
-          }
-        );
-      }
-      if (data["result"] == 1) {
-        alert("Đã tồn tại chuyên mục con này ở trong chuyên mục cha đã chọn!");
-      }
-      if (data["result"] == 2) {
-        alert("Đã tồn tại chuyên mục cha!");
-      }
-    })
-  }
-  function editCategory(index) {
-    let categoryName = $("#txtCategory" + index).val();
-    if (categoryName !== '') {
-      $.getJSON(`/admin/Categories/edit/validation?categoryname=${categoryName}&id=${index}`, (data) => {
-        if (data["result"] == 0) {
-          $.post(
-            "/admin/Categories/edit",
-            { TenChuyenMuc: categoryName, id: index },
-            window.alert("Sửa thành công!")
-          );
-        }
-        if (data["result"] == 1) {
-          alert("Đã tồn tại chuyên mục con này ở trong chuyên mục cha đã chọn!");
-        }
-        if (data["result"] == 2) {
-          alert("Đã tồn tại chuyên mục cha!");
+  $(document).ready(function () {
+    $("#button-load-more").on("click", function () {
+      $.getJSON(`/category-load-more?id=${$("#categoryID").val()}&offset=${+$("#offset").val() + 1}`, (data) => {
+        if (data.length !== 0) {
+          data.forEach(val => {
+            var fDate = formatDate(val['NgayXuatBan']);
+            const row = `
+              <div class="flex-wr-sb-s p-t-40 p-b-15 how-bor2">
+                <a href="/article/${val['id']}" class="size-w-8 wrap-pic-w hov1 trans-03 w-full-sr575 m-b-25 _article">
+                  <img src="${val['HinhAnh']}" alt="IMG">
+                </a>
+                <div class="size-w-9 w-full-sr575 m-b-25">
+                  <h5 class="p-b-12">
+                    <a href="/article/${val['id']}" class="f1-l-1 cl2 hov-cl10 trans-03 respon2 _article">
+                      ${val['TieuDe']}
+                    </a>
+                  </h5>
+                  <div class="cl8 p-b-18">
+                    <a href="javascript:;" class="f1-s-4 cl8 hov-cl10 trans-03">${val['ButDanh']}</a>
+                    <span class="f1-s-3 m-rl-3">-</span>
+                    <span class="f1-s-3">${fDate}</span>
+                  </div>
+                  <p class="f1-s-1 cl6 p-b-24">${val['NoiDungTat']}</p>
+                </div>
+              </div>`;
+            $("#articles-area").append(row);
+            $("#offset").val(+$('#offset').val() + 1);
+            $("#button-load-more").removeAttr("disabled");
+            $("#button-load-more").addClass("hov-btn1");
+          });
+        } else {
+          $("#button-load-more").attr('disabled', 'disabled');
+          $("#button-load-more").removeClass("hov-btn1");
         }
       });
-    }
-    else {
-      alert("Tên category không được rỗng!");
-    }
-  }
-  function delCategory(index) {
-    let btnName = "btnDelCategory" + index;
-    $.getJSON(`/admin/Categories/del/${index}`, (data) => {
-      if (data["result"] == '0') {
-        alert("Xóa thành công!");
-        $("#row" + index).remove();
-        $('#' + btnName).closest('tr').remove();
-      }
-      if (data["result"] == '1')
-        alert("Chuyên mục vẫn còn chứa bài viết! Không thể xóa!");
-      if (data["result"] == '2')
-        alert("Chuyên mục vẫn còn chứa chuyên mục con! Không thể xóa!");
     });
-  }
+  });
 </script>
 {{/section}}
-<div class="card">
-  <div class="card-header">
-    <h4>Danh sách chuyên mục</h4>
-  </div>
-  <div class="card">
-    <div class="card-header d-flex justify-content-between">
-      <input id="txtParentCategoryName"></input>
-      <button class="btn btn-outline-success" role="button" onclick="addParent()">
-        <i class="fa fa-plus" aria-hidden="true"></i>
-        Thêm Chuyên mục
-      </button>
+
+<!-- Breadcrumb -->
+<div class="container">
+  <div class="bg0 flex-wr-sb-c p-rl-20 p-tb-8">
+    <div class="f2-s-1 p-r-30 m-tb-6">
+      <a href="/" class="breadcrumb-item f1-s-3 cl9">
+        Trang chủ
+      </a>
+
+      <span class="breadcrumb-item f1-s-3 cl9">
+        {{this._categoryName.TenChuyenMuc}}
+      </span>
     </div>
-    <table class="table table-hover" id="tableCategory">
-      <thead>
-        <tr style="background-color:bisque">
-          <th scope="col" class="text-left" style="width: 10%">#</th>
-          <th scope="col" style="width: 60%;" class="text-center">Tên chuyên mục</th>
-          <th scope="col" class="text-center">View detail</th>
-          <th scope="col" class="text-center">Action</th>
-        </tr>
-      </thead>
-      <tbody id="tbodyCateParent">
-        {{#each List}}
-        <tr>
-          <th scope="row" class="text-left" id="tdParentIndex{{this.0.id}}">
-            <p>{{@index}}</p>
-          </th>
-          <td class="text-center">
-            <input id="txtCategory{{this.0.id}}" style="border:5mm;text-align:center;"
-              value="{{this.0.TenChuyenMuc}}"></input>
-          </td>
-          <td class="text-center">
-            <button type="button" class="btn btn-primary" onclick="viewDetail({{this.0.id}})"><i class="fa fa-eye"
-                aria-hidden="true"></i></button>
-          </td>
-          <td class="text-center">
-            <button id="btnEditCategory{{this.0.id}}" class="btn btn-primary btn-sm" role="button" title="Sửa category"
-              onclick="editCategory({{this.0.id}})">
-              <i class="fa fa-pencil" aria-hidden="true">sửa</i>
-            </button>
-            <button id="btnDelCategory{{this.0.id}}" class="btn btn-danger btn-sm" role="button" title="Xóa category"
-              onclick="delCategory({{this.0.id}})">
-              <i class="fa fa-trash" aria-hidden="true">Xóa</i>
-            </button>
-          </td>
-        </tr>
 
-        <tr id="row{{this.0.id}}" style="display:none">
-          <td></td>
-          <td colspan="2">
-            <input id="txtAddChild{{this.0.id}}">
-            </input>
-            <button id="btnAddChild{{this.0.id}}" style="margin-left: 0px;" class="btn btn-success btn-sm"
-              onclick="addChild({{this.0.id}})">Thêm mới</button>
-            <table id = "tableChild{{this.0.id}}" class="table table-hover">
-              <thead>
-                <tr style="background-color:lightgray">
-                  <th scope="col" class="text-left" style="width: 20%">#</th>
-                  <th scope="col" style="width: 60%;" class="text-center">Tên chuyên mục con</th>
-                  <th scope="col" class="text-center">Action</th>
-                </tr>
-              </thead>
+    <form class="dropdown" method="post" action="/search-enter" id="search-box">
+      <div class="size-a-2 bo-1-rad-22 of-hidden bocl11 m-tb-6 ">
+        <input autocomplete="off" class="f1-s-1 cl6 plh9 s-full p-l-25 p-r-45" type="text" name="search" id="search"
+          placeholder="Tìm kiếm...">
+        <button class="flex-c-c size-a-1 ab-t-r fs-20 cl2 hov-cl10 trans-03" type="submit">
+          <i class="zmdi zmdi-search"></i>
+        </button>
+      </div>
 
-              <tbody id="tbodyCateChild{{this.0.id}}">
-                {{#each this}}
-                {{#if (isNotEqual @index 0)}}
-                <tr id="row{{ChuyenMucCon}}" class="childRow">
-                  <td></td>
-                  <td class="text-center"><input id="txtCategory{{id}}" style="border:5mm;text-align: center;"
-                      value="{{TenChuyenMuc}}"></input></td>
-                  <td class="text-left">
-                    <button id="btnEditCategory{{id}}" class="btn btn-primary btn-sm" role="button" title="Sửa category"
-                      onclick="editCategory({{id}})">
-                      <i class="fa fa-pencil" aria-hidden="true">sửa</i>
-                    </button>
-                    <button id="btnDelCategory{{id}}" class="btn btn-danger btn-sm" role="button" title="Xóa category"
-                      onclick="delCategory({{id}})">
-                      <i class="fa fa-trash" aria-hidden="true">Xóa</i>
-                    </button>
-                  </td>
-                </tr>
-                {{/if}}
-                {{/each}}
-              </tbody>
-            </table>
-          </td>
-        </tr>
-        {{/each}}
-      </tbody>
-    </table>
+      <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton" id="match-list">
+      </ul>
+    </form>
   </div>
 </div>
+
+<div class="container p-t-4 p-b-40">
+  <h2 class="f1-l-1 cl2">
+    <i class="fa fa-paperclip" aria-hidden="true"></i> Danh sách bài viết liên quan
+  </h2>
+</div>
+
+<section class="bg0 p-b-55">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-10 col-lg-8 p-b-80">
+        <div class="p-r-10 p-r-0-sr991">
+          <div class="m-t--40 p-b-40" id="articles-area">
+            {{#each this._articles}}
+            <div class="flex-wr-sb-s p-t-40 p-b-15 how-bor2">
+              <a href="/article/{{id}}" class="size-w-8 wrap-pic-w hov1 trans-03 w-full-sr575 m-b-25 _article">
+                <img src="{{HinhAnh}}" alt="IMG">
+              </a>
+
+              <div class="size-w-9 w-full-sr575 m-b-25">
+                <h5 class="p-b-12">
+                  <a href="/article/{{id}}" class="f1-l-1 cl2 hov-cl10 trans-03 respon2 _article">
+                    {{TieuDe}}
+                  </a>
+                </h5>
+
+                <div class="cl8 p-b-18">
+                  <a href="javascript:;" class="f1-s-4 cl8 hov-cl10 trans-03">
+                    {{ButDanh}}
+                  </a>
+
+                  <span class="f1-s-3 m-rl-3">
+                    -
+                  </span>
+
+                  <span class="f1-s-3">
+                    {{formatDate NgayXuatBan}}
+                  </span>
+                </div>
+
+                <p class="f1-s-1 cl6 p-b-24">
+                  {{NoiDungTat}}
+                </p>
+              </div>
+            </div>
+            {{/each}}
+          </div>
+
+          <button class="flex-c-c size-a-13 bo-all-1 bocl11 f1-m-6 cl6 hov-btn1 trans-03" id="button-load-more">
+            <input type="hidden" id="offset" value="{{this._offset}}">
+            <input type="hidden" id="categoryID" value="{{this._categoryName.id}}">
+            Xem thêm
+          </button>
+        </div>
+      </div>
+
+      <div class="col-md-10 col-lg-4 p-b-80">
+        <div class="p-l-10 p-rl-0-sr991">
+
+          <!-- Most Popular -->
+          <div class="p-b-23">
+            <div class="how2 how2-cl4 flex-s-c">
+              <h3 class="f1-m-2 cl3 tab01-title">
+                <i class="fa fa-quote-right" aria-hidden="true"></i> Các bài viết khác
+              </h3>
+            </div>
+            <ul class="p-t-35">
+              {{#each this._otherArticles}}
+              <li class="flex-wr-sb-s p-b-30" title="{{NoiDungTat}}">
+                <a href="/article/{{id}}" class="size-w-10 wrap-pic-w hov1 trans-03 _article">
+                  <img src="{{HinhAnh}}" alt="IMG">
+                </a>
+
+                <div class="size-w-11">
+                  <h6 class="p-b-4">
+                    <a href="/article/{{id}}" class="f1-s-5 cl3 hov-cl10 trans-03 _article">
+                      {{TieuDe}}
+                    </a>
+                  </h6>
+
+                  <span class="cl8 txt-center p-b-24">
+                    <a href="/category/{{ChuyenMucID}}"
+                      class="f1-s-4 cl8 hov-cl10 trans-03 border border-dark rounded p-1">
+                      {{TenChuyenMuc}}
+                    </a>
+
+                    <span class="f1-s-3 m-rl-3">
+                      -
+                    </span>
+
+                    <a href="javascript:;" class="f1-s-6 cl8 hov-cl10 trans-03">
+                      {{ButDanh}}
+                    </a>
+
+                    <span class="f1-s-3 m-rl-3">
+                      -
+                    </span>
+
+                    <span class="f1-s-3">
+                      {{formatDate NgayXuatBan}}
+                    </span>
+                  </span>
+                </div>
+              </li>
+              {{/each}}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{> footer}}
