@@ -135,7 +135,7 @@ module.exports = {
     return `
       select bv.id, bv.TieuDe
       from baiviet bv
-      where match(bv.TieuDe, bv.NoiDungTat, bv.NoiDung) against ('${keyword}') and bv.TrangThaiID = 3
+      where match(bv.TieuDe, bv.NoiDungTat) against ('${keyword}') and bv.TrangThaiID = 3
       limit 7`;
   },
 
